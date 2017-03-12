@@ -1,0 +1,117 @@
+{if $data_inv}
+<div class="single-input one-half left" style='width:100% !important;'>	
+	<div class="table-responsive">
+		<table class="table table-bordered">
+			<tbody>
+				{if $data_customer.jenis_pembeli|default:'' eq 'SEKOLAH'}
+				<tr>
+				  <td>Nama Sekolah</td>
+				  <td>{$data_customer.nama_sekolah|default:'-'}</td>
+				</tr>	
+				<tr>
+				  <td>NPSN</td>
+				  <td>{$data_customer.npsn|default:'-'}</td>
+				</tr>	
+				{elseif $data_customer.jenis_pembeli|default:'' eq 'UMUM'}	
+				<tr>
+				  <td>Nama Customer</td>
+				  <td>{$data_customer.nama_lengkap|default:'-'}</td>
+				</tr>	
+				{/if}
+				<tr>
+				  <td>Zona Pengiriman</td>
+				  <td>{$data_inv.zona|default:'-'}</td>
+				</tr>				
+				<tr>
+				  <td>Subtotal</td>
+				  <td>Rp. {$data_inv.sub_total|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Pajak</td>
+				  <td>Rp. {$data_inv.pajak|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Grand Total</td>
+				  <td>Rp. {$data_inv.grand_total|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Jasa Pengiriman</td>
+				  <td>{$data_inv.jasa_pengiriman|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Metode Pembayaran</td>
+				  <td>{$data_inv.metode_pembayaran|default:'-'}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>		
+</div>		
+<div class="single-input one-half left" style='width:100% !important;'>	
+	<div class="table-responsive">
+		<table class="table table-bordered">
+			<thead>
+			  <tr>
+				<th width='30%' align='center'>Status Pembayaran</th>
+				<th width='40%' align='center'>Status Konfirmasi Pembayaran</th>
+				<th width='30%' align='center'>Status Pengiriman</th>
+			  </tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td align='center'>{$data_tracking.status_pembayaran|default:'-'}</td>
+					<td align='center'>{$data_tracking.status_konfirmasi|default:'-'}</td>
+					<td align='center'>{$data_tracking.status_tracking|default:'-'}</td>
+				</tr>
+				<tr>
+					<td colspan='3'>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>Jasa Pengiriman</td>
+					<td colspan='2'>{$data_inv.jasa_pengiriman|default:'-'}</td>
+				</tr>
+				<tr>
+					<td>No Resi</td>
+					<td colspan='2'>{$data_tracking.no_resi|default:'-'}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="single-input">
+	<label>&nbsp;<span>&nbsp;</span></label> 
+</div>
+<div class="submit-btn-area text-center">
+	<hr/>
+	<a id='ctk_bast' href='javascript:void(0);' class="estut-btn active submit">Cetak BAST</a> 
+	<a id='ctk_kwt' href='javascript:void(0);' class="estut-btn active submit">Cetak KWITANSI</a> 
+	<a id='ctk_tt' href='javascript:void(0);' class="estut-btn active submit">Cetak Tanda Terima</a> 
+	<a id='ctk_sp' href='javascript:void(0);' class="estut-btn active submit">Cetak Surat Pesanan</a> 
+</div>
+<script>
+	$('#ctk_bast').on('click', function(){
+		var post = {};
+		post['invo'] = $('#inv_lck').val();
+		openWindowWithPost(host+'cetak-bast', post);
+	});	
+	$('#ctk_kwt').on('click', function(){
+		var post = {};
+		post['invo'] = $('#inv_lck').val();
+		openWindowWithPost(host+'cetak-kwitansi', post);
+	});	
+	$('#ctk_tt').on('click', function(){
+		var post = {};
+		post['invo'] = $('#inv_lck').val();
+		openWindowWithPost(host+'cetak-tanda-terima', post);
+	});	
+	$('#ctk_sp').on('click', function(){
+		var post = {};
+		post['invo'] = $('#inv_lck').val();
+		openWindowWithPost(host+'cetak-surat-pesanan', post);
+	});	
+</script>
+{else}	
+	<center>Data Anda Tidak Ditemukan</center>
+{/if}
+
+
+

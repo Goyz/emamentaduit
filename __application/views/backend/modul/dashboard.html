@@ -1,0 +1,66 @@
+
+<div class="row-fluid" >
+    <div class="span12 widget-container-span">
+		<div class="widget-box light-border">
+			<div class="widget-header header-color-dark">
+				<h5 class="smaller">Jumlah Buku Terlaris</h5>
+
+				<!--div class="widget-toolbar">
+					<span class="badge badge-important">Alert</span>
+				</div-->
+			</div>
+
+			<div class="widget-body">
+				<div class="widget-main" style="padding:10px;">
+					<div id='charttable_{$acak}'></div>
+				</div>
+			</div>
+		</div>
+    </div>
+</div>
+<br>
+<br>
+<div class="row-fluid" >
+	<div class="span6 widget-container-span">
+		<div class="widget-box light-border">
+			<div class="widget-header header-color-dark">
+				<h5 class="smaller">Top 10 Penjualan </h5>
+			</div>
+
+			<div class="widget-body">
+				<div class="widget-main" style="padding:10px;">
+					<div id='charttable2_{$acak}'></div>
+				</div>
+			</div>
+		</div>
+    </div>
+	<div class="span6 widget-container-span">
+		<div class="widget-box light-border">
+			<div class="widget-header header-color-dark">
+				<h5 class="smaller">Penjualan PerZona</h5>
+			</div>
+
+			<div class="widget-body">
+				<div class="widget-main" style="padding:10px;">
+					<div id='charttable4_{$acak}'></div>
+				</div>
+			</div>
+		</div>
+    </div>
+</div>
+
+<script>
+	$.post(host+'backoffice-GetDataChart',{ mod:'produk_laris' },function(r){
+		var x=JSON.parse(r);
+		chart_na('charttable_{$acak}',"column","Jumlah Buku Terlaris",'',"",x.x,x.y,"");
+	});
+	$.post(host+'backoffice-Dashboard',{ mod:'dashboard_penjualan' },function(r){
+		$('#charttable2_{$acak}').html(r);
+	});
+	/*$.post(host+'backoffice-Dashboard',{ mod:'dashboard_penjualan_umum' },function(r){
+		$('#charttable3_{$acak}').html(r);
+	});*/
+	$.post(host+'backoffice-Dashboard',{ mod:'dashboard_penjualan_zona' },function(r){
+		$('#charttable4_{$acak}').html(r);
+	});
+</script>

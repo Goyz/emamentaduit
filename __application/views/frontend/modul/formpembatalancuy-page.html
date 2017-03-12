@@ -1,0 +1,50 @@
+<div class="single-input one-half left" style='width:100% !important;'>	
+	<div class="table-responsive">
+		<table class="table table-bordered">
+			<tbody>
+				<tr>
+				  <td>Kami sudah mengirimkan Kode Pembatalan ke Email anda, silahkan masukkan kode pembatalan pada form dibawah ini.</td>
+				</tr>	
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="single-input">
+	<label>Kode Pembatalan<span>*</span></label> 
+	<input type="text" class='validasi' name="kdpemb" id="kdpemb" required="required">
+</div>
+
+<div class="submit-btn-area text-center">
+	<hr/>
+	<a id='sebatslah' href='javascript:void(0);' class="estut-btn active submit">Batalkan Pesanan</a>
+</div>
+
+<script>
+	$(".validasi").validatebox({ required:true }); 
+	$('#sebatslah').on('click', function(){
+		validasi = $('#frmpemb').form('validate');
+		if(validasi){
+			$.blockUI({ message: '<h3>Data Sedang Diproses...</h3>' });			
+		}
+		submit_form('frmpemb', function(resp){
+			if(resp){
+				$.unblockUI();
+			}
+			
+			if(resp == 1){
+				var wordnya = "Pesanan Anda Sudah Dibatalkan, Terima Kasih";
+			}else if(resp == 0){
+				var wordnya = "Kode Pembatalan Anda Tidak Cocok";
+			}else{
+				var wordnya = "Terjadi Kegagalan Sistem, Coba Beberapa Saat Lagi.";
+			}
+			
+			$('#modalencuk').html(wordnya);			
+			$('#productModal').modal('show'); 
+			
+			if(resp == 1){
+				location.reload();
+			}
+		});
+	});
+</script>

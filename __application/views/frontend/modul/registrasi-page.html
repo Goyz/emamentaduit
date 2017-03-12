@@ -1,0 +1,146 @@
+<div class="page-content">
+	<div class="contact-us-area padding100 bg-white-2">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="contact-form-area">
+						<div class="form-wrap">
+							<form id='frmregsbro' url="{$host}submit-registrasi" method='post' enctype="multipart/form-data" class="form-inline">
+								<div class="form-inner" style='min-height:300px !important;'>
+									<div class="single-input">
+										<label>Nama Sekolah <span>*</span></label> 
+										<input type="text" name="nmseko" class='validasi' value="{$data.nama_sekolah|default:''}">
+									</div>
+									<div class="single-input one-half left">
+										<label>NPSN <span>*</span></label> 
+										<input name="npsn" id="npsn" class='validasi' type="text" required="required">
+										<br/>
+										<br/>
+									</div>
+									<div class="single-input one-half right">
+										<label>NIP Kepala Sekolah <span>*</span></label> 
+										<input type="text" name="nipkepsek" class='validasi' value="{$data.nip|default:''}">
+										<br/>
+										<br/>
+									</div>
+									<div class="single-input one-half left">
+										<label>Nama Kepala Sekolah <span>*</span></label> 
+										<input type="text" name="nmkepsek" class='validasi' value="{$data.nama_kepala_sekolah|default:''}" required="required">
+										<br/>
+										<br/>
+									</div>	
+									<div class="single-input one-half right">
+										<label>Nama Bendahara<span>*</span></label> 
+										<input type="text" name="nmbend" class='validasi' value="{$data.nama_bendahara|default:''}" required="required">
+										<br/>
+										<br/>
+									</div>
+									<div class="single-input one-half left">
+										<label>No. HP Kepala Sekolah <span>*</span></label> 
+										<input type="text" name="nohpkepsek" class='validasi' value="{$data.no_hp_kepsek|default:''}" required="required">
+										<br/>
+										<br/>
+									</div>	
+									<div class="single-input one-half right">
+										<label>No. HP Bendahara<span>*</span></label> 
+										<input type="text" name="nohpbend" class='validasi' value="{$data.no_hp_bendahara|default:''}" required="required">
+										<br/>
+										<br/>
+									</div>		
+									<div class="single-input one-half left">
+										<label>Provinsi<span>*</span></label> 
+										<select id='prv_skull' readonly class='validasi' name='prov'>
+											{$combo_prov}
+										</select>
+										<br/>
+										<br/>
+									</div>
+									<div class="single-input one-half right">
+										<label>Kabupaten<span>*</span></label> 
+										<select id='kab_skull' class='validasi' name='kab'></select>
+										<br/>
+										<br/>
+									</div>
+									<div class="single-input one-half left">
+										<label>Kecamatan<span>*</span></label> 
+										<select id='kec_skull' class='validasi' name='kec'></select>
+										<br/>
+										<br/>
+									</div>
+									<div class="single-input one-half right">
+										<label>Kode Pos<span>*</span></label> 
+										<input type="text" name="kdpos" class='validasi' value="{$data.kode_pos|default:''}" />
+										<br/>
+										<br/>
+									</div>
+									<div class="single-input one-half left">
+										<label>No. Telp. Sekolah<span>*</span></label> 
+										<input type="text" name="notelp" class='validasi' value="{$data.no_telp_sekolah|default:''}" required="required">
+										<br/>
+										<br/>
+									</div>
+									<div class="single-input one-half right">
+										<label>Email Sekolah<span>*</span></label> 
+										<input type="text" name="email" class='validasi' value="{$data.email|default:''}" required="required">
+										<br/>
+										<br/>
+									</div>
+									<div class="single-input">
+										<label>Alamat Pengiriman <span>*</span></label> 
+										<textarea name="almt" class='validasi' class="textarea">{$data.alamat_pengiriman|default:''}</textarea>
+									</div>	
+									<div class="submit-btn-area text-center">
+										<br/>
+										<a id='slesai_registrasi' href='javascript:void(0);' class="estut-btn active submit">Registrasi</a>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	$('#prv_skull').bind('change', function(){
+		fillCombo(host+'combo-kab-kota', 'kab_skull', '', $(this).val() );
+	});
+	$('#kab_skull').on('change', function(){
+		fillCombo(host+'combo-kecamatan', 'kec_skull', '', $(this).val() );
+	});
+
+	$(".validasi").validatebox({ required:true }); 
+	$('#slesai_registrasi').on('click', function(){
+		validasi = $('#frmregsbro').form('validate');
+		if(validasi){
+			$.blockUI({ message: '<h3>Data Sedang Diproses...</h3>' });			
+		}
+		submit_form('frmregsbro', function(resp){
+			if(resp == 1){
+				$.post(host+'finish-registrasi', { } , function(s){
+					if(s){
+						$.unblockUI();
+					}
+					parsinganxs = $.parseJSON(s)
+					$('#modalencuk').html(parsinganxs.page);			
+					$('#productModal').modal({
+						backdrop: 'static',
+						keyboard: false
+					}); 
+					$('#productModal').modal('show'); 
+					$('#button_close').hide();
+				});
+			}else if(resp == 2){
+				$.unblockUI();
+				$('#modalencuk').html("Data Email Anda Sudah Ada Dalam System Kami!");			
+				$('#productModal').modal('show'); 
+			}else if(resp == 3){
+				$.unblockUI();
+				$('#modalencuk').html("Data NPSN Anda Sudah Ada Dalam System Kami!s");			
+				$('#productModal').modal('show'); 					
+			}
+		});
+	});
+</script>

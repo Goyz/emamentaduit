@@ -1,0 +1,30 @@
+<div class="row-fluid">
+    <fieldset>
+	<div class="span12">
+		<form  parsley-validate id="form_input_{$acak}" method="post" class="form-horizontal" url="{$host}backoffice-simpan/tbl_paket/{$sts|default:'add'}">
+			<input type="hidden" name="id" id="id_{$acak}" value="{$data.id|default:''}">
+			<table class="table table-hover">
+			{include file="backend/template/input_goyz.html" label="Nama Paket" type="text" name="nama_paket" id_na="nama_paket" class="validasi" value=$data.nama_paket|default:'' style_type="width:80%"}
+			</table>
+			<div class="col-sm-7 col-sm-offset-3">
+				<div class="pull-right">
+					{include file="backend/template/button_save.html" text="Simpan Data" id_na="simpan_paket" style_btn="btn-success"  btn_goyz="true"}
+					{include file="backend/template/button_save.html" text="Kembali" id_na="batal_paket" style_btn="btn-info"  btn_goyz="true"}
+				</div>
+			</div>
+		</form>
+	</div>
+	</fieldset>
+</div>
+
+<script>
+	$(".validasi").validatebox({ required:true }); 
+	
+	$('#simpan_paket_{$acak}').bind('click',function(){
+		simpan_form('form_input_{$acak}','batal_paket_{$acak}','Data Paket Sudah Tersimpan');
+	});
+	$('#batal_paket_{$acak}').bind('click',function(){
+		$('#grid_nya_{$mod}').show();
+		$('#detil_nya_{$mod}').hide();
+	});
+</script>

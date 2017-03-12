@@ -1,0 +1,70 @@
+{if $type eq 'one'}
+	{foreach from=$data_buku item=row}
+		<div class="col-md-4 col-sm-6 col-xs-12 col-lg-4">
+			<div class="single-product text-center">
+				<div class="pro-thumb overlay-bg">
+					<img src="{$row.foto_buku}" alt="{$row.judul_buku}" style='height:200px !important;' />
+					<div class="hover-btn">
+						<ul class="action-buttons">
+							<li class="quickview"><a href="javascript:void(0);" onClick="productwindow('{$row.id}');" ><i class="fa fa-hand-o-up"> Lihat Barang</i></a></li>
+						</ul>
+					</div>
+				</div>
+			
+				<div class="pro-info" style='min-height:150px !important;'>
+					<p class="pro-category" style='margin-bottom:5px !important;'>{$row.nama_kategori}</p>
+					<div style='margin-bottom:5px;'><font style='font-size:15px !important;'>{$row.judul_buku}</font></div>
+					<div><font style='font-size:18px !important;'>Rp. {$row.harga_buku_bener|default:''}</font></div>
+				</div>
+			</div>
+		</div>
+	{/foreach}
+{/if}
+{if $type eq 'two'}
+	{foreach from=$data_buku item=row}
+		<div class="col-md-12">
+			<div class="single-product text-left fix">
+				<div class="pro-thumb">
+					<img src="{$host}img/product/list/full/1.jpg" alt="product img" />
+				</div>
+				<div class="pro-info">
+					<p class="pro-category">{$row.nama_kategori}</p>
+					<h3 class="pro-title"><a href="#">{$row.judul_buku}</a></h3>
+					<div class="product-action">
+						<a href="#" class="estut-btn">ADD TO CART</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	{/foreach}
+	
+								{*
+								<div role="tabpanel" class="tab-pane fade" id="list">
+									<div class="product-list-view-area clear">
+										{if $data_buku}
+											<div id='konten-buku-lebar'>
+											{foreach from=$data_buku item=row}
+												<div class="col-md-12">
+													<div class="single-product text-left fix">
+														<div class="pro-thumb">
+															<img src="{$host}img/product/list/full/1.jpg" alt="product img" />
+														</div>
+														<div class="pro-info">
+															<p class="pro-category">{$row.nama_kategori}</p>
+															<h3 class="pro-title"><a href="#">{$row.judul_buku}</a></h3>
+															<div class="product-action">
+																<a href="#" class="estut-btn">ADD TO CART</a>
+															</div>
+														</div>
+													</div>
+												</div>
+											{/foreach}
+											</div>
+										{else}
+											<center>-- Tidak Ada Data Tersedia -- </center>
+										{/if}
+									</div>
+								</div>
+								*}
+
+{/if}

@@ -1,0 +1,86 @@
+<div class="page-content">
+	
+	<div class="contact-us-area padding100 bg-white-2">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="contact-form-area">
+						<div class="form-wrap">
+							<ul class="nav nav-tabs">
+								 <li class="active"><a data-toggle="tab" href="#sekolah">Sekolah</a></li>
+								 <li><a data-toggle="tab" href="#umum">Umum</a></li>
+							</ul>
+							<div class="tab-content">
+								<div id="sekolah" class="tab-pane fade in active">
+									<br/>
+									<form class="form-inline">
+										<div class="form-inner" style='min-height:300px !important;'>
+											<div class="single-input one-half left">
+												<label>NPSN Sekolah<span>*</span></label> 
+												<input name="npsn" id="npsn" type="text" required="required">
+											</div>
+											<div class="single-input one-half right">
+												<label>&nbsp;</label> 
+												<div class="submit-btn-area">
+													<a id='cek_data_sekolah' href='javascript:void(0);' class="estut-btn active submit">Cek Data</a>
+												</div>
+											</div>
+											<div id='load_form_riwayat_sekolah'></div>
+										</div>
+									</form>									
+								</div>
+								<div id="umum" class="tab-pane fade">
+									<br/>
+									<form class="form-inline">
+										<div class="form-inner" style='min-height:300px !important;'>
+											<div class="single-input one-half left">
+												<label>Email<span>*</span></label> 
+												<input name="em" id="em" type="text" required="required">
+											</div>
+											<div class="single-input one-half right">
+												<label>&nbsp;</label> 
+												<div class="submit-btn-area">
+													<a id='cek_data_umum' href='javascript:void(0);' class="estut-btn active submit">Cek Data</a>
+												</div>
+											</div>
+											<div id='load_form_riwayat_umum'></div>
+										</div>
+									</form>									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+<script>
+	$('#cek_data_sekolah').on('click', function(){
+		if($('#npsn').val() == ""){
+			alert('NPSN Tidak Boleh Kosong!');
+			return false;
+		}
+		
+		$.post(host+'loading-riwayatform', { 'np':$('#npsn').val(), 'typ':'skull' }, function(ex){
+			parsingansshhd = $.parseJSON(ex)
+			$('#load_form_riwayat_sekolah').html(parsingansshhd.page);
+		});
+	});
+	
+	//dascripto doeshdoadajflkdfjlajfdjfadhfiasdh-oasdjflkdsjf-adfadfafadfdsf
+	
+	$('#cek_data_umum').on('click', function(){
+		if($('#em').val() == ""){
+			alert('Email Tidak Boleh Kosong!');
+			return false;
+		}
+		
+		$.post(host+'loading-riwayatform', { 'em':$('#em').val(), 'typ':'umu' }, function(edx){
+			parsingansshhdx = $.parseJSON(edx)
+			$('#load_form_riwayat_umum').html(parsingansshhdx.page);
+		});
+	});
+</script>

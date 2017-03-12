@@ -1,0 +1,59 @@
+<div class="page-content">
+	<div class="contact-us-area padding100 bg-white-2">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="contact-form-area">
+						<div class="form-wrap">
+							<form id='frmkmp' url="{$host}submit-komplain" method='post' enctype="multipart/form-data" class="form-inline">
+								<div class="form-inner" style='min-height:300px !important;'>
+									<div class="single-input">
+										<label>No. Invoice <span>*</span></label> 
+										<input type="text" name="noinv" class='validasi'>
+									</div>
+									<div class="single-input">
+										<label>Komplain Anda<span>*</span></label> 
+										<textarea name="komp" class='validasi' class="textarea">{$data.alamat_pengiriman|default:''}</textarea>
+									</div>	
+									<div class="single-input">
+										<label>File Pendukung <span>&nbsp;</span></label> 
+										<input type="file" name="filepend" />
+									</div>
+									<div class="submit-btn-area text-center">
+										<hr/>
+										<a id='slesai_submit' href='javascript:void(0);' class="estut-btn active submit">Selesai</a>
+									</div>									
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	$(".validasi").validatebox({ required:true }); 
+	$('#slesai_submit').on('click', function(){
+		validasi = $('#frmkmp').form('validate');
+		if(validasi){
+			$.blockUI({ message: '<h3>Data Sedang Diproses...</h3>' });			
+		}
+		submit_form('frmkmp', function(resp){
+			$.post(host+'finish', { } , function(s){
+				if(s){
+					$.unblockUI();
+				}
+				parsinganxs = $.parseJSON(s)
+				$('#modalencuk').html(parsinganxs.page);			
+				$('#productModal').modal({
+					backdrop: 'static',
+					keyboard: false
+				}); 
+				$('#productModal').modal('show'); 
+				$('#button_close').hide();
+			});
+		});
+	});
+</script>

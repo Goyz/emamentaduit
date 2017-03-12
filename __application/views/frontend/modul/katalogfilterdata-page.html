@@ -1,0 +1,56 @@
+<div class="row">
+	<div class="tab-content">
+		<div role="tabpanel" class="tab-pane fade in active" id="grid">
+			{if $data_buku}
+				<div id='konten-buku'>
+				{foreach from=$data_buku item=row}
+					<div class="col-md-4 col-sm-6 col-xs-12 col-lg-4">
+						<div class="single-product text-center">
+							<div class="pro-thumb overlay-bg">
+								<img src="{$row.foto_buku}" alt="{$row.judul_buku}" style='height:200px !important;' />
+								<div class="hover-btn">
+									<ul class="action-buttons">
+										<li class="quickview"><a href="javascript:void(0);" onClick="productwindow('{$row.id}');" ><i class="fa fa-hand-o-up"> Lihat Barang</i></a></li>
+									</ul>
+								</div>
+							</div>
+						
+							<div class="pro-info" style='min-height:150px !important;'>
+								<p class="pro-category" style='margin-bottom:5px !important;'>{$row.nama_kategori}</p>
+								<div style='margin-bottom:5px;'><font style='font-size:15px !important;'>{$row.judul_buku}</font></div>
+								<div><font style='font-size:18px !important;'>Rp. {$row.harga_buku_bener|default:''}</font></div>
+							</div>
+						</div>
+					</div>
+				{/foreach}
+				</div>
+			{else}
+			<center>-- Tidak Ada Data Tersedia -- </center>
+			{/if}
+		</div>						
+	</div>
+</div>
+<div class="row">
+	<div class="pagination-area-v1">
+		<div class="col-md-12 text-left">
+			Halaman :
+			<select id='pag' onChange="pagjs('{$typefilter}', '{$idfilter}', '{$crfilter}');" style='width:70px !important;'>
+				{foreach from=$array_paging item=pag}
+					<option value='{$pag.limitnya}'>{$pag.angka}</option>
+				{/foreach}
+			</select>
+			
+			{*
+			{if $array_paging}
+				<ul class="page-numbers">
+				{foreach from=$array_paging item=pag}
+					<li><a id='{$pag.angka}' href="javascript:void(0);" class="page-number" onClick="pagjs('{$pag.angka}', '{$pag.limitnya}')" >{$pag.angka}</a></li>
+				{/foreach}
+				</ul>
+			{else}
+				<li class="page-number current">-</li>
+			{/if}
+			*}
+		</div>
+	</div>
+</div>

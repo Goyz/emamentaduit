@@ -1,0 +1,74 @@
+<div  class="sidebar fixed" id="sidebar">
+	<div class="sidebar-shortcuts" id="sidebar-shortcuts">
+		<b>MENU UTAMA</b>
+	</div>
+	<ul class="nav nav-list">
+		<li>
+			<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-Dashboard','dashboard')">
+				<i class="icon-bar-chart"></i>
+				<span class="menu-text">Dashboard</span>
+			</a>
+		</li>
+		{if $auth.flag_group neq 'L'}
+		<li>
+			<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/produk','tbl_buku')">
+				<i class="icon-bar-chart"></i>
+				<span class="menu-text">Produk</span>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/paket','tbl_paket')">
+				<i class="icon-bar-chart"></i>
+				<span class="menu-text">Paket Produk</span>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:void(0);"  class="dropdown-toggle" >
+				<i class="icon-book"></i>
+				<span class="menu-text">Transaksi</span>
+				<b class="arrow icon-angle-down"></b>
+			</a>
+			<ul class="submenu">
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/invoice','tbl_h_pemesanan');$('#judul_kecil').html('Invoice Sekolah')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Invoice Sekolah</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/invoice_umum','tbl_h_pemesanan');$('#judul_kecil').html('Invoice Umum')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Invoice Umum</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/konfirmasi','tbl_konfirmasi');$('#judul_kecil').html('Konfirmasi Pembayaran')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Konfirmasi</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/gudang_konfirmasi','tbl_gudang');$('#judul_kecil').html('Manajemen Order')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Manajemen Order</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/monitor_order','tbl');$('#judul_kecil').html('Manajemen Order')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Monitoring Transaksi</span>
+					</a>
+				</li>
+			</ul>
+		</li>
+		{/if}
+		
+	</ul>
+	
+	
+		
+	
+	<div class="sidebar-collapse" id="sidebar-collapse">
+		<i class="icon-double-angle-left"></i>
+	</div>
+</div>

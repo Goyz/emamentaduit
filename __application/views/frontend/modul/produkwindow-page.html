@@ -1,0 +1,161 @@
+<link rel="stylesheet" href="{$host}__assets/ef/responsiveslide/demo.css" type="text/css" media="screen" />
+<div class="product-images">
+	<div class="main-image images">
+		{if $data_fotobuku}
+			<ul class="rslides" id='slider3'>
+			{foreach from=$data_fotobuku item=rw}
+				<li>
+					<img src="{$rw.foto_buku}" />
+				</li>
+			{/foreach}
+			</ul>
+			<ul id="slider3-pager">
+			{foreach from=$data_fotobuku item=rws}
+				<li><a href="#"><img src="{$rws.foto_buku}" style='width:30px;height:30px;' alt=""></a></li>
+			{/foreach}
+			</ul>
+		{else}
+			<img src="{$host}__repository/no-image.jpeg"  style='margin-bottom:20px !important;'/>
+		{/if}		
+	</div>
+	<div class="quick-desc">
+		<h3>Deskripsi Buku</h3>
+		<hr />
+		{$data_buku.deskripsi_buku}
+	</div>
+</div>
+<div class="product-info">
+	<h1>{$data_buku.judul_buku}</h1>
+	<div class="price-box-3">
+		<div class="s-price-box">
+			<span class="new-price">Harga Zona {$zona|default:'0'} : Rp. {$harga_buku|default:'0'}</span><br/>
+		</div>
+	</div>
+	<div class="quick-add-to-cart">
+		<div class="table-responsive">
+			<table class="table">
+				<thead>
+					  <tr>
+						<th>Zona</th>
+						<th>Harga Retail</th>
+						<th>Harga Pemerintah</th>
+					  </tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>1</td>
+						<td>{$data_buku.harga_zona_1}</td>
+						<td>{$data_buku.harga_pemerintah_zona_1}</td>
+					</tr>
+					<tr>
+						<td>2</td>
+						<td>{$data_buku.harga_zona_2}</td>
+						<td>{$data_buku.harga_pemerintah_zona_2}</td>
+					</tr>
+					<tr>
+						<td>3</td>
+						<td>{$data_buku.harga_zona_3}</td>
+						<td>{$data_buku.harga_pemerintah_zona_3}</td>
+					</tr>
+					<tr>
+						<td>4</td>
+						<td>{$data_buku.harga_zona_4}</td>
+						<td>{$data_buku.harga_pemerintah_zona_4}</td>
+					</tr>
+					<tr>
+						<td>5</td>
+						<td>{$data_buku.harga_zona_5}</td>
+						<td>{$data_buku.harga_pemerintah_zona_5}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="table-responsive">
+			<table class="table table-bordered">
+				<tbody>
+					<tr>
+					  <td>Lokasi Anda</td>
+					  <td>{$provinsi|default:'-'}</td>
+					</tr>
+					<tr>
+					  <td>Estimasi Pengiriman</td>
+					  <td>{$estimasi|default:'-'}</td>
+					</tr>				
+					<tr>
+					  <td>Edisi</td>
+					  <td>{$data_buku.nama_edisi}</td>
+					</tr>
+					<tr>
+					  <td>Kelas</td>
+					  <td>{$data_buku.kelas}</td>
+					</tr>
+					<tr>
+					  <td>Kategori</td>
+					  <td>{$data_buku.nama_kategori}</td>
+					</tr>
+					<tr>
+					  <td>ISBN</td>
+					  <td>{$data_buku.isbn}</td>
+					</tr>
+					<tr>
+					  <td>Penerbit</td>
+					  <td>{$data_buku.penerbit}</td>
+					</tr>
+					<tr>
+					  <td>Kode Buku</td>
+					  <td>{$data_buku.kode_buku}</td>
+					</tr>
+					<tr>
+					  <td>Jumlah Hal.</td>
+					  <td>{$data_buku.jml_hal}</td>
+					</tr>
+					<tr>
+					  <td>Ukuran Buku</td>
+					  <td>{$data_buku.ukuran_buku}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>		
+		<div class="numbers-row">
+			<input type="number" style='width:80px !important;' id="french-hens_{$data_buku.id}" value="1">
+		</div>
+		<button id='sbm-cart_{$data_buku.id}' class="single_add_to_cart_button" >Beli</button>
+		
+	</div>
+</div>
+
+<script>
+	$(document).ready(function(){
+		$("#slider3").responsiveSlides({
+			manualControls: '#slider3-pager',
+			maxwidth: 540
+		});
+	});
+	
+	$('#combo_zona_{$data_buku.id}').on('change', function(){
+		$('#zon_{$data_buku.id}').html('');
+		$.post(host+'harga-per-zona', { 'znpn':$(this).val(), 'iix':'{$data_buku.id}' }, function(responze){
+			$('#zon_{$data_buku.id}').html(responze);
+		});
+	});
+	
+	$('#sbm-cart_{$data_buku.id}').on('click', function(){
+		var posting = {};
+		posting['zn'] = '{$zona}';
+		posting['iipx'] = '{$data_buku.id}';
+		posting['yqt'] = $('#french-hens_{$data_buku.id}').val();
+		$.post(host+'keranjang-belanja-masuk', posting, function(resp){
+			if(resp){
+				$('#productModal').modal('hide'); 
+				$.post(host+'banyak-belanja', { } , function(prsp) {
+					$('#tot_item').html(prsp);
+				} );
+				alert('Buku telah ditambahkan, bisa di lihat di keranjang belanja di kanan atas! atau silahkan lanjutkan belanja');
+			}else{
+				alert('Terjadi Kegagalan System, Coba Lagi!');
+			}
+		});
+	});
+	
+	
+</script>

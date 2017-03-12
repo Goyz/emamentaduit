@@ -1,0 +1,42 @@
+<form id='frmlogin' url="{$host}submit-login" method='post' enctype="multipart/form-data" class="form-inline">
+	<div class="form-inner" style='min-height:300px !important;'>
+		<div class="single-input">
+			<label>Username <span>*</span></label> 
+			<input type="text" name="userpmb" class='validasi' />
+		</div>
+		<div class="single-input">
+			<label>Password <span>*</span></label> 
+			<input type="password" name="pwdpmb" class='validasi' />
+		</div>
+		<div class="submit-btn-area text-center">
+			<span id='hasilnya' style='margin-top:5px !important;margin-bottom:5px !important;'></span>
+			<br/>
+			<br/>
+			<a id='batten_login' href='javascript:void(0);' class="estut-btn active submit">Login</a>
+			&nbsp;&nbsp;
+			<a id='login_dapodik' href="{$authorize_endpoint}/?response_type=code&client_id={$client_id}&state=100100&redirect_uri={$redirect_uri}" target='_blank' class="estut-btn active submit">Login Dapodik</a> 
+		</div>
+	</div>
+</form>
+
+<script>
+	$(".validasi").validatebox({ required:true }); 
+	$('#batten_login').on('click', function(){
+		validasi = $('#frmlogin').form('validate');
+		if(validasi){
+			$.blockUI({ message: '<h3>Data Sedang Diproses...</h3>' });			
+		}
+		submit_form('frmlogin', function(resp){
+			if(resp == 1){
+				$.unblockUI();
+				alert("Anda Sudah Masuk Kedalam System Webstore Kami. Selamat Belanja");
+				location.reload();
+			}else{
+				$.unblockUI();
+				$('#hasilnya').html(resp);
+			}
+		});
+		
+		return false;
+	});
+</script>

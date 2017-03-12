@@ -1,0 +1,19 @@
+
+{if $mod eq 'invoice' ||$mod eq 'komplain'||$mod eq 'invoice_umum'|| $mod eq 'konfirmasi' || $mod eq 'gudang_konfirmasi' || $mod eq 'gudang_kirim' || $mod eq 'member_sekolah' || $mod eq 'member_umum' || $mod eq 'monitor_order' || $mod eq 'reg_marketing'}
+	{include file="backend/template/grid.html" main={$mod} button="false" table={$table|default:''} filter="true" }
+	{if $mod eq 'konfirmasi'}
+	<div class="modol" ></div>
+		
+	{/if}
+{else}
+	{assign var=disable_enable value='false'}
+	{assign var=mapping value='false'}
+	{if $mod eq 'produk'}
+		{assign var=disable_enable value='true'}
+	{/if}
+	{if $mod eq 'paket'}
+		{assign var=disable_enable value='true'}
+		{assign var=mapping value='true'}
+	{/if}
+	{include file="backend/template/grid.html" main={$mod} button_disable={$disable_enable} button_mapping={$mapping} button="true" table={$table|default:''} filter="true"}
+{/if}

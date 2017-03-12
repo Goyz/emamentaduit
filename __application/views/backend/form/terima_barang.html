@@ -1,0 +1,52 @@
+<div style="margin-left:0px;">
+<form id="form_input_terima_{$acak}" method="post" class="form-horizontal" url="{$host}simpan-tandaterima">
+	<input type="hidden" name="tbl_h_pemesanan_id" id="id_{$acak}" value="{$id|default:''}">
+	<input type="hidden" name="mod" id="mod_{$acak}" value="{$table|default:''}">
+	<input type="hidden" name="editstatus" value="add">
+	<table class="table table-hover">
+		<tr>
+			<td>&nbsp;</td><td style="width:20%">Tanggal Terima</td><td>:</td>
+			<td style="font-weight:bold;">
+				<input class="form-control" name="tanggal_terima" id='tanggal_terima' style="width:50%" type="text">
+			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td><td style="width:20%">Jam Terima</td><td>:</td>
+			<td style="font-weight:bold;">
+				<input class="form-control" name="jam_terima" id='jam_terima' style="width:50%" type="text">
+			</td>
+		</tr>
+		{include file="backend/template/input_goyz.html" label="Petugas" type="text" name="petugas" id_na="petugas"  style_type="width:80%" class="validasi" value=$data.resi|default:''}
+	</table>
+	
+	
+</form>
+<div class="col-sm-7 col-sm-offset-3">
+<div class="pull-right">
+	{include file="backend/template/button_save.html" text="Simpan Data" id_na="simpan" style_btn="btn-success"  btn_goyz="true"}
+	{include file="backend/template/button_save.html" text="Tutup" id_na="batal" style_btn="btn-info"  btn_goyz="true"}
+</div>
+</div>
+</div>
+
+<script>
+	$('#tanggal_terima').datebox({
+		formatter : formatDate,
+        parser : myparser,
+		required : true,
+	});
+	$('#jam_terima').timespinner({
+		showSeconds: false,
+		separator: '.',
+		required : true,
+	});
+	$(".validasi").validatebox({ required:true }); 
+	
+	$('#batal_{$acak}').bind('click',function(){
+		closeWindow();
+	});
+	$('#simpan_{$acak}').on('click',function(){	
+		simpan_form('form_input_terima_{$acak}','batal_{$acak}',"data_tersimpan");
+	});
+
+</script>

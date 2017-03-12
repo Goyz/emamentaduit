@@ -1,0 +1,99 @@
+{if $datacust|default:''}
+<div class="single-input one-half left" style='width:100% !important;'>	
+	<div class="table-responsive">
+		<table class="table table-bordered">
+			<tbody>
+				{if $datacust.jenis_pembeli|default:'' eq 'SEKOLAH'}
+				<tr>
+				  <td width='30%'>Nama Sekolah</td>
+				  <td width='70%'>{$datacust.nama_sekolah|default:'-'}</td>
+				</tr>	
+				<tr>
+				  <td>NPSN</td>
+				  <td>{$datacust.npsn|default:'-'}</td>
+				</tr>	
+				{elseif $datacust.jenis_pembeli|default:'' eq 'UMUM'}	
+				<tr>
+				  <td width='30%'>Nama Customer</td>
+				  <td width='70%'>{$datacust.nama_lengkap|default:'-'}</td>
+				</tr>	
+				<tr>
+				  <td>Email</td>
+				  <td>{$datacust.email|default:'-'}</td>
+				</tr>					
+				{/if}
+				<tr>
+				  <td>Provinsi</td>
+				  <td>{$datacust.provinsi|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Kabupaten / Kota</td>
+				  <td>{$datacust.kab_kota|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Kecamatan</td>
+				  <td>{$datacust.kecamatan|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Kode Pos</td>
+				  <td>{$datacust.kode_pos|default:'-'}</td>
+				</tr>
+			<tbody>
+		</table>
+	</div>
+</div>
+<div class="single-input one-half left" style='width:100% !important;'>	
+	<div class="table-responsive">
+		<table class="table table-bordered">
+			<thead>
+			  <tr style='background:#EFEFEF;'>
+				<th width='20%' align='center'>No. Invoice</th>
+				<th width='20%' align='center'>Tanggal Pesanan</th>
+				<th width='20%' align='center'>Sub Total</th>
+				<th width='20%' align='center'>Pajak</th>
+				<th width='20%' align='center'>Total</th>
+			  </tr>
+			</thead>
+			<tbody>
+			{if $datapesanan}
+				{foreach from=$datapesanan item=riw}
+				<tr>
+					<td>{$riw.no_order|default:'-'}</td>
+					<td>{$riw.tgl_order|date_format:'%d-%m-%Y'}</td>
+					<td>Rp. {$riw.sub_total|default:'-'}</td>
+					<td>Rp. {$riw.pajak|default:'-'}</td>
+					<td>Rp. {$riw.grand_total|default:'-'}</td>
+				</tr>
+				<tr>
+					<td colspan='2'>Status Pembayaran</td>
+					<td colspan='3'>{$riw.status_pembayaran|default:'-'}</td>
+				</tr>
+				<tr>
+					<td colspan='2'>Status Konfirmasi Pembayaran</td>
+					<td colspan='2'>{$riw.status_konfirmasi|default:'-'}</td>
+				</tr>
+				<tr>
+					<td colspan='2'>Status Pengiriman</td>
+					<td colspan='3'>{$riw.status_tracking|default:'-'}</td>
+				</tr>
+				{/foreach}
+			{else}
+				<tr>
+					<td colspan='5' align='center' >Data Tidak Ditemukan</td>
+				</tr>
+			{/if}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div class="single-input">
+	<label>&nbsp;<span>&nbsp;</span></label> 
+</div>
+<div class="submit-btn-area text-center">
+	<hr/>
+</div>
+
+{else}
+	<center>Data Anda Tidak Ditemukan</center>
+{/if}

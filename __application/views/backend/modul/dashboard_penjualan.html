@@ -1,0 +1,38 @@
+<h2>TOP 10 Penjualan Sekolah</h2>
+<hr>
+<div style="padding:10px;">
+	<table class="table table-hover">
+	<thead>
+	<tr>
+		<th style="text-align:left;">No.</th>
+		<th>No. Order</th>
+		<th>Nama Sekolah</th>
+		<th style="text-align:right;">Total</th>
+	</tr>
+	</thead>
+	<tbody>
+	{assign var=tot_qty value=0}
+	{assign var=tot_bayar value=0}
+	{assign var=grand_tot value=0}
+	{if !empty($data)}
+	{foreach from=$data item=i name=x}
+	
+	<tr>
+		<td >{$smarty.foreach.x.iteration}</td>
+		<td>{$i.no_order|default:'-'}</td>
+		<td>{$i.nama_sekolah|default:'-'}</td>
+		<td align="right">{$i.grand_total|number_format:2:',':'.'|default:'-'}</td>
+	</tr>
+	{/foreach}
+	{else}
+	<tr>
+		<td colspan="8" align="center" style="font-weight:bold;">-- Tidak Ada Transaksi Pada Periode Tersebut --</td>
+	</tr>
+	{/if}
+	</tbody>
+	
+	</table>
+</div>
+<script>
+
+</script>

@@ -1,0 +1,7 @@
+<div id='main-template'></div>
+<script>
+	$.post(host+'loading-{$konten}', {}, function(respons){
+		var parsing = $.parseJson(respons);
+		$('#main-template').html(parsing.page);
+	});
+</script>

@@ -1,0 +1,93 @@
+<table width="100%" style='font-family:helvetica,arial,verdana,sans; font-size:12px;'>
+	<tr>
+		<td style="width: 120px; height: 50px;"><img src='__assets/ef/img/logo/logo.png' width='100px' /></td>
+		<td style="height: 80px; color: #00000; text-align: center; border:1px solid #0000;" valign="middle">
+			<div style="font-family:arial; font-weight:bold;">		
+				<h1>KWITANSI PEMBAYARAN</h1>
+			</div>
+		</td>
+		<td style="width: 120px; height: 80px;">
+			<table width='100%'>
+				<tr>
+					<td width='20%'>No</td>
+					<td width='5%'>:</td>
+					<td width='75%'>{$no_kwitansi}</td>
+				</tr>
+				<tr>
+					<td>Tanggal</td>
+					<td>:</td>
+					<td>{$datainvoice.tgl_order|date_format:'%d-%m-%Y'|default:''}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>	
+	<tr>
+		<td colspan='3' style='padding-top:5px;' >
+			<font color='blue' style='font-weight:bold;'>
+				Jl. Merdeka No. 18, Cipayung  Abadijaya, Depok, Jawa Barat <br/>
+				Telp : 081310008868 Email : aldeazsejahteraprinting@gmail.com website : www.aldeaz.com, www.aldeaz.id
+			</font>
+		</td>
+	</tr>
+	<tr>
+		<td colspan='3'><hr /></td>
+	</tr>
+</table>
+
+<table width="100%" style='margin-top:20px;margin-bottom:10px;font-family:helvetica,arial,verdana,sans; font-size:14px;'>
+	<tr>
+		<td width='20%' >Sudah Terima Dari</td>
+		<td width='5%' >:</td>
+		{if $datacust.jenis_pembeli eq 'SEKOLAH'}
+			<td width='75%'>{$datacust.nama_sekolah|default:''}</td>
+		{elseif $datacust.jenis_pembeli eq 'UMUM'}
+			<td width='75%'>{$datacust.nama_lengkap|default:''}</td>
+		{/if}
+	</tr>
+	<tr>
+		<td>Banyaknya Uang</td>
+		<td>:</td>
+		<td>{$jumlah} Rupiah</td>
+	</tr>
+	<tr>
+		<td>Untuk Pembayaran</td>
+		<td>:</td>
+		<td>Pembelian Buku, sesuai dengan BAST No. {$datainvoice.no_order}/ASP/BAST/{$smarty.now|date_format:'%Y'}</td>
+	</tr>
+	<tr>
+		<td colspan='3'>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>Jumlah Pembayaran</td>
+		<td>:</td>
+		<td><b>Rp. {$grandtotal}</b></td>
+	</tr>
+</table>
+
+<table width="100%" style='margin-top:60px;margin-bottom:10px;font-family:helvetica,arial,verdana,sans; font-size:12px;'>
+	<tr>
+		<td width='50%' align='center'>
+			&nbsp;
+		</td>
+		<td width='50%' align='right'>
+			<table width="100%">
+				<tr>
+					<td align='center'>Depok, {$datakonfirmasi.tgl_konfirmasi|date_format:'%d-%m-%Y'}</td>
+				</tr>
+				<tr>
+					<td align='center'>
+						<br />
+						<br />
+						<br />
+						<br />
+						<br />
+						<b>
+						<u>( HADI GUNOWO )</u> <br />
+						Direktur
+						</b>
+ 					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>

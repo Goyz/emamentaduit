@@ -1,0 +1,46 @@
+<div class="row">
+	<div class="tab-content">
+		<div role="tabpanel" class="tab-pane fade in active" id="grid">
+			{if $data_buku}
+				<div id='konten-buku'>
+				{foreach from=$data_buku item=row}
+					<div class="col-md-4 col-sm-6 col-xs-12 col-lg-4">
+						<div class="single-product text-center">
+							<div class="pro-thumb overlay-bg">
+								<img src="{$row.foto_buku}" alt="{$row.nama_paket}" style='height:200px !important;' />
+								<div class="hover-btn">
+									<ul class="action-buttons">
+										<li class="quickview"><a href="javascript:void(0);" onClick="productwindow('{$row.id}');" ><i class="fa fa-hand-o-up"> Detail Paket</i></a></li>
+									</ul>
+								</div>
+							</div>
+						
+							<div class="pro-info" style='min-height:50px !important;'>
+								<p class="pro-category" style='margin-bottom:5px !important;'>Klik Detail Untuk Melihat Harga</p>
+								<div style='margin-bottom:5px;'><font style='font-size:15px !important;'>{$row.nama_paket}</font></div>
+							</div>
+						</div>
+					</div>
+				{/foreach}
+				</div>
+			{else}
+			<center>-- Tidak Ada Data Tersedia -- </center>
+			{/if}
+		</div>						
+	</div>
+</div>
+<div class="row">
+	<div class="pagination-area-v1">
+		<div class="col-md-12 text-left">
+			Halaman :
+			<select id='pag' onChange="pagjspaket('{$crfilter}');" style='width:70px !important;'>
+				{foreach from=$array_paging item=pag}
+					<option value='{$pag.limitnya}'>{$pag.angka}</option>
+				{/foreach}
+			</select>	
+			<br/>
+			<br/>
+			<br/>			
+		</div>
+	</div>
+</div>

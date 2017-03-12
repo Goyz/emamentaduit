@@ -1,0 +1,349 @@
+{if $data_inv.sts_pesan eq 'P' || $data_inv.sts_pesan eq 'B'}
+<div class="single-input one-half left" style='width:100% !important;'>	
+	<div class="table-responsive">
+		<table class="table table-bordered">
+			<tbody>
+				{if $data_customer.jenis_pembeli|default:'' eq 'SEKOLAH'}
+				<tr>
+				  <td>Nama Sekolah</td>
+				  <td>{$data_customer.nama_sekolah|default:'-'}</td>
+				</tr>	
+				<tr>
+				  <td>NPSN</td>
+				  <td>{$data_customer.npsn|default:'-'}</td>
+				</tr>	
+				{/if}
+				<tr>
+				  <td>Zona Pengiriman</td>
+				  <td>{$data_inv.zona|default:'-'}</td>
+				</tr>				
+				<tr>
+				  <td>Subtotal</td>
+				  <td>Rp. {$data_inv.sub_total|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Pajak</td>
+				  <td>Rp. {$data_inv.pajak|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Grand Total</td>
+				  <td>Rp. {$data_inv.grand_total|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Jasa Pengiriman</td>
+				  <td>{$data_inv.jasa_pengiriman|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Metode Pembayaran</td>
+				  <td>{$data_inv.metode_pembayaran|default:'-'}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>		
+</div>		
+<div class="single-input one-half left">
+	<label>Nama Bank Pengirim<span>*</span></label> 
+	<select name='bank_pengirim' class='validasi' id='bank_pengirim' >
+		<option value="">-- Pilih --</option>
+		<option value="BRI">BRI</option>
+		<option value="MANDIRI">MANDIRI</option>
+		<option value="BCA">BCA</option>
+		<option value="BNI">BNI</option>
+	</select>
+	<br/>
+	<br/>
+</div>
+<div class="single-input one-half right">
+	<label>Atas Nama<span>*</span></label> 
+	<input type="text" class='validasi' name="atas_nama" id="atas_nama" required="required">
+	<br/>
+	<br/>	
+</div>
+<div class="single-input one-half left">
+	<label>Bank Tujuan<span>*</span></label> 
+	<select name='bank_tujuan' class='validasi' id='bank_tujuan'>
+		<option value="">-- Pilih --</option>
+		<option value="BRI">BRI</option>
+		<option value="MANDIRI">MANDIRI</option>
+	</select>
+	<br/>
+	<br/>	
+</div>
+<div class="single-input one-half right">
+	<label>Jumlah Transfer<span>*</span></label> 
+	<input type="text" class='validasi' name="jml_trf" id="jml_trf" required="required">
+	<br/>
+	<br/>	
+</div>
+<div class="single-input one-half left">
+	<label>Tanggal Transfer<span>*</span></label> 
+	<input type="text" id='tgl_trf' class='validasi' name="tgl_trf" required="required">
+	<br/>
+	<br/>	
+</div>
+<div class="single-input one-half right">
+	<label>Upload Bukti Bayar<span></span></label> 
+	<input type="file" class='validasi' name="bkt_byr" id="bkt_byr" required="required" />
+	<br/>
+	<br/>	
+</div>
+{*
+<div class="single-input one-half right">
+	<label>&nbsp;<span></span></label> 
+	&nbsp;
+</div>
+*}
+<div class="single-input">
+	<label>&nbsp;<span>&nbsp;</span></label> 
+</div>
+<div class="submit-btn-area text-center">
+	<hr/>
+	<a id='konfi' href='javascript:void(0);' class="estut-btn active submit">Konfirmasi</a>
+</div>
+
+<script>
+	$('#tgl_trf').Zebra_DatePicker();
+	$(".validasi").validatebox({ required:true }); 
+	$('#konfi').on('click', function(){
+		validasi = $('#frmkonf').form('validate');
+		if(validasi){
+			$.blockUI({ message: '<h3>Data Sedang Diproses...</h3>' });			
+		}
+		submit_form('frmkonf', function(resp){
+			$.post(host+'finish', { 'type':'konfirmasi' } , function(s){
+				if(s){
+					$.unblockUI();
+				}	
+				parsinganxs = $.parseJSON(s)
+				$('#modalencuk').html(parsinganxs.page);			
+				$('#productModal').modal({
+					backdrop: 'static',
+					keyboard: false
+				}); 
+				$('#productModal').modal('show'); 
+				$('#button_close').hide();
+			});
+		});
+	});
+</script>
+{/if}
+
+{if $data_konfirmasi.flag|default:'' eq 'B'}
+<div class="single-input one-half left" style='width:100% !important;'>	
+	<div class="table-responsive">
+		<table class="table table-bordered">
+			<tbody>
+				{if $data_customer.jenis_pembeli|default:'' eq 'SEKOLAH'}
+				<tr>
+				  <td>Nama Sekolah</td>
+				  <td>{$data_customer.nama_sekolah|default:'-'}</td>
+				</tr>	
+				<tr>
+				  <td>NPSN</td>
+				  <td>{$data_customer.npsn|default:'-'}</td>
+				</tr>	
+				{/if}
+				<tr>
+				  <td>Zona Pengiriman</td>
+				  <td>{$data_inv.zona|default:'-'}</td>
+				</tr>				
+				<tr>
+				  <td>Subtotal</td>
+				  <td>Rp. {$data_inv.sub_total|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Pajak</td>
+				  <td>Rp. {$data_inv.pajak|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Grand Total</td>
+				  <td>Rp. {$data_inv.grand_total|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Jasa Pengiriman</td>
+				  <td>{$data_inv.jasa_pengiriman|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Metode Pembayaran</td>
+				  <td>{$data_inv.metode_pembayaran|default:'-'}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>		
+</div>		
+<div class="single-input one-half left">
+	<label>Nama Bank Pengirim<span>*</span></label> 
+	<select name='bank_pengirim' class='validasi' id='bank_pengirim' >
+		<option value="">-- Pilih --</option>
+		<option value="BRI">BRI</option>
+		<option value="MANDIRI">MANDIRI</option>
+		<option value="BCA">BCA</option>
+		<option value="BNI">BNI</option>
+	</select>
+	<br/>
+	<br/>
+</div>
+<div class="single-input one-half right">
+	<label>Atas Nama<span>*</span></label> 
+	<input type="text" class='validasi' name="atas_nama" id="atas_nama" required="required">
+	<br/>
+	<br/>	
+</div>
+<div class="single-input one-half left">
+	<label>Bank Tujuan<span>*</span></label> 
+	<select name='bank_tujuan' class='validasi' id='bank_tujuan'>
+		<option value="">-- Pilih --</option>
+		<option value="BRI">BRI</option>
+		<option value="MANDIRI">MANDIRI</option>
+	</select>
+	<br/>
+	<br/>	
+</div>
+<div class="single-input one-half right">
+	<label>Jumlah Transfer<span>*</span></label> 
+	<input type="text" class='validasi' name="jml_trf" id="jml_trf" required="required">
+	<br/>
+	<br/>	
+</div>
+<div class="single-input one-half left">
+	<label>Tanggal Transfer<span>*</span></label> 
+	<input type="text" id='tgl_trf' class='validasi' name="tgl_trf" required="required">
+	<br/>
+	<br/>	
+</div>
+<div class="single-input one-half right">
+	<label>Upload Bukti Bayar<span></span></label> 
+	<input type="file" class='validasi' name="bkt_byr" id="bkt_byr" required="required" />
+	<br/>
+	<br/>	
+</div>
+{*
+<div class="single-input one-half right">
+	<label>&nbsp;<span></span></label> 
+	&nbsp;
+</div>
+*}
+<div class="single-input">
+	<label>&nbsp;<span>&nbsp;</span></label> 
+</div>
+<div class="submit-btn-area text-center">
+	<hr/>
+	<a id='konfi' href='javascript:void(0);' class="estut-btn active submit">Konfirmasi</a>
+</div>
+
+<script>
+	$('#tgl_trf').Zebra_DatePicker();
+	$(".validasi").validatebox({ required:true }); 
+	$('#konfi').on('click', function(){
+		validasi = $('#frmkonf').form('validate');
+		if(validasi){
+			$.blockUI({ message: '<h3>Data Sedang Diproses...</h3>' });			
+		}
+		submit_form('frmkonf', function(resp){
+			$.post(host+'finish', { 'type':'konfirmasi' } , function(s){
+				if(s){
+					$.unblockUI();
+				}	
+				parsinganxs = $.parseJSON(s)
+				$('#modalencuk').html(parsinganxs.page);			
+				$('#productModal').modal({
+					backdrop: 'static',
+					keyboard: false
+				}); 
+				$('#productModal').modal('show'); 
+				$('#button_close').hide();
+			});
+		});
+	});
+</script>
+{elseif $data_konfirmasi.flag|default:'' eq 'F'}
+<div class="single-input one-half left" style='width:100% !important;'>	
+	<div class="table-responsive">
+		<table class="table table-bordered">
+			<tbody>
+				{if $data_customer.jenis_pembeli|default:'' eq 'SEKOLAH'}
+				<tr>
+				  <td>Nama Sekolah</td>
+				  <td>{$data_customer.nama_sekolah|default:'-'}</td>
+				</tr>	
+				<tr>
+				  <td>NPSN</td>
+				  <td>{$data_customer.npsn|default:'-'}</td>
+				</tr>	
+				{/if}
+				<tr>
+				  <td>Zona Pengiriman</td>
+				  <td>{$data_inv.zona|default:'-'}</td>
+				</tr>				
+				<tr>
+				  <td>Subtotal</td>
+				  <td>Rp. {$data_inv.sub_total|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Pajak</td>
+				  <td>Rp. {$data_inv.pajak|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Grand Total</td>
+				  <td>Rp. {$data_inv.grand_total|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Jasa Pengiriman</td>
+				  <td>{$data_inv.jasa_pengiriman|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Metode Pembayaran</td>
+				  <td>{$data_inv.metode_pembayaran|default:'-'}</td>
+				</tr>
+				<tr>
+				  <td>Status Konfirmasi Pembayaran</td>
+				  <td>
+						{if $data_konfirmasi.flag|default:'' eq 'P'}
+							Pending
+						{elseif $data_konfirmasi.flag|default:'' eq 'F'}
+							Sudah Terverifikasi
+						{/if}
+				  </td>
+				</tr>
+				<tr>
+				  <td>Jumlah Transfer</td>
+				  <td>
+						Rp. {$data_konfirmasi.total_pembayaran|default:''}
+				  </td>
+				</tr>
+				<tr>
+				  <td>Tanggal Transfer</td>
+				  <td>
+						{$data_konfirmasi.tanggal_transfer|date_format:'%d-%m-%Y'|default:''}
+				  </td>
+				</tr>
+			</tbody>
+		</table>
+	</div>		
+</div>		
+<div class="single-input">
+	<label>&nbsp;<span>&nbsp;</span></label> 
+</div>
+{*
+<div class="submit-btn-area text-center">
+	<hr/>
+	<a id='ctk_bast' href='javascript:void(0);' class="estut-btn active submit">Cetak BAST</a> 
+	<a id='ctk_kwt' href='javascript:void(0);' class="estut-btn active submit">Cetak KWITANSI</a> 
+</div>
+*}
+{elseif $data_konfirmasi.flag|default:'' eq 'P'}	
+	<center>Data Konfirmasi Pembayaran Anda Masih Dalam Tahap Verifikasi</center>
+{/if}
+
+<script>
+	$('#ctk_bast').on('click', function(){
+		var post = {};
+		post['invo'] = $('#inv').val();
+		openWindowWithPost(host+'cetak-bast', post);
+	});	
+	$('#ctk_kwt').on('click', function(){
+		var post = {};
+		post['invo'] = $('#inv').val();
+		openWindowWithPost(host+'cetak-kwitansi', post);
+	});	
+</script>

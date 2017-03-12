@@ -1,0 +1,319 @@
+<div class="page-content">
+	<div class="contact-us-area padding100 bg-white-2">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="contact-form-area">
+						<div class="form-wrap">
+							<div class="" style='display:inline !important;'>
+								<legend>Keranjang Belanja Anda</legend>
+								<div class="table-responsive">
+								<table class="table table-bordered">
+									<thead>
+									  <tr style='background:#F1EDED;'>
+										<th width='20%' style='text-align:center !important;'>Gambar Produk</th>
+										<th width='30%' style='text-align:center !important;'>Judul Buku</th>
+										<th width='10%' style='text-align:center !important;'>Harga</th>
+										<th width='10%' style='text-align:center !important;'>Quantity</th>
+										<th width='10%' style='text-align:center !important;'>Total</th>
+										<th width='10%' style='text-align:center !important;'>::</th>
+									  </tr>
+									</thead>
+									<tbody id='content-keranjang-checkout'>
+										{if $data_cart}
+											{foreach from=$data_cart item=rows}
+												<tr>
+													<td style='text-align:center !important;'><img src="{$rows.foto_buku}" style='width:55px;height:65px;'></td>
+													<td>{$rows.name}</td>
+													<td>{$rows.price}</td>
+													<td><input type='text' id='qrt_{$rows.rowid}' style='width:80px !important;' value='{$rows.qty}' /> </td>
+													<td>{$rows.subtotal}</td>
+													<td style='text-align:center !important;'>
+														<a href="javascript:void(0);" onClick="forcart('apdeting','{$rows.rowid}', 'ck')"><i class="fa fa-refresh"></i></a>
+														<a href="javascript:void(0);" onClick="forcart('delting','{$rows.rowid}', 'ck')"><i class="fa fa-times"></i></a>						
+													</td>
+												</tr>
+											{/foreach}
+										{else}
+											<tr>
+												<td align='center' colspan='6'>-- Tidak Ada Data --</td>
+											</tr>
+										{/if}
+									</tbody>
+								</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{if $data_cart}
+			<div class='row'>
+				<div class="col-md-12">
+					<div class="contact-form-area">
+						<div class="form-wrap">
+							<legend>Isi Data Sekolah / Data Pembeli Umum</legend>
+							<ul class="nav nav-tabs">
+								 <li class="active"><a data-toggle="tab" href="#sekolah">Sekolah</a></li>
+								 <li><a data-toggle="tab" href="#umum">Umum</a></li>
+							</ul>
+							<div class="tab-content">
+								<div id="sekolah" class="tab-pane fade in active">
+									<br/>
+									<form id='frmskul' url="{$host}submit-transaksi" method='post' enctype="multipart/form-data" class="form-inline">
+										{*
+										<input type='hidden' name='editstatus' value='edxxxi'>
+										<input type='hidden' name='typ' value='skull'>
+										<div class="form-inner" style='min-height:300px !important;'>
+											<div class="single-input one-half left">
+												<label>Jasa Pengiriman<span>*</span></label> 
+												<select id='js_pengiriman_skull' class='validasi' name='jasa_pengiriman'>
+													{$combo_jasa_pengiriman}
+												</select>
+											</div>
+											<div class="single-input one-half right">
+												<label>Metode Pembayaran<span>*</span></label> 
+												<select id='mtd_pembayaran_skull' class='validasi' name='metode_pembayaran'>
+													{$combo_metode_pembayaran}
+												</select>
+											</div>											
+											<div class="single-input one-half left">
+												<label>NPSN <span>*</span></label> 
+												<input name="npsn" id="npsn" class='validasi' type="text" required="required">
+											</div>
+											<div class="single-input one-half right">
+												<label>&nbsp;</label> 
+												<div class="submit-btn-area">
+													<a id='cek_data_sekolah' href='javascript:void(0);' class="estut-btn active submit">Cek Data</a>
+												</div>
+											</div>
+											<div id='load_form_sekolah'></div>
+										</div>
+										*}
+										
+										{if $auth}
+											<input type='hidden' name='editstatus' value='edxxxi'>
+											<input type='hidden' name='typ' value='skull'>
+											<div class="form-inner" style='min-height:300px !important;'>
+												<div class="single-input one-half left">
+													<label>Jasa Pengiriman<span>*</span></label> 
+													<select id='js_pengiriman_skull' class='validasi' name='jasa_pengiriman'>
+														{$combo_jasa_pengiriman}
+													</select>
+												</div>
+												<div class="single-input one-half right">
+													<label>Metode Pembayaran<span>*</span></label> 
+													<select id='mtd_pembayaran_skull' class='validasi' name='metode_pembayaran'>
+														{$combo_metode_pembayaran}
+													</select>
+												</div>											
+												<div class="single-input one-half left">
+													<label>Kode Marketing <span>*</span></label> 
+													<input type="text" name="kdmar" class='' id="kdmar" >
+												</div>
+												<div class="single-input one-half right">
+													<label>NPSN <span>*</span></label> 
+													<input name="npsn" id="npsn" class='validasi' readonly value="{$auth.npsn|default:''}" type="text" required="required">
+												</div>
+												<div class="single-input one-half left">
+													<label>Nama Sekolah <span>*</span></label> 
+													<input type="text" name="nmseko" class='validasi' readonly value="{$auth.nama_sekolah|default:''}">
+													<br/>
+													<br/>
+												</div>
+												<div class="single-input one-half right">
+													<label>NIP Kepala Sekolah <span>*</span></label> 
+													<input type="text" name="nipkepsek" class='validasi' readonly value="{$auth.nip|default:''}">
+													<br/>
+													<br/>
+												</div>
+												<div class="single-input one-half left">
+													<label>Nama Kepala Sekolah <span>*</span></label> 
+													<input type="text" name="nmkepsek" class='validasi' readonly value="{$auth.nama_kepala_sekolah|default:''}" required="required">
+													<br/>
+													<br/>
+												</div>	
+												<div class="single-input one-half right">
+													<label>Nama Bendahara<span>*</span></label> 
+													<input type="text" name="nmbend" class='validasi' readonly value="{$auth.nama_bendahara|default:''}" required="required">
+													<br/>
+													<br/>
+												</div>
+												<div class="single-input one-half left">
+													<label>No. HP Kepala Sekolah <span>*</span></label> 
+													<input type="text" name="nohpkepsek" class='validasi' readonly value="{$auth.no_hp_kepsek|default:''}" required="required">
+													<br/>
+													<br/>
+												</div>	
+												<div class="single-input one-half right">
+													<label>No. HP Bendahara<span>*</span></label> 
+													<input type="text" name="nohpbend" class='validasi' readonly value="{$auth.no_hp_bendahara|default:''}" required="required">
+													<br/>
+													<br/>
+												</div>		
+												<div class="single-input one-half left">
+													<label>Provinsi<span>*</span></label> 
+													<input type="text" name="nohpbend" class='validasi' readonly value="{$auth.provinsi|default:''}" required="required">
+													<br/>
+													<br/>
+												</div>
+												<div class="single-input one-half right">
+													<label>Kabupaten<span>*</span></label> 
+													<input type="text" name="nohpbend" class='validasi' readonly value="{$auth.kab_kota|default:''}" required="required">
+													<br/>
+													<br/>
+												</div>
+												<div class="single-input one-half left">
+													<label>Kecamatan<span>*</span></label> 
+													<input type="text" name="nohpbend" class='validasi' readonly value="{$auth.kecamatan|default:''}" required="required">
+													<br/>
+													<br/>
+												</div>
+												<div class="single-input one-half right">
+													<label>Kode Pos<span>*</span></label> 
+													<input type="text" name="kdpos" class='validasi' readonly value="{$auth.kode_pos|default:''}" />
+													<br/>
+													<br/>
+												</div>
+												<div class="single-input one-half left">
+													<label>No. Telp. Sekolah<span>*</span></label> 
+													<input type="text" name="notelp" class='validasi' readonly value="{$auth.no_telp_sekolah|default:''}" required="required">
+													<br/>
+													<br/>
+												</div>
+												<div class="single-input one-half right">
+													<label>Email Sekolah<span>*</span></label> 
+													<input type="text" name="email" class='validasi' readonly value="{$auth.email|default:''}" required="required">
+													<br/>
+													<br/>
+												</div>
+												<div class="single-input">
+													<label>Alamat Pengiriman <span>*</span></label> 
+													<textarea name="almt" class='validasi' readonly class="textarea">{$auth.alamat_pengiriman|default:''}</textarea>
+												</div>
+												<div class="submit-btn-area text-center">
+													<br/>
+													<a id='slesai_belanja' href='javascript:void(0);' class="estut-btn active submit">Selesai Belanja</a>
+												</div>												
+											</div>
+										{else}
+											<center>:: Anda Harus Login Terlebih Dahulu Untuk Selesai Belanja ::</center>
+										{/if}
+									</form>		
+								</div>
+								<div id="umum" class="tab-pane fade">
+									<br/>
+									<form id='frmumu' url="{$host}submit-transaksi" method='post' enctype="multipart/form-data" class="form-inline">
+										{if $auth}
+											<center>::Tidak Dapat Sebagai Pembeli Umum::</center>
+										{else}
+										<input type='hidden' name='editstatus' value='edi'>
+										<input type='hidden' name='typ' value='umu'>
+										<div class="form-inner" style='min-height:300px !important;'>
+											<div class="single-input one-half left">
+												<label>Jasa Pengiriman<span>*</span></label> 
+												<select id='js_pengiriman_umu' class='validasi' name='jasa_pengiriman'>
+													{$combo_jasa_pengiriman}
+												</select>
+											</div>
+											<div class="single-input one-half right">
+												<label>Metode Pembayaran<span>*</span></label> 
+												<select id='mtd_pembayaran_umu' class='validasi' name='metode_pembayaran'>
+													{$combo_metode_pembayaran}
+												</select>
+											</div>																						
+											<div class="single-input one-half left">
+												<label>Email Anda<span>*</span></label> 
+												<input name="email" id='em' class='validasi' type="text" required="required">
+											</div>
+											<div class="single-input one-half right">
+												<label>&nbsp;</label> 
+												<div class="submit-btn-area">
+													<a id='cek_data_umum' href='javascript:void(0);' class="estut-btn active submit">Cek Data</a>
+												</div>
+											</div>
+											<div id='load_form_umum'></div>
+										</div>
+										{/if}
+									</form>										
+								</div>
+							</div>
+						</div>
+					</div>			
+				</div>
+			</div>
+			{/if}
+		</div>
+	</div>
+</div>
+
+<script>
+	/*
+	$('#cek_data_sekolah').on('click', function(){
+		if($('#npsn').val() == ""){
+			alert('NPSN Tidak Boleh Kosong!');
+			return false;
+		}
+		
+		$.post(host+'loading-formcheckout', { 'tpefrm':'skull', 'npp':$('#npsn').val() }, function(e){
+			parsinganss = $.parseJSON(e)
+			$('#load_form_sekolah').html(parsinganss.page);
+		});
+	});
+	*/
+	$(".validasi").validatebox({ required:true }); 
+	$('#slesai_belanja').on('click', function(){
+		validasi = $('#frmskul').form('validate');
+		if(validasi){
+			$.blockUI({ message: '<h3>Data Sedang Diproses...</h3>' });			
+		}
+		$('#modalencuk').html("");
+		submit_form('frmskul', function(resp){
+			var jsn = JSON.parse(resp);
+			if(jsn.msg == 1){
+				$.post(host+'finish', { 'type':'checkout', 'no_order':jsn.no_order } , function(s){
+					if(s){
+						$.unblockUI();
+					}
+					parsinganxs = $.parseJSON(s)
+					$('#modalencuk').html(parsinganxs.page);			
+					$('#productModal').modal({
+						backdrop: 'static',
+						keyboard: false
+					}); 
+					$('#productModal').modal('show'); 
+					$('#button_close').hide();
+				});
+			}else if(jsn.msg == 2){
+				$.unblockUI();
+				$('#modalencuk').html("Kode Marketing Tidak Ditemukan!! Mohon Masukkan Kode Marketing Dengan Benar");			
+				$('#productModal').modal('show'); 
+			}else if(jsn.msg == 3){
+				$.unblockUI();
+				$('#modalencuk').html("Email Sudah Terdaftar Oleh User Lain!! Silahkan Coba Dengan Email Lainnya.");			
+				$('#productModal').modal('show'); 					
+			}else if(jsn.msg == 0){
+				$.unblockUI();
+				$('#modalencuk').html("Terjadi Kegagalan Sistem! Mohon Coba Beberapa Saat Lagi.");			
+				$('#productModal').modal('show'); 
+			}
+		});
+	});	
+	///////////zzzzzzfdfa
+	$('#cek_data_umum').on('click', function(){
+		if($('#em').val() == ""){
+			alert('Email Tidak Boleh Kosong!');
+			return false;
+		}
+	
+		$.post(host+'loading-formcheckout', { 'tpefrm':'umu', 'em':$('#em').val() }, function(ex){
+			if(ex == 2){
+				$('#modalencuk').html("Email Sudah Terdaftar Oleh User Lain!! Silahkan Coba Dengan Email Lainnya.");			
+				$('#productModal').modal('show'); 
+			}else{
+				parsinganssd = $.parseJSON(ex)
+				$('#load_form_umum').html(parsinganssd.page);
+			}
+		});
+	});
+</script>

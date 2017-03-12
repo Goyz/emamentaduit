@@ -1,0 +1,43 @@
+<div class="page-content">
+	<div class="contact-us-area padding100 bg-white-2">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="contact-form-area">
+						<div class="form-wrap">
+							<form id='frmpemb' url="{$host}submit-pembatalan" method='post' enctype="multipart/form-data" class="form-inline">
+								<div class="form-inner" style='min-height:300px !important;'>
+									<div class="single-input one-half left">
+										<label>No. Invoice <span>*</span></label> 
+										<input name="inv" class='validasi' id="inv" type="text" required="required">
+									</div>
+									<div class="single-input one-half right">
+										<label>&nbsp;</label> 
+										<div class="submit-btn-area">
+											<a id='cek_data_pemb' href='javascript:void(0);' class="estut-btn active submit">Kirim</a>
+										</div>
+									</div>
+									<div id='load_form_pembatalan'></div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	$('#cek_data_pemb').on('click', function(){
+		if($('#inv').val() == ""){
+			alert('No. Invoice Tidak Boleh Kosong!');
+			return false;
+		}
+		
+		$.post(host+'loading-formpemb', { 'inv':$('#inv').val() }, function(ex){
+			parsingansshh = $.parseJSON(ex)
+			$('#load_form_pembatalan').html(parsingansshh.page);
+		});
+	});
+</script>

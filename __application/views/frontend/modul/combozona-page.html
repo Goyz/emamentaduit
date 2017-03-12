@@ -1,0 +1,82 @@
+<div class="product-info" style="width:100% !important; margin-left:-20px !important;">
+	<div class="price-box-3">
+			<h3>Pilih Zona Anda Saat Ini</h3>
+			<hr>
+	</div>
+	<div class="" style='display:inline !important;'>
+		<select id='combo_zona_sess' style='padding:5px;'>
+			{$combo_zona}
+		</select>
+		<br/>
+		<hr>
+		<div class="action-cart">
+			<a id='selesai_pilih_zona' class="checkout" href="javascript:void(0);">Lanjut Belanja</a>
+		</div>
+		<br>
+		<div style='color:red;'>
+			<table width='100%' class="table" >
+				{foreach from=$ket_zona item=rows}
+					<tr id='zona_{$rows.zona_code}' class='tabel_keterangan'>
+						<td width='20%'>*) {$rows.nama_zona}</td>
+						<td width='80%'> {$rows.keterangan}</td>
+					</tr>
+				{/foreach}
+				{*
+				<tr id='zona_1' class='tabel_keterangan'>
+					<td width='20%'>*) Zona 1</td>
+					<td width='75%'>
+						Provinsi Jawa Barat, Provinsi Jawa Tengah, Provinsi Jawa Timur, Daerah Istimewa Yogyakarta, DKI Jakarta, dan Provinsi Banten
+					</td>
+				</tr>
+				<tr id='zona_2' class='tabel_keterangan'>
+					<td>*) Zona 2</td>
+					<td>
+						Provinsi Bali, Provinsi NTB, Provinsi Lampung, dan Provinsi Sumatera Selatan.
+					</td>
+				</tr>
+				<tr id='zona_3' class='tabel_keterangan'>
+					<td>*) Zona 3</td>
+					<td>
+						Provinsi  Bengkulu, Provinsi  Jambi,  Provinsi  Bangka  Belitung,  Provinsi Sumatera   Barat,   Provinsi   Riau,   Provinsi   Sumatera   Utara,   Provinsi Sulawesi Selatan, Provinsi Sulawesi Utara, Provinsi Sulawesi Tengah, Provinsi Sulawesi Barat, Provinsi Sulawesi Tenggara, dan Provinsi Gorontalo.
+					</td>
+				</tr>
+				<tr id='zona_4' class='tabel_keterangan'>
+					<td>*) Zona 4</td>
+					<td>
+						Provinsi Nangroe Aceh Darussalam, Provinsi Kepulauan Riau, Provinsi NTT, Provinsi Kalimantan Barat, Provinsi Kalimantan Selatan, Provinsi Kalimantan  Tengah,  Provinsi  Kalimantan  Timur,  dan  Provinsi Kalimantan Utara.
+					</td>
+				</tr>
+				<tr id='zona_5' class='tabel_keterangan'>
+					<td>*) Zona 5</td>
+					<td>
+						Provinsi Papua, Provinsi Papua Barat dan Provinsi Maluku, dan Provinsi Maluku Utara.
+					</td>
+				</tr>
+				*}
+			</table>
+			
+		</div>
+	</div>
+</div>
+
+<script>
+	$('#combo_zona_sess').on('change', function(){
+		$('.tabel_keterangan').css( { 'font-weight':'', 'color':'red' } );
+		var valnya = $(this).val();
+		$('#zona_'+valnya).css( { 'font-weight':'bold', 'color':'black' } );
+	});
+	
+	$('#selesai_pilih_zona').on('click', function(){
+		if($('#combo_zona_sess').val() == ""){
+			alert('Provinsi Tidak Boleh Kosong!');
+			return false;
+		}
+		
+		$.post(host+'pilih-zona', { 'kdprv':$('#combo_zona_sess').val() }, function(rpo) {
+			if(rpo == 1){
+				$('#button_close').show();
+				location.reload();
+			}
+		});
+	});
+</script>

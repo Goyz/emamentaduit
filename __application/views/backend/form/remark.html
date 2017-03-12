@@ -1,0 +1,56 @@
+{if $modul eq "kirim_gudang"}
+{assign var=label_na value="Pesan Ke Gudang"}
+{assign var=label_but value="Kirim Ke Gudang"}
+{assign var=tinggi_text value="100px"}
+{else if $modul eq "set_packing"}
+{assign var=label_na value="Remark Packing"}
+{assign var=label_but value="Packing"}
+{assign var=tinggi_text value="100px"}
+{else if $modul eq "set_kirim"}
+{assign var=label_na value="Remark Pengiriman"}
+{assign var=label_but value="Kirim"}
+{assign var=tinggi_text value="50px"}
+{else if $modul eq "cancel_pesanan"}
+{assign var=label_na value="Remark Pembatalan"}
+{assign var=label_but value="Batalkan Order"}
+{assign var=tinggi_text value="100px"}
+{/if}
+<div style="margin-left:40px;">
+<form  parsley-validate id="form_input_{$acak}" method="post" class="form-horizontal" url="{$host}backoffice-SetFlag">
+	<input type="hidden" name="id" id="id_{$acak}" value="{$id|default:''}">
+	<input type="hidden" name="mod" id="mod_{$acak}" value="{$modul|default:''}">
+	<table class="table table-hover">
+	{include file="backend/template/input_goyz.html" label="{$label_na}" type="textarea" name="remark" id_na="remark"  style_type="width:80%" class="validasi" value=$data.remark|default:''}
+	{if $modul eq "set_kirim"}
+	
+	{include file="backend/template/input_goyz.html" label="No Resi" type="text" name="no_resi" id_na="no_resi"  style_type="width:80%" class="validasi" value=$data.resi|default:''}
+	{/if}
+	</table>
+	<br>
+	<div class="col-sm-7 col-sm-offset-3">
+		{include file="backend/template/button_save.html" text="{$label_but}" id_na="simpan" style_btn="btn-success"  btn_goyz="true"}
+		{include file="backend/template/button_save.html" text="Tutup" id_na="batal" style_btn="btn-info"  btn_goyz="true"}
+	</div>
+</form>
+</div>
+<script>
+	var upl_vid=0;
+	//gen_editor('#deskripsi{$acak}');
+	$(".validasi").validatebox({ required:true }); 
+	$('#batal_{$acak}').bind('click',function(){
+		closeWindow();
+	});
+	$('#simpan_{$acak}').bind('click',function(){	
+		//tinyMCE.get("deskripsi{$acak}").save();
+		var msg;
+		msg="Pemesanan Telah Dibatalkan";
+		{if $modul eq "kirim_gudang"}
+		msg='Transfer Ke Gudang Berhasil';
+		{else if $modul eq "set_packing"}
+		msg='Pemesanan Sudah Masuk Proses Packing';
+		{else if $modul eq "set_kirim"}
+		msg='Pemesanan Dalam Proses Pengiriman';
+		{/if}
+		simpan_form('form_input_{$acak}','batal_{$acak}',msg);
+	});
+</script>

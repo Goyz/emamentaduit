@@ -1,0 +1,268 @@
+{literal}
+<style type="text/css">
+table.gridtable {
+	font-family: verdana,arial,sans-serif;
+	font-size:12px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+}
+table.gridtable th {
+	font-family: verdana,arial,sans-serif;
+	font-size:12px;
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #dedede;
+}
+table.gridtable td {
+	font-family: verdana,arial,sans-serif;
+	font-size:12px;
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
+}
+</style>
+{/literal}
+
+<table width="100%">
+	<tr>
+		<td style="width: 120px; height: 50px;"><img src='__assets/ef/img/logo/logo.png' width='100px' /></td>
+		<td style="height: 80px; color: #00000; text-align: center;" valign="top">
+			<div style="font-family:arial; font-weight:bold;">		
+			<h5>
+				<h2>BERITA ACARA SERAH TERIMA BUKU</h2>
+				<h3>NO. {$no_bast} </h3>
+			</h5>
+			</div>
+			
+			<br />
+		</td>
+		<td style="width: 120px; height: 80px;">
+			
+		</td>
+	</tr>
+	
+	<tr>
+		<td colspan='3'><hr /></td>
+	</tr>
+</table>
+<p style='font-family:helvetica,arial,verdana,sans; font-size:12px;'> 
+	Pada hari ini, {$tgl.hari|default:'-'} tanggal {$tgl.tgl_text|default:'-'} bulan {$tgl.bulan|default:'-'} tahun {$tgl.tahun|default:'-'},    {* {$datakonfirmasi.tgl_konfirmasi|date_format:'%d-%m-%Y'|default:''}, *}
+	Yang bertanda tangan dibawah ini : 
+</p>
+
+<table width="100%" style='margin-top:10px;margin-bottom:10px;font-family:helvetica,arial,verdana,sans; font-size:12px;'>
+	<tr>
+		<td width='20%' >Nama</td>
+		<td width='5%' >:</td>
+		<td width='75%'>HADI GUNOWO</td>
+	</tr>
+	<tr>
+		<td>Jabatan</td>
+		<td>:</td>
+		<td>Direktur Utama</td>
+	</tr>
+	<tr>
+		<td>Perusahaan</td>
+		<td>:</td>
+		<td>CV. Aldeaz Sejahtera Printing</td>
+	</tr>
+	<tr>
+		<td>Alamat</td>
+		<td>:</td>
+		<td>Jl. Merdeka No. 18, Abadijaya, Sukmajaya, Depok, Jawa Barat, Indonesia.</td>
+	</tr>
+	<tr>
+		<td colspan='3'>
+			<br />
+			Selanjutnya disebut sebagai PIHAK PERTAMA
+		</td>
+	</tr>
+</table>
+
+<table width="100%" style='margin-bottom:10px;font-family:helvetica,arial,verdana,sans; font-size:12px;'>
+	{if $datacust.jenis_pembeli eq 'SEKOLAH'}
+	<tr>
+		<td width='20%'>Nama</td>
+		<td width='5%'>:</td>
+		<td width='75%'>{$datacust.nama_kepala_sekolah|default:''}</td>
+	</tr>
+	<tr>
+		<td>Jabatan</td>
+		<td>:</td>
+		<td>Kepala Sekolah</td>
+	</tr>
+	<tr>
+		<td>NIP</td>
+		<td>:</td>
+		<td>{$datacust.nip|default:''}</td>
+	</tr>
+	<tr>
+		<td>Nama Sekolah</td>
+		<td>:</td>
+		<td>{$datacust.nama_sekolah|default:''}</td>
+	</tr>
+	<tr>
+		<td>NPSN</td>
+		<td>:</td>
+		<td>{$datacust.npsn|default:''}</td>
+	</tr>
+	<tr>
+		<td>Alamat</td>
+		<td>:</td>
+		<td>{$datacust.alamat_pengiriman|default:''}</td>
+	</tr>
+	<tr>
+		<td>Telepon Sekolah</td>
+		<td>:</td>
+		<td>{$datacust.no_telp_sekolah|default:''}</td>
+	</tr>
+	<tr>
+		<td>Handphone</td>
+		<td>:</td>
+		<td>{$datacust.no_hp_kepsek|default:''}</td>
+	</tr>
+	<tr>
+		<td>Email</td>
+		<td>:</td>
+		<td>{$datacust.email|default:''}</td>
+	</tr>
+	{elseif $datacust.jenis_pembeli eq 'UMUM'}
+	<tr>
+		<td width='20%'>Nama</td>
+		<td width='5%'>:</td>
+		<td width='75%'>{$datacust.nama_lengkap|default:'-'}</td>
+	</tr>
+	<tr>
+		<td>Alamat</td>
+		<td>:</td>
+		<td>{$datacust.alamat_pengiriman|default:'-'}</td>
+	</tr>
+	<tr>
+		<td>No. Telp.</td>
+		<td>:</td>
+		<td>{$datacust.no_telp_customer|default:'-'}</td>
+	</tr>
+	<tr>
+		<td>Handphone</td>
+		<td>:</td>
+		<td>{$datacust.no_hp_customer|default:'-'}</td>
+	</tr>
+	<tr>
+		<td>Email</td>
+		<td>:</td>
+		<td>{$datacust.email|default:'-'}</td>
+	</tr>
+	{/if}
+	<tr>
+		<td colspan='3'>
+			<br />
+			Selanjutnya disebut sebagai PIHAK KEDUA
+		</td>
+	</tr>	
+</table>
+
+<p align='justify' style='font-family:helvetica,arial,verdana,sans; font-size:12px;'>
+	Selanjutnya berdasarkan Surat Pemesanan Buku yang telah diterima nomor #{$datainvoice.no_order|default:''} tanggal {$datainvoice.tgl_order|date_format:'%d-%m-%Y'|default:''},
+	PIHAK PERTAMA telah menyerahkan buku, dan PIHAK KEDUA telah menerima buku yang dimaksud dengan detail pemesanan buku sebagai berikut :
+</p>
+
+<br/>
+
+
+<table width="100%" class="gridtable" style='margin-bottom:10px;'>
+	<thead>
+		<tr style="border:1px solid black;">
+		  <th style="border-bottom:1px solid black;" width="5%" rowspan="2">No.</th>
+		  <th style="border-bottom:1px solid black;" width='30%' rowspan="2">Judul Buku</th>
+		  <th style="border-bottom:1px solid black;" width='10%' rowspan="2">Kelas</th>
+		  <th style="border-bottom:1px solid black;" width='10%' rowspan="2">Jenis(S/G)</th>
+		  <th style="border-bottom:1px solid black;" width='10%' rowspan="2">Oplah Dipesan</th>
+		  <th style="border-bottom:1px solid black;" width="20%" colspan="3">Hasil Pemeriksaan</th>
+		  <th style="border-bottom:1px solid black;" width='20%' rowspan="2">Harga</th>
+		  <th style="border-bottom:1px solid black;" width='20%' rowspan="2">Total</th>
+		</tr>
+		<tr style="border:1px solid black;">
+		  <th style="border-bottom:1px solid black;" width="10%">Baik</th>
+		  <th style="border-bottom:1px solid black;" width="10%">Rusak</th>
+		  <th style="border-bottom:1px solid black;" width="10%">Kurang</th>
+		</tr>
+	</thead>
+	{if $datadetailpesanan}
+		{assign var=ind value=1}
+		{foreach from=$datadetailpesanan item=rws}
+			<tr>
+				<td style='border:1px solid #000;padding:5px;'>{$ind}</td>
+				<td style='border:1px solid #000;padding:5px;'>{$rws.judul_buku}</td>
+				<td style='border:1px solid #000;padding:5px;'>{$rws.kelas}</td>
+				<td style='border:1px solid #000;padding:5px;' align='center'>{$rws.nama_group}</td>
+				<td style='border:1px solid #000;padding:5px;' align='right'>{$rws.qty}</td>
+				<td style='border:1px solid #000;padding:5px;'>&nbsp;</td>
+				<td style='border:1px solid #000;padding:5px;'>&nbsp;</td>
+				<td style='border:1px solid #000;padding:5px;'>&nbsp;</td>
+				<td style='border:1px solid #000;padding:5px;' align='right'>{$rws.harga}</td>
+				<td style='border:1px solid #000;padding:5px;' align='right'>{$rws.subtotal}</td>
+			</tr>
+			{assign var=ind value=$ind+1}
+		{/foreach}
+		<tr style='background:#EFEFEF;'>
+			<td style='border:1px solid #000;padding:5px;font-weight:bold;' >&nbsp;</td>
+			<td style='border:1px solid #000;padding:5px;font-weight:bold;' colspan='3' align='center'>Total Oplah</td>
+			<td style='border:1px solid #000;padding:5px;font-weight:bold;' align='center'>{$totqty|default:'0'}</td>
+			<td style='border:1px solid #000;padding:5px;font-weight:bold;' colspan='4' align='center'>Total Harga</td>
+			<td style='border:1px solid #000;padding:5px;font-weight:bold;' align='center'>{$tottotal|default:'0'}</td>
+		</tr>
+	{/if}
+</table>
+
+<br />
+
+<p align='justify' style='font-family:helvetica,arial,verdana,sans; font-size:12px;'>
+	Demikian Berita Acara Serah Terima ini dibuat dengan sebenar-benarnya, dan untuk dapat dipergunakan dengan semestinya.
+</p>
+
+<br />
+
+<table width="100%" style='margin-top:10px;margin-bottom:10px;font-family:helvetica,arial,verdana,sans; font-size:12px;'>
+	<tr>
+		<td width='50%' align='center'>
+			<table width="100%">
+				<tr>
+					<td align='center'>PIHAK KEDUA</td>
+				</tr>
+				<tr>
+					<td align='center'>
+						<br />
+						<br />
+						<br />
+						<br />
+						<br />
+						( {$datacust.nama_kepala_sekolah|default:''} )
+ 					</td>
+				</tr>
+			</table>
+		</td>
+		<td width='50%' align='center'>
+			<table width="100%">
+				<tr>
+					<td align='center'>PIHAK PERTAMA</td>
+				</tr>
+				<tr>
+					<td align='center'>
+						<br />
+						<br />
+						<br />
+						<br />
+						<br />
+						( HADI GUNOWO )
+ 					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>

@@ -1,0 +1,398 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Aldeaz Sejahtera Printing</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- favicon
+		============================================ -->		
+        <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+		
+		<!-- Google Fonts
+		============================================ -->		
+       	<link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500italic,500,400italic,700italic,900,100,300' rel='stylesheet' type='text/css'>
+	   	<link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,900' rel='stylesheet' type='text/css'>
+	   
+		<!-- Bootstrap CSS
+		============================================ -->		
+        <link rel="stylesheet" href="{$host}__assets/ef/css/bootstrap.min.css">
+		<!-- Bootstrap CSS
+		============================================ -->
+        <link rel="stylesheet" href="{$host}__assets/ef/css/font-awesome.min.css">
+		<!-- owl.carousel CSS
+		============================================ -->
+        <link rel="stylesheet" href="{$host}__assets/ef/css/owl.carousel.css">
+        <link rel="stylesheet" href="{$host}__assets/ef/css/owl.theme.css">
+        <link rel="stylesheet" href="{$host}__assets/ef/css/owl.transitions.css">
+		<!-- nivo slider CSS
+		============================================ -->
+		<link rel="stylesheet" href="{$host}__assets/ef/lib/css/nivo-slider.css" type="text/css" />
+		<link rel="stylesheet" href="{$host}__assets/ef/lib/css/preview.css" type="text/css" media="screen" />
+		<!-- jquery-ui CSS
+		============================================ -->
+        <link rel="stylesheet" href="{$host}__assets/ef/css/jquery-ui.css">
+		<!-- meanmenu CSS
+		============================================ -->
+        <link rel="stylesheet" href="{$host}__assets/ef/css/meanmenu.min.css">
+		<!-- animate CSS
+		============================================ -->
+        <link rel="stylesheet" href="{$host}__assets/ef/css/animate.css">
+		<!-- normalize CSS
+		============================================ -->
+        <link rel="stylesheet" href="{$host}__assets/ef/css/normalize.css">
+		<!-- main CSS
+		============================================ -->
+		<link rel="stylesheet" href="{$host}__assets/easyui/themes/default/easyui.css">
+        <link rel="stylesheet" href="{$host}__assets/ef/css/main.css">
+		<!-- custom color CSS
+		============================================ -->
+        <link rel="stylesheet" href="{$host}__assets/ef/css/color-one.css">
+		<!-- shortcodes CSS
+		============================================ -->
+        <link rel="stylesheet" href="{$host}__assets/ef/css/shortcodes/shortcodes.css">
+		<!-- style CSS
+		============================================ -->
+        <link rel="stylesheet" href="{$host}__assets/ef/css/style.css">
+		<!-- responsive CSS
+		============================================ -->
+        <link rel="stylesheet" href="{$host}__assets/ef/css/responsive.css">
+		<link rel="stylesheet" type="text/css" href="{$host}__assets/ef/zebradate/css/default.css">
+		<link rel="stylesheet" href="{$host}__assets/ef/responsiveslide/responsiveslides.css" type="text/css" media="screen" />
+		<!-- modernizr JS
+		============================================ -->			
+        <script src="{$host}__assets/ef/js/vendor/modernizr-2.8.3.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        
+        <div class="wrapper">
+			<!-- Start Header Area -->
+			<header id="header" class="solid-bg-header clear">
+				<div class="header-v1">
+					<!-- Start Header Top -->
+					<div class="header-top clear">
+						<div class="container">
+							<div class="row">
+								<div class="col-md-8 hidden-sm hidden-xs">
+									<div class="header-top-left header-top-info">
+										<p><a href="#"><i class="fa fa-phone"></i>021 7701525</a></p>
+										<p><a href="#"><i class="fa fa-whatsapp"></i>0812 9000 7684</a></p>
+										<p><a href="{$host}uploadfile">Upload</a></p> 
+										<p><a href="{$host}komplain">Layanan Komplain</a></p> 
+										{if $auth}
+											<p><a href="{$host}logoutpembeli" onClick="alert('Anda Akan Keluar Dari System WebStore Kami. Terima Kasih');" >Keluar</a></p> 
+										{else}
+											<p><a href="{$host}registrasipembeli">Daftar</a></p> 
+											<p><a href="javascript:void(0);" onClick="kumpulAction('lgnpmb');" >Masuk</a></p> 
+										{/if}
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="header-top-right pull-right">
+										<ul>
+											<li class="search-bar">
+												<p style='color:#BBDEFB !important;'>{$zona_pilihan|default:'Tidak Ada Zona Pilihan'}</p>
+											</li>
+											<li class="cart-active">
+												<div class="cart-btn">
+													<a href="javascript:void(0);" onClick="kumpulAction('krj')" ><i class="fa fa-shopping-cart"></i><sup><span id='tot_item'>{$tot_item|default:0}</span></sup></a>
+												</div>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- End Header Top -->
+					<!-- Start Header Bottom -->
+					<div class="header-bottom">
+						<div class="container">
+							<div class="row hidden-sm hidden-xs">
+								<!-- Start Logo -->
+								<div class="col-md-2">
+									<div class="header-logo">
+										<a href="{$host}beranda"><img src="{$host}__assets/ef/img/logo.png" alt="logo Aldeaz" /></a>
+									</div>
+								</div>
+								<!-- End Logo -->
+								<!-- Start Main Menu -->
+                                <div class="col-md-10">
+                                    <div class="menu-wrap pull-right">
+                                        <nav class="primary-menu">
+										    <ul>
+										        <li class="current"><a href="{$host}beranda">Beranda</a></li>  
+												<li><a href="{$host}caraberbelanja">Cara belanja</a></li>												
+										        <li>
+													<a href="javascript:void(0);">Katalog <span class="indicator"><i class="fa fa-angle-down"></i></span></a>
+													<ul class="estut-dropdown">
+										                <li><a href="{$host}katalog">Buku Satuan</a></li>
+										                <li><a href="{$host}katalogpaket">Paket</a></li>
+										            </ul>
+												</li>      
+												<li><a href="{$host}konfirmasi">Konfirmasi</a></li>      
+												<li><a href="{$host}lacakpesanan">Lacak Pesanan</a></li>      
+												<li><a href="{$host}riwayatpesanan">Riwayat</a></li>      
+												<li><a href="{$host}pembatalan">Pembatalan</a></li>      
+										        <li><a href="{$host}komentar">Komentar</a></li>
+										    </ul>
+										</nav>
+                                    </div>
+                                </div>
+                                <!-- End Main Menu -->
+							</div>
+							<div class="row">
+								<div class="col-sm-2 hidden-md hidden-lg">
+									<div class="mobile-logo">
+										<a href="{$host}beranda"><img src="{$host}__assets/ef/img/logo.png" alt="logo Aldeaz"/></a>
+									</div>
+								</div>
+								<div class="col-sm-10 hidden-md hidden-lg">
+									<!-- Main Menu End -->
+									<div class='mobile-menu-area'>
+										<nav id="mobile-menu">
+											<ul>
+												<li><a href="{$host}beranda">Beranda</a></li>
+												<li><a href="{$host}caraberbelanja">Cara belanja</a></li>
+												<li>
+													<a href="javascript:void(0);">Katalog</a>
+													<ul>
+										                <li><a href="{$host}katalog">Buku Satuan</a></li>
+										                <li><a href="{$host}katalogpaket">Paket</a></li>
+										            </ul>
+												</li>
+												<li><a href="{$host}konfirmasi">Konfirmasi Pesanan</a></li>      
+												<li><a href="{$host}lacakpesanan">Lacak Pesanan</a></li>      
+												<li><a href="{$host}riwayatpesanan">Riwayat</a></li>      
+												<li><a href="{$host}pembatalan">Pembatalan</a></li>
+												<li><a href="{$host}komplain">Layanan Komplain</a></li>
+										        <li><a href="{$host}komentar">Komentar</a></li>
+										        {if $auth}
+													<li><a href="{$host}logoutpembeli" >Keluar</a></li>
+												{else}
+													<li><a href="{$host}registrasipembeli">Daftar</a></li>
+													<li><a href="javascript:void(0);" onClick="kumpulAction('lgnpmb');" >Masuk</a></li>
+												{/if}
+											</ul>
+										</nav>
+									</div>
+									<!-- Main Menu End -->
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!-- End Header Bottom -->
+				</div>
+			</header>
+			<div class="mass-head inner" >
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+							<div style='padding-bottom:5px;padding-top:5px;'>
+							<h1>{$judulbesar|default:''} <small> -  {$judulkecil|default:''}</small></h1>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>	
+			<!-- End Header Area -->
+			<div id='main-template'></div>
+			<!-- Start  Footer  Area -->	
+			<footer id="footer-area">
+				<!-- Start Footer Top Area -->	
+				<div class="footer-top-area bg-1 overlay-bg padding50">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-6 col-md-offset-3 text-center">
+								<div class="footer-logo">
+									<a href="{$host}beranda"><img src="{$host}__assets/ef/img/logo.png" alt="footer Logo" /></a>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-3 col-sm-4">
+								<div class="footer-top-menu">
+									<h3 class="widget-title">Aldeaz Sejahtera Printing</h3>
+									<div class="fo-aboutus-container">
+										<address>
+											<p><strong>Alamat :</strong> Jl. Merdeka No. 18, Abadijaya, Sukmajaya, Depok, Jawa Barat, Indonesia.</p>
+											<p><strong>Email : </strong><a href="mailto:info@aldeaz.id">aldeaz.id@gmail.com</a></p>
+											<p><strong>Phone : </strong><a href="tel:+021 7701525">+ 62 21 7701525</a></p>
+										</address>
+										<div class="footer-social-bookmark">
+											<ul>
+												<li><a target="_blank" href="#" class="facebook"><i class="fa fa-facebook-square"></i></a></li>
+												<li><a target="_blank" href="#" class="twitter"><i class="fa fa-twitter-square"></i></a></li>
+												<!--li><a target="_blank" href="#" class="google-plus"><i class="fa fa-google-plus-square"></i></a></li>
+												<li><a target="_blank" href="#" class="dribbble"><i class="fa fa-dribbble"></i></a></li>
+												<li><a target="_blank" href="#" class="behance"><i class="fa fa-behance-square"></i></a></li-->
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 col-sm-4">
+								<div class="footer-top-menu">
+									<h3 class="widget-title">Informasi</h3>
+									<div class="fo-course-container">
+										<ul>
+											<li>
+												<a href="{$host}kontak">Tentang Kami</a>
+											</li>
+											<li>
+												<a href="{$host}caraberbelanja">Cara Pesan</a>
+											</li>
+											<li>
+												<a href="{$host}konfirmasi">Konfirmasi Bayar</a>
+											</li>
+											<li>
+												<a href="{$host}pembatalan">Pembatalan Pesan</a>
+											</li>
+											<li>
+												<a href="{$host}riwayatpesanan">Riwayat</a>
+											</li>
+											<li>
+												<a href="#">FAQ</a>
+											</li>
+
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 hidden-sm">
+								<div class="footer-top-menu">
+									<div class="newsletter">
+									<h3 class="widget-title">Langganan Info</h3>
+									<p>Untuk berlangganan tentang produk dan berita dari Aldeaz silahkan daftarkan email Anda di sini</p>
+									<div class="newsletter-form">
+										<form action="#" method="get">
+											<input class="email-box" type="email" name="email" id="email" placeholder="Enter your email here..."/>
+											<button type="submit"><i class="fa fa-envelope-o"></i></button>
+										</form>
+									</div>
+									
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 col-sm-4">
+								<div class="footer-top-menu">
+									<h3 class="widget-title">Statistic Website</h3>
+										<!-- Histats.com  START (html only)-->
+										<a href="/" alt="page hit counter" target="_blank" >
+										<embed src="http://s10.histats.com/604.swf"  flashvars="jver=1&acsid=3549538&domi=4"  quality="high"  width="110" height="55" name="604.swf"  align="middle" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" wmode="transparent" /></a>
+										<img  src="//sstatic1.histats.com/0.gif?3549538&101" alt="website statistics" border="0">
+										<!-- Histats.com  END  -->
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+				
+				<!-- End Footer Top Area -->	
+				<!-- Start Footer Bottom Area -->	
+				<div class="footer-bottom-area">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-12 text-center">
+								<div class="copyright-wrap text-center" >
+									<p style='color:#fff !important;'>&copy; 2016 | <a style='color:#fff !important;' href="http://www.aldeaz.com/">CV. Aldeaz Printing Sejahtera</a> All Rights Reserved. {* - Design By <a style='color:#fff !important;' href="http://www.jingga.co.id/">Jingga Sinergi Idea</a> *}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- End Footer Bottom Area -->	
+			</footer>
+			<!-- End Footer  Area -->		
+			
+			
+		</div>
+		<!-- End wrapper -->
+		<!-- QUICKVIEW PRODUCT -->
+		<div id="quickview-wrapper">
+			<!-- Modal -->
+			<div style='z-index:9999999 !important;' class="modal fade" id="productModal" tabindex="-1" role="dialog">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button id='button_close' type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						</div>
+						<div class="modal-body">
+							<div id='modalencuk' class="modal-product">
+							</div><!-- .modal-product -->
+						</div><!-- .modal-body -->
+					</div><!-- .modal-content -->
+				</div><!-- .modal-dialog -->
+			</div>
+			<!-- END Modal -->
+		</div>
+		
+		<!-- END QUICKVIEW PRODUCT -->
+		<!-- jquery
+		============================================ -->		
+		<script>
+			var host = "{$host}";
+			var cont = "{$konten}";
+			var cont2 = "{$param2|default:''}";
+		</script>
+        <script src="{$host}__assets/ef/js/vendor/jquery-1.11.3.min.js"></script>
+		<!-- mixitup JS
+		============================================ -->		
+        <script src="{$host}__assets/ef/js/jquery.mixitup.js"></script>		
+		<!-- bootstrap JS
+		============================================ -->		
+        <script src="{$host}__assets/ef/js/bootstrap.min.js"></script>
+        <script src="{$host}__assets/ef/js/bootstrap-select.min.js"></script>
+		<!-- wow JS
+		============================================ -->		
+        <script src="{$host}__assets/ef/js/wow.min.js"></script>
+		<!-- price-slider JS
+		============================================ -->		
+        <script src="{$host}__assets/ef/js/jquery-price-slider.js"></script>		
+		<!-- meanmenu JS
+		============================================ -->		
+        <script src="{$host}__assets/ef/js/jquery.meanmenu.js"></script>
+		<!-- owl.carousel JS
+		============================================ -->		
+        <script src="{$host}__assets/ef/js/owl.carousel.min.js"></script>
+		<!-- counterup JS
+		============================================ -->		
+        <script src="{$host}__assets/ef/js/jquery.counterup.min.js"></script>
+		<script src="{$host}__assets/ef/js/waypoints.min.js"></script>
+		<!-- sliphover JS
+		============================================ -->		
+        <script src="{$host}__assets/ef/js/jquery.sliphover.min.js"></script>
+		<!-- Nivo slider js
+		============================================ --> 		
+		<script src="{$host}__assets/ef/lib/js/jquery.nivo.slider.js" type="text/javascript"></script>
+		
+		<!-- scrollUp JS
+		============================================ -->		
+        <script src="{$host}__assets/ef/js/jquery.scrollUp.min.js"></script>
+        <!-- bxslider JS
+		============================================ -->		
+        <script src="{$host}__assets/ef/js/jquery.bxslider.min.js"></script>
+		<!-- masonry JS
+		============================================ -->		
+        <script src="{$host}__assets/ef/js/masonry.pkgd.min.js"></script>
+		<!-- plugins JS
+		============================================ -->	
+		
+        <script src="{$host}__assets/ef/js/plugins.js"></script>
+		<script src="{$host}__assets/ef/zebradate/js/zebra_datepicker.js"></script>
+		<script src="{$host}__assets/easyui/jquery.easyui.min.js"></script>
+		<script src="{$host}__assets/ef/js/blockui.js"></script>
+		<script src="{$host}__assets/ef/responsiveslide/responsiveslides.js"></script>
+
+		<!-- main JS
+		============================================ -->		
+        <script src="{$host}__assets/ef/js/main.js"></script>
+    </body>
+
+</html>

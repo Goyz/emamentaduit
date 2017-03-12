@@ -1,0 +1,62 @@
+<div class="product-info" style="width:100% !important; margin-left:-20px !important;">
+	{if $type eq 'checkout'}
+	<table class="table table-bordered">
+		<tbody>
+			<tr>
+				<td width='20%'>No. Order</td>
+				<td width='80%'>{$arraynya.no_order}</td>
+			</tr>
+			<tr>
+				<td width='20%'>Tanggal Order</td>
+				<td width='80%'>{$arraynya.no_order|date_format:"%d %b %Y"|default:'-'}</td>
+			</tr>
+			<tr>
+				<td width='20%'>Grand Total</td>
+				<td width='80%'>{$arraynya.grand_total}</td>
+			</tr>
+		</tbody>
+	</table>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th>Kelas</th>
+				<th>Jenis</th>
+				<th>Judul Buku</th>
+				<th>Qty</th>
+				<th>Harga</th>
+				<th>Total</th>
+			</tr>
+		</thead>
+		<tbody>
+			{foreach from=$arraynya.detail_pesanan item=rows}
+				<tr>
+					<td>{$rows.kelas}</td>
+					<td>{$rows.nama_group}</td>
+					<td>{$rows.judul_buku}</td>
+					<td>{$rows.qty}</td>
+					<td>{$rows.harga}</td>
+					<td>{$rows.subtotal}</td>
+				</tr>
+			{/foreach}
+		</tbody>
+	</table>
+	<br/>
+	<br/>
+	{/if}
+	<div class="price-box-3">
+		{$pesan}
+	</div>
+	<div class="" style='display:inline !important;'>
+		<hr>
+		<div class="action-cart">
+			<a id='selesai_finish' class="checkout" href="javascript:void(0);">OK</a>
+		</div>
+	</div>
+</div>
+
+<script>
+	$('#selesai_finish').on('click', function(){
+		$('#button_close').show();
+		location.href = "{$host}beranda";
+	});
+</script>

@@ -1,0 +1,18 @@
+<div class="product-info" style="width:100% !important; margin-left:-20px !important;">
+	<div class="price-box-3">
+		Terima Kasih Telah Mendaftar di WebStore www.aldeaz.id
+	</div>
+	<div class="" style='display:inline !important;'>
+		<hr>
+		<div class="action-cart">
+			<a id='selesai_finish_registrasi' class="checkout" href="javascript:void(0);">OK</a>
+		</div>
+	</div>
+</div>
+
+<script>
+	$('#selesai_finish_registrasi').on('click', function(){
+		$('#button_close').show();
+		location.href = "{$host}beranda";
+	});
+</script>

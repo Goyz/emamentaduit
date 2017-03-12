@@ -1,0 +1,213 @@
+ <div class="span12">
+	<div class="row-fluid">
+		<fieldset>
+		<div class="span6">
+			<table width="100%" cellpadding="1" cellspacing="1">
+				<tr>
+					<td style="width:10%">&nbsp;</td>
+					<td style="width:40%">NO. Order/Invoice</td>
+					<td width="2%">:</td>
+					<td>{$data.header.no_order|default:'-'}</td>
+				</tr>
+				<tr>
+					<td style="width:10%">&nbsp;</td>
+					<td style="width:40%">Tgl. Order/Invoice</td>
+					<td width="2%">:</td>
+					<td>{$data.header.tgl_order|default:'-'}</td>
+				</tr>
+				<tr>
+					<td style="width:10%">&nbsp;</td>
+					<td style="width:40%">{if $data.header.jenis_pembeli eq 'SEKOLAH'} Nama Sekolah {else} Nama Lengkap{/if}</td>
+					<td width="2%">:</td>
+					<td>{if $data.header.jenis_pembeli eq 'SEKOLAH'}{$data.header.nama_sekolah|default:'-'}{else}{$data.header.nama_lengkap|default:'-'}{/if}</td>
+				</tr>
+				
+			</table>
+		</div>
+		<div class="span6">
+			<table width="100%">
+				<tr>
+					<td style="width:10%">&nbsp;</td>
+					<td style="width:40%">Zona</td>
+					<td width="2%">:</td>
+					<td>{$data.header.zona|default:'-'}</td>
+				</tr>
+				<tr>
+					<td style="width:10%">&nbsp;</td>
+					<td style="width:40%">SubTotal</td>
+					<td width="2%">:</td>
+					<td>{$data.header.sub_total|number_format:2:',':'.'|default:'-'}</td>
+				</tr>
+				<tr>
+					<td style="width:10%">&nbsp;</td>
+					<td style="width:40%">GrandTotal</td>
+					<td width="2%">:</td>
+					<td>{$data.header.grand_total|number_format:2:',':'.'|default:'-'}</td>
+				</tr>
+			</table>
+		</div>
+		</fieldset>
+	</div>
+	<div class="row-fluid">
+		<table class="table table-hover">
+			<thead>
+			<tr>
+				
+				<th style="text-align:left;">No.</th>
+				<th>Judul Buku</th>
+				<th style="text-align:right;">Harga (Sesuai Zona {$data.header.zona})</th>
+				<th style="text-align:right;">Jumlah/Qty</th>
+				<th style="text-align:right;">Total</th>
+				{if $mod eq 'invoice' || $mod eq 'invoice_umum'}
+				{if $data.header.flag_ver|default:'P' eq 'P'}
+					<th style="text-align:center;">Editing</th>
+				{/if}
+				{/if}
+			</tr>
+			</thead>
+			<tbody>
+			{assign var=tot_qty value=0}
+			{assign var=tot_harga value=0}
+			{assign var=tot_pajak value=0}
+			{assign var=grand_tot value=0}
+			{foreach from=$data.detil item=i name=x}
+			{if $i.flag neq 'C'}
+			{assign var=tot_qty value=$tot_qty+$i.qty}
+			{assign var=tot_harga value=$tot_harga+$i.total}
+			{/if}
+			<tr style="{if $i.flag eq 'C'}background:red;color:#FFFFFF{/if}">
+				
+				<td >{$smarty.foreach.x.iteration}</td>
+				<td>{$i.judul_buku|default:'-'}</td>
+				<td style="text-align:right;">Rp. {$i.harga|number_format:2:',':'.'|default:'-'}</th>
+				<td style="text-align:right;">{$i.qty|number_format:2:',':'.'|default:'-'}</td>
+				<td style="text-align:right;">Rp.{$i.total|number_format:2:',':'.'|default:'-'}</td>
+				{if $mod eq 'invoice' || $mod eq 'invoice_umum'}
+				
+				{if $data.header.flag_ver|default:'P' eq 'P'}
+				{if $i.flag neq 'C'}
+					<td style="text-align:center;">
+						<div class="skin skin-minimal">
+							<div class="btn-group">
+						<a href="javascript:void(0);" class="btn btn-sm btn-success" title="Edit" onclick="get_detil('invoice_edit',{$i.id},'{$mod}')">
+							<img src="{$host}__assets/eb/easyui/themes/icons/pencil.png">
+						</a>
+						<a href="javascript:void(0);" class="btn btn-sm btn-success batalkan_{$acak}" title="Batal" data="{$i.id}" >
+							<img src="{$host}__assets/eb/easyui/themes/icons/yellow-cross-icon.png">
+						</a>
+						<a href="javascript:void(0);" class="btn btn-sm btn-success hapuskan_{$acak}" title="Hapus" data="{$i.id}"> 
+							<img src="{$host}__assets/eb/easyui/themes/icons/no.png">
+						</a>
+							</div>
+						</div>
+					</td>
+				{else}
+					<td style="text-align:center;">Data Ini Dibatalkan</td>
+				{/if}
+				
+				{/if}
+				{/if}
+			</tr>
+			{/foreach}
+			</tbody>
+			
+			<tr style="font-weight:bold;">
+				<td colspan="3" align="center">SUB TOTAL</td>
+				<td style="text-align:right;">{$tot_qty|number_format:2:',':'.'|default:'-'}</td>
+				<td style="text-align:right;">Rp.{$tot_harga|number_format:2:',':'.'|default:'-'}</td>
+				{if $mod eq 'invoice' || $mod eq 'invoice_umum'}
+				{if $data.header.flag_ver|default:'P' eq 'P'}
+				<td align="center">&nbsp;</td>
+				{/if}
+				{/if}
+			</tr>
+			<tr style="font-weight:bold;">
+				<td colspan="3" align="center">PAJAK</td>
+				<td align="center">&nbsp;</td>
+				<!--td align="right">Rp.{($tot_harga * 0.1)|number_format:2:',':'.'|default:'-'}</td-->
+				<td style="text-align:right;">Rp. 0,00</td>
+				{if $mod eq 'invoice' || $mod eq 'invoice_umum'}
+				{if $data.header.flag_ver|default:'P' eq 'P'}
+				<td align="center">&nbsp;</td>
+				{/if}
+				{/if}
+			</tr>
+			<tr style="font-weight:bold;">
+				<td colspan="3" align="center">GRAND TOTAL</td>
+				<td align="center">&nbsp;</td>
+				<!--td align="right">Rp.{(($tot_harga * 0.1) + $tot_harga)|number_format:2:',':'.'|default:'-'}</td-->
+				<td style="text-align:right;">Rp.{$tot_harga|number_format:2:',':'.'|default:'-'}</td>
+				{if $mod eq 'invoice' || $mod eq 'invoice_umum'}
+				{if $data.header.flag_ver|default:'P' eq 'P'}
+				<td align="center">&nbsp;</td>
+				{/if}
+				{/if}
+			</tr>
+		</table>
+	</div>
+</div>
+<div class="col-sm-8 col-sm-offset-3" style="margin-top:10px;">
+	<div class="pull-right">
+		
+		{include file="backend/template/button_save.html" text="Cetak Data" id_na="cetak" style_btn="btn-success"  btn_goyz="true"}
+		{include file="backend/template/button_save.html" text="Kembali" id_na="batal" style_btn="btn-info"  btn_goyz="true"}
+
+		{if $mod eq 'invoice' || $mod eq 'invoice_umum'}
+		{if $data.header.flag_ver|default:'P' eq 'P'}
+		{include file="backend/template/button_save.html" text="Verifikasi Data" id_na="ver" style_btn="btn-primary"  btn_goyz="true"}
+		{/if}
+		{/if}
+	</div>
+
+</div>
+<script>
+$('#cetak_{$acak}').bind('click',function(){
+	var param_na={};
+	param_na['mod']='{$mod}';
+	param_na['id']={$data.header.id|default:0};
+	openWindowWithPost(host+'backoffice-Cetak',param_na);
+});
+$('#batal_{$acak}').bind('click',function(){
+	$('#grid_nya_{$mod}').show();
+	$('#detil_nya_{$mod}').hide();
+});
+$('#ver_{$acak}').bind('click',function(){
+	var id_na={$data.header.id|default:'-'};
+	$.messager.confirm('MKS - STORE','Apakah Yakin Data Sudah Valid?',function(re){
+		if(re){
+			$.post('{$host}backend/simpandata/tbl_h_pemesanan',{ editstatus:'edit',id:id_na,flag_ver:'F' },function(r){
+				if(r==1){
+					$.messager.alert('MKS - STORE',"Data Sudah Terverifikasi",'info');
+					$('#batal_{$acak}').trigger('click');
+				}
+			});
+		}
+	});
+});
+$('.batalkan_{$acak}').bind('click',function(){
+	var id_na=$(this).attr('data');
+	$.messager.confirm('MKS - STORE','Apakah Ingin Membatalkan Detil Invoice Ini?',function(re){
+		if(re){
+			$.post('{$host}backend/set_flag',{ mod:'tbl_d_pemesanan',flag:'C',id:id_na },function(r){
+				if(r==1){
+					$.messager.alert('MKS - STORE',"Data Detil Invoice Sudah DiBatalkan",'info');
+					get_detil("invoice",{$data.header.id|default:0});
+				}
+			});
+		}
+	});
+});
+$('.hapuskan_{$acak}').bind('click',function(){
+	var id_na=$(this).attr('data');
+	$.messager.confirm('MKS - STORE','Apakah Ingin Menghapus Detil Invoice Ini?',function(re){
+		if(re){
+			$.post('{$host}backend/simpandata',{ mod:'tbl_d_pemesanan',editstatus:'delete',id:id_na },function(r){
+				if(r==1){
+					$.messager.alert('MKS - STORE',"Data Detil Invoice Sudah Dihapus",'info');
+					get_detil("invoice",{$data.header.id|default:0});
+				}
+			});
+		}
+	});
+});
+</script>

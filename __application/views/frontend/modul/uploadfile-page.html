@@ -1,0 +1,69 @@
+<link rel="stylesheet" href="{$host}__assets/ef/css/starrating/cssrating.css" type="text/css" media="screen" />
+<div class="page-content">
+	<div class="contact-us-area padding100 bg-white-2">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="contact-form-area">
+						<div class="form-wrap">
+							<form id='frmupload' url="{$host}submit-uploadfile" method='post' enctype="multipart/form-data" class="form-inline">
+								<div class="form-inner" style='min-height:300px !important;'>
+									<div class="single-input one-half left">
+										<label>No. Invoice<span>*</span></label> 
+										<input type="text" name="inv" class='validasi' value="{$data.nama_bendahara|default:''}" required="required">
+										<br/>
+										<br/>
+									</div>
+									<div class="single-input one-half right">
+										<label>&nbsp;<span></span></label> 
+										&nbsp;
+										<br/>
+										<br/>
+										<br/>
+									</div>
+									<div class="single-input one-half left">
+										<label>Upload BAST<span></span></label> 
+										<input type="file" class='validasi' name="bast" id="bast" required="required" />
+										<br/>
+									</div>
+									<div class="single-input one-half right">
+										<label>Upload Tanda Terima<span></span></label> 
+										<input type="file" class='validasi' name="tanda_terima" id="tanda_terima" required="required" />
+										<br/>
+									</div>
+									<div class="submit-btn-area text-center">
+										<br/>
+										<a id='selesai_submit' href='javascript:void(0);' class="estut-btn active submit">Submit File</a>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+
+	$(".validasi").validatebox({ required:true }); 
+	$('#selesai_submit').on('click', function(){
+		validasi = $('#frmupload').form('validate');
+		if(validasi){
+			$.blockUI({ message: '<h3>Data Sedang Diproses...</h3>' });			
+		}
+		submit_form('frmupload', function(resp){
+			if(resp == 1){
+				$.unblockUI();
+				$('#modalencuk').html("File BAST & File Tanda Terima Anda Sudah Dimasukkan Dalam System Kami.");			
+				$('#productModal').modal('show');
+				$('#frmupload')[0].reset();
+			}else if(resp == 2){
+				$.unblockUI();
+				$('#modalencuk').html("No Invoice Anda Tidak Terdaftar!");			
+				$('#productModal').modal('show'); 
+			}
+		});
+	});
+</script>

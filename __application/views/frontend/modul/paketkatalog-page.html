@@ -1,0 +1,136 @@
+<div class="page-content">
+
+	<div class="shop-area shop-page bg-white-2">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="shop-content-area">
+						<div class="row">
+							<div class="product-toolbar clear">
+								<div class="form-inner" >
+									<div class="single-input one-half left">
+										<label>&nbsp;</label> 
+										<input id="cari" type="text" placeholder='Cari Paket Buku Pilihan Anda' />
+									</div>
+									<div class="single-input one-half right">
+										<label>&nbsp;</label> 
+										<div class="submit-btn-area">
+											<a  href='javascript:void(0);' onClick="searchdtpaket();" class="estut-btn active submit">Cari</a>
+											&nbsp;
+											<a  href='javascript:void(0);' onClick="location.reload();" class="estut-btn active submit">Refresh Data</a>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						
+						<div id='konten-utama-buku'>
+							<div class="row">
+								<div class="tab-content">
+									<div role="tabpanel" class="tab-pane fade in active" id="grid">
+										{if $data_buku}
+											<div id='konten-buku'>
+											{foreach from=$data_buku item=row}
+												<div class="col-md-4 col-sm-6 col-xs-12 col-lg-4">
+													<div class="single-product text-center">
+														<div class="pro-thumb overlay-bg">
+															<img src="{$row.foto_buku}" alt="{$row.nama_paket}" style='height:200px !important;' />
+															<div class="hover-btn">
+																<ul class="action-buttons">
+																	<li class="quickview"><a href="javascript:void(0);" onClick="productwindowpaket('{$row.id}');" ><i class="fa fa-hand-o-up"> Detail Paket</i></a></li>
+																</ul>
+															</div>
+														</div>
+													
+														<div class="pro-info" style='min-height:50px !important;'>
+															<p class="pro-category" style='margin-bottom:5px !important;'>Klik Detail Untuk Melihat Harga</p>
+															<div style='margin-bottom:5px;'><font style='font-size:15px !important;'>{$row.nama_paket}</font></div>
+														</div>
+													</div>
+												</div>
+											{/foreach}
+											</div>
+										{else}
+										<center>-- Tidak Ada Data Tersedia -- </center>
+										{/if}
+									</div>						
+								</div>
+							</div>
+							<div class="row">
+								<div class="pagination-area-v1">
+									<div class="col-md-12 text-left">
+										Halaman :
+										<select id='pag' onChange='pagjspaket();' style='width:70px !important;'>
+											{foreach from=$array_paging item=pag}
+												<option value='{$pag.limitnya}'>{$pag.angka}</option>
+											{/foreach}
+										</select>
+										<br/>
+										<br/>
+										<br/>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>
+						
+<script>			
+	function productwindowpaket(idpro){
+		$('.modal-dialog').css( { 'width':'1200px' } );
+		$('#modalencuk').html('');
+		$.post(host+'detil-paket', { 'isds':idpro }, function(resp){
+			parsingan = $.parseJSON(resp)
+			$('#modalencuk').html(parsingan.page);
+			$('#productModal').modal('show'); 
+		});
+	}
+	
+	function pagjspaket(srch){
+		var delimeter = $('#pag').val();
+		$('#konten-buku').html('');
+		$('#konten-buku-lebar').html('');
+		$.post(host+'paginationdatapaket', { 'dtype':'one', 'lmt':delimeter, 'cr':srch }, function(rp){
+			parspro = $.parseJSON(rp);
+			$('#konten-buku').html(parspro.page);
+		});	
+	}
+
+	function searchdtpaket(){
+		var vlcr = $('#cari').val();
+		if(vlcr == ""){
+			$('#modalencuk').html('Masukkan Inputan Judul Yang Anda Cari!');
+			$('#productModal').modal('show'); 
+		}else{
+			$('#konten-utama-buku').html('');
+			$.post(host+'filtering-datapaket', { 'cr':vlcr }, function(rpload){
+				parsload = $.parseJSON(rpload);
+				$('#konten-utama-buku').html(parsload.page);
+			});
+		}
+	}
+	
+	{if $flag_window eq 'uye'}	
+		$.post(host+'session-zona', { }, function(respo){
+			parsingans = $.parseJSON(respo)
+			$('#modalencuk').html(parsingans.page);			
+			
+			$('#productModal').modal({
+				backdrop: 'static',
+				keyboard: false
+			}); 
+			$('#productModal').modal('show'); 
+			$('#button_close').hide();
+		});
+	{/if}
+</script>					
+
+	

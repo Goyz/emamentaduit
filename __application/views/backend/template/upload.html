@@ -1,0 +1,50 @@
+<tr>
+<td>&nbsp;</td><td style="width:20%">{$label|default:'-'}</td><td>:</td>
+<td style="font-weight:bold;">
+	<div id="{$id_na|default:''}_{$acak}" class="col-sm-12" >Pilih File</div>
+</td>
+<script>
+var uploadObj_{$id_na}_{$acak};	
+var settings = {
+		url:host+'{$url|default:"backoffice-upload"}',
+		method: "POST",
+		//allowedTypes:"mp4",
+		//acceptFiles:'.mp4',
+		//maxFileSize:26100000,
+		fileName: "file_nya",
+		multiple: true,
+		autoSubmit:false,
+		showStatusAfterSuccess:true,
+		dragDropStr: "<span><b>Upload File </b></span>",
+		abortStr:"Gagal",
+		cancelStr:"Batal",
+		doneStr:"OK",
+		multiDragErrorStr: "Plusieurs Drag & Drop de fichiers ne sont pas autorisés.",
+		extErrorStr:"Format Video Salah Harus ",
+		sizeErrorStr:"Ukuran File Max ",
+		uploadErrorStr:"uploaderror",
+		onSuccess:function(files,data,xhr)
+		{
+			if(parseInt(data)==1){
+				upl_vid=upl_vid+parseInt(data);
+				if(upl_vid==uploadObj_{$id_na}_{$acak}.getFileCount()){
+					$.messager.alert('Aldeaz Back-Office','{$msg}','info');
+					$('#{$id_batal}').trigger('click');
+					grid_nya.datagrid('reload');
+				}
+			}
+			console.log(data);
+			//$("#status").html("<font color='green'>Upload is success</font>");
+		},
+		onError: function(files,status,errMsg)
+		{       
+			$("#status").html("<font color='red'>Upload is Failed</font>");
+		}
+	}
+//$(document).ready(function(){
+	var sts=0;
+	$(".validasi").validatebox({ required:true }); 
+	uploadObj_{$id_na}_{$acak}=$("#{$id_na|default:''}_{$acak}").uploadFile(settings);
+//});
+
+</script>

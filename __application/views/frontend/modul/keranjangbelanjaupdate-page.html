@@ -1,0 +1,19 @@
+{if $data_cart}
+	{foreach from=$data_cart item=rows}
+		<tr>
+			<td style='text-align:center !important;'><img src="{$rows.foto_buku}" style='width:55px;height:65px;'></td>
+			<td>{$rows.name}</td>
+			<td>{$rows.price}</td>
+			<td><input type='text' id='qrt_{$rows.rowid}' style='width:80px !important;' value='{$rows.qty}' /> </td>
+			<td>{$rows.subtotal}</td>
+			<td style='text-align:center !important;'>
+				<a href="javascript:void(0);" onClick="forcart('apdeting','{$rows.rowid}', '{$ck}')"><i class="fa fa-refresh"></i></a>
+				<a href="javascript:void(0);" onClick="forcart('delting','{$rows.rowid}', '{$ck}' )"><i class="fa fa-times"></i></a>
+			</td>
+		</tr>
+	{/foreach}
+{else}
+	<tr>
+		<td align='center' colspan='6'>-- Tidak Ada Data --</td>
+	</tr>
+{/if}

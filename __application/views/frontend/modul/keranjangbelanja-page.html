@@ -1,0 +1,84 @@
+<div class="product-info" style="width:100% !important; margin-left:-20px !important;">
+	<div class="price-box-3">
+		<div class="s-price-box">
+			<span class="new-price"><span id='zon_{$data_buku.id}'>Keranjang Belanja Anda</span></span><br/>
+		</div>
+	</div>
+	<div class="table-responsive">
+	<table class="table table-bordered">
+		<thead>
+		  <tr style='background:#F1EDED;'>
+			<th width='20%' style='text-align:center !important;'>Gambar Produk</th>
+			<th width='30%' style='text-align:center !important;'>Judul Buku</th>
+			<th width='10%' style='text-align:center !important;'>Harga</th>
+			<th width='10%' style='text-align:center !important;'>Quantity</th>
+			<th width='10%' style='text-align:center !important;'>Total</th>
+			<th width='10%' style='text-align:center !important;'>::</th>
+		  </tr>
+		</thead>
+		<tbody id='content-keranjang'>
+			{if $data_cart}
+				{foreach from=$data_cart item=rows}
+					<tr>
+						<td style='text-align:center !important;'><img src="{$rows.foto_buku}" style='width:55px;height:65px;'></td>
+						<td>{$rows.name}</td>
+						<td>{$rows.price}</td>
+						<td><input type='text' id='qrt_{$rows.rowid}' style='width:80px !important;' value='{$rows.qty}' /> </td>
+						<td>{$rows.subtotal}</td>
+						<td style='text-align:center !important;'>
+							<a href="javascript:void(0);" onClick="forcart('apdeting','{$rows.rowid}')"><i class="fa fa-refresh"></i></a>
+							<a href="javascript:void(0);" onClick="forcart('delting','{$rows.rowid}')"><i class="fa fa-times"></i></a>						
+						</td>
+					</tr>
+				{/foreach}
+			{else}
+				<tr>
+					<td align='center' colspan='6'>-- Tidak Ada Data --</td>
+				</tr>
+			{/if}
+		</tbody>
+	</table>
+	</div>
+	
+	{if $data_cart}
+	<div class="action-cart" id='selesai_bel'>
+		<a class="checkout" href="{$host}selesai-belanja">Selesai Belanja</a>
+	</div>
+	{/if}
+
+	
+	{*
+	<div class="" style='display:inline !important;'>
+		{if $data_cart}
+			<div id='content-keranjang'>
+				{foreach from=$data_cart item=rows}
+					<div class="cart-single-product" id='xx_{$rows.rowid}'>
+						<div class="cart-single-product-img">
+							<img src="{$host}img/cart/2.jpg">
+						</div>
+						<div class="cart-single-product-title">
+							<a href="javascript:void(0);">{$rows.name}</a>
+							<input type='text' id='qrt_{$rows.rowid}' style='width:80px !important;' value='{$rows.qty}' /> 
+							x
+							Rp. {$rows.price}
+							=
+							Rp. {$rows.subtotal}
+						</div>
+						<div class="cart-single-product-del">
+							<a href="javascript:void(0);" onClick="forcart('apdeting','{$rows.rowid}')"><i class="fa fa-refresh"></i></a>
+							<a href="javascript:void(0);" onClick="forcart('delting','{$rows.rowid}')"><i class="fa fa-times"></i></a>
+						</div>
+					</div>
+				{/foreach}
+			</div>
+			<div class="action-cart">
+				<a class="checkout" href="{$host}selesai-belanja">Selesai Belanja</a>
+			</div>
+		{else}
+			<center>Keranjang Belanjang Kosong</center>
+			<center>--</center>
+			<center>-- Anda Belum Belanja --</center>
+		{/if}
+	</div>
+	*}
+</div>

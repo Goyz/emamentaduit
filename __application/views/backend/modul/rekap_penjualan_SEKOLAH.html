@@ -1,0 +1,57 @@
+
+<hr>
+<div style="padding:10px;">
+	<table class="table table-hover">
+	<thead>
+	<tr>
+		<th style="text-align:left;">No.</th>
+		<th>No. Order</th>
+		<th class="sakola">Nama Sekolah</th>
+		<th class="sakola">NPSN</th>
+		<th class="sakola">PIC</th>
+		
+		<th style="text-align:right;">Jumlah/Qty</th>
+		<th style="text-align:right;">Total</th>
+		<th style="text-align:right;">Bayar</th>
+	</tr>
+	</thead>
+	<tbody>
+	{assign var=tot_qty value=0}
+	{assign var=tot_bayar value=0}
+	{assign var=grand_tot value=0}
+	{if !empty($data)}
+	{foreach from=$data item=i name=x}
+	{assign var=tot_qty value=$tot_qty+$i.jml_buku}
+	{assign var=grand_tot value=$grand_tot+$i.grand_total}
+	{assign var=tot_bayar value=$tot_bayar+$i.total_pembayaran}
+	<tr>
+		<td >{$smarty.foreach.x.iteration}</td>
+		<td>{$i.no_order|default:'-'}</td>
+		<td class="sakola">{$i.nama_sekolah|default:'-'}</td>
+		<td class="sakola">{$i.npsn|default:'-'}</td>
+		<td class="sakola">{$i.pic|default:'-'}</td>
+		
+		<td align="right">Rp. {$i.jml_buku|number_format:2:',':'.'|default:'-'}</th>
+		<td align="right">{$i.grand_total|number_format:2:',':'.'|default:'-'}</td>
+		<td align="right">Rp.{$i.total_pembayaran|number_format:2:',':'.'|default:'-'}</td>
+	</tr>
+	{/foreach}
+	{else}
+	<tr>
+		<td colspan="8" align="center" style="font-weight:bold;">-- Tidak Ada Transaksi Pada Periode Tersebut --</td>
+	</tr>
+	{/if}
+	</tbody>
+	<tfoot>
+	<tr style="font-weight:bold;">
+		<td colspan="5" align="center">GRAND TOTAL</td>
+		<td align="right">{$tot_qty|number_format:2:',':'.'|default:'-'}</td>
+		<td align="right">Rp.{$grand_tot|number_format:2:',':'.'|default:'-'}</td>
+		<td align="right">Rp.{$tot_bayar|number_format:2:',':'.'|default:'-'}</td>
+	</tr>
+	</tfoot>
+	</table>
+</div>
+<script>
+
+</script>

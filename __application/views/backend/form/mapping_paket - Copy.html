@@ -1,0 +1,95 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><strong>FORM MAPPING</strong> Data Buku - Data Paket</h3>
+            </div>
+		<div class="panel-body">
+			<div class="row" style="width:100%">
+				<div class="col-md-12 col-sm-12 col-xs-12">
+					<div class="form-horizontal">
+						{include file="backend/template/input_goyz.html" id_na="nama_paket" name="nama_paket" label="Nama Paket" type="text" value=$nama_paket|default:''}
+						
+						<div class="form-horizontal">
+							<div class="form-group " style="">
+								<div class="col-md-5" style='margin-left:30px !important;'>
+									{include file="backend/template/grid.html" main="mapping_paket_belum" search="true" tinggi_grid="400px" param_tambahan={$id|default:''} }
+								</div>
+								<div class="col-md-1">
+									<center>
+										<br/>
+										<br/>
+										<br/>
+										<br/>
+										<a href="javascript:void(0)" class="l-btn l-btn-small l-btn-plain" group="" id="not_mapping" onClick="">
+											<span class="l-btn-left l-btn-icon-left">
+												<span class="l-btn-text">&nbsp;</span><span class="l-btn-icon icon-undo">&nbsp;</span>
+											</span>
+										</a>
+										<br/>
+										<br/>
+										<a href="javascript:void(0)" class="l-btn l-btn-small l-btn-plain" group="" id="yes_mapping" onClick="">
+											<span class="l-btn-left l-btn-icon-left">
+												<span class="l-btn-text">&nbsp;</span><span class="l-btn-icon icon-redo">&nbsp;</span>
+											</span>
+										</a>
+									</center>
+								</div>
+								<div class="col-md-5">
+									{include file="backend/template/grid.html" main="mapping_paket_sudah" search="true" tinggi_grid="400px" param_tambahan={$id|default:''} }
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-sm-7 col-sm-offset-3">
+							<div class="pull-right">
+								{include file="backend/template/button_save.html" text="Kembali" id_na="batal_mapping" style_btn="btn-info"  btn_goyz="true"}
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	var idpaket = "{$id|default:''}";
+	$('#batal_mapping_{$acak}').bind('click',function(){
+		$('#grid_nya_paket').show();
+		$('#detil_nya_paket').hide();
+	});
+	
+	$('#not_mapping').on('click', function(){
+		var row = $('#grid_mapping_paket_sudah').datagrid('getSelected');
+		if(row){
+			$.post(host+'mapping-delete', { 'id':row.id }, function(respo){
+				if(respo == 1){
+					$('#grid_mapping_paket_belum').datagrid('reload');
+					$('#grid_mapping_paket_sudah').datagrid('reload');
+				}else{
+					$.messager.alert('Aldeaz',"Gagal Maning Son",'error');
+				}
+			} );
+		}else{
+			$.messager.alert('Aldeaz',"Pilih Data Dalam Table Mapping Paket",'error');
+		}
+	});
+	$('#yes_mapping').on('click', function(){
+		var rowss = $('#grid_mapping_paket_belum').datagrid('getSelected');
+		if(rowss){
+			$.post(host+'mapping-add', { 'idpaket':idpaket, 'idbuku':rowss.id }, function(respo){
+				if(respo == 1){
+					$('#grid_mapping_paket_belum').datagrid('reload');
+					$('#grid_mapping_paket_sudah').datagrid('reload');
+				}else{
+					$.messager.alert('Aldeaz',"Gagal Maning Son",'error');
+				}
+			} );
+		}else{
+			$.messager.alert('Aldeaz',"Pilih Data Dalam Table Master Buku",'error');
+		}
+	});
+	
+</script>
