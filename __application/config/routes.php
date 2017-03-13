@@ -116,12 +116,13 @@ $route['loading-pembatalan'] = 'frontend/getdisplay/loading_page/pembatalanpesan
 $route['loading-formpemb'] = 'frontend/getdisplay/loading_page/formpembatalancuy';
 $route['submit-pembatalan'] = 'frontend/cruddata/form/pembss';
 
-$route['registrasipembeli'] = 'frontend/getdisplay/main_page/registrasipembeli';
-$route['loading-registrasipembeli'] = 'frontend/getdisplay/loading_page/registrasipembeli';
+$route['registrasi'] = 'frontend/getdisplay/main_page/registrasi';
+$route['loading-registrasi'] = 'frontend/getdisplay/loading_page/registrasi';
 $route['submit-registrasi'] = 'frontend/cruddata/form/registrasi';
 $route['finish-registrasi'] = 'frontend/getdisplay/loading_page/finish_registrasi';
 
-$route['form-login'] = 'frontend/getdisplay/loading_page/form_login';
+$route['login'] = 'frontend/getdisplay/main_page/login';
+$route['loading-login'] = 'frontend/getdisplay/loading_page/login';
 $route['submit-login'] = 'frontend/loginpembeli';
 $route['logoutpembeli'] = 'frontend/logoutpembeli';
 

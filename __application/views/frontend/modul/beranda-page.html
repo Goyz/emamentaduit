@@ -1,358 +1,103 @@
-			<!-- Start Slider Area -->
-			<section class="slider-area">
-				<div class="bend niceties preview-2">
-					<div id="ensign-nivoslider" class="slides">	
-						<img src="{$host}__assets/ef/img/sliders/bg-1.jpg" alt="" title="#slider-direction-1"  />
-						<img src="{$host}__assets/ef/img/sliders/bg-2.jpg" alt="" title="#slider-direction-2"  />
+	<div class="container">
+		<div class="row">
+			<div id="content">
+				<div class="row">
+					<div class="col-sm-8">
+						<ul class="bxslider">
+							<li><img src="{$host}__assets/images/banner-0-750x400.png" /></li>
+							<li><img src="{$host}__assets/images/banner-1-750x400.png" /></li>
+							<li><img src="{$host}__assets/images/banner-2-750x400.png" /></li>
+							<li><img src="{$host}__assets/images/banner-3-750x400.png" /></li>
+						</ul>
 					</div>
-					<!-- direction 1 -->
-					<div id="slider-direction-1" class="slider-direction slider-one">
-						<div class="container">
+					<div class="col-sm-4 pull-right flip">
+						<div class="marketshop-banner">
 							<div class="row">
-								<div class="col-md-12 text-right">
-									<div class="slider-content">
-																			<!-- layer 2 -->
-										<div class="layer-1-2">
-											<h1 class="title2">www.aldeaz.id</h1>
-										</div> 
-										<!-- layer 1 -->
-										<div class="layer-1-1">
-											<h5 class="title1">Melayani Seluruh ZONA</h5>
-										</div>
-
-										<!-- layer 3 -->
-										<div class="layer-1-3">
-											<p class="title3">Melayani pembelian dari seluruh zona di Indonesa, <br />untuk pembeli umum ataupun pembeli sekolah.</p>
-										</div>
-										<!-- layer 4 -->
-										<div class="layer-1-4">
-											<a href="{$host}katalog" class="estut-btn active">Belanja</a>
-											<!--a href="#" class="estut-btn" >Pembeli Sekolah</a-->
-										</div>
-									</div>
+								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+									<a href="#"><img title="sample-banner1" alt="sample-banner1" src="{$host}__assets/images/banner-01-360x185.png"></a>
+								</div>
+								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+									<a href="#"><img title="sample-banner" alt="sample-banner" src="{$host}__assets/images/banner-02-360x185.png"></a>
 								</div>
 							</div>
 						</div>
 					</div>
-					<!-- direction 2 -->
-					<div id="slider-direction-2" class="slider-direction slider-two">
-						<div class="container">
-							<div class="row">
-								<div class="col-md-12 text-left">
-									<div class="slider-content">
-										<!-- layer 1 -->
-										<div class="layer-2-1">
-											<h5 class="title1">Penyedia Buku Kurtilas</h5>
-										</div>
-										<!-- layer 2 -->
-										<div class="layer-2-2">
-											<h5 class="title2">2016</h5>
-										</div>
-										<!-- layer 3 -->
-										<div class="layer-2-3">
-											<p class="title3">Pelayanan cepat, Buku berkualitas <br />Data dan buku pembeli di jamin aman.</p>
-										</div>
-										<!-- layer 4 -->
-										<div class="layer-2-4">
-											<a href="{$host}katalog" class="estut-btn active">Belanja</a>
-											<!--a href="#" class="estut-btn" >Pembeli Sekolah</a-->
-										</div>
-									</div>
+				</div>			
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="custom-feature-box row">
+			<div class="col-sm-4 col-xs-12">
+				<div class="feature-box fbox_1">
+					<img title="sample-banner" class="img-responsive" src="{$host}__assets/images/buku_sd.png">
+				</div>
+			</div>
+			<div class="col-sm-4 col-xs-12">
+				<div class="feature-box fbox_3">
+					<img title="sample-banner" class="img-responsive" src="{$host}__assets/images/buku_smp.png">
+				</div>
+			</div>
+			<div class="col-sm-4 col-xs-12">
+				<div class="feature-box fbox_4">
+					<img title="sample-banner" class="img-responsive" src="{$host}__assets/images/buku_sma.png">
+				</div>
+			</div>
+		</div>
+	</div>	
+	<br/>
+	{*
+	<div class="container">
+		<div class="row">
+			<h3 class="subtitle">Katalog Buku Kami</h3>	
+			<div class="owl-carousel product_carousel owl-theme" style="opacity: 1; display: block;">
+				<div class="owl-wrapper-outer">
+					<div class="owl-wrapper" style="width: 2736px; left: 0px; display: block; transition: all 1000ms ease 0s; transform: translate3d(0px, 0px, 0px);">
+						{foreach from=$data_buku item=rows}
+						<div class="owl-item" style="width: 228px;">
+							<div class="product-thumb clearfix">
+								<div class="image">
+									<a href="product.html"><img src="{$rows.foto_buku}" alt="iPhone5" title="iPhone5" class="img-responsive"></a>
+								</div>
+								<div class="caption">
+									<h4><a href="product.html">{$rows.judul_buku}</a></h4>
+								</div>
+								<div class="button-group">
+									<button class="btn-primary" type="button" onclick=""><span>Add to Cart</span></button>
 								</div>
 							</div>
 						</div>
+						{/foreach}
 					</div>
 				</div>
-			</section>
-			<!-- End Slider Area -->
-			<!-- Start Intro Courses Area -->
-			<section class="intro-courses-area">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-12">
-							<div class="intro-courses-container">
-								<!-- Start Intro Courses Nav  -->
-								<ul class="nav nav-tabs" role="tablist">
-									<li role="presentation">
-										<a href="#online" aria-controls="online" role="tab" data-toggle="tab">
-										<div class="est-icon"><img src="{$host}img/icon/1.png" alt="icon" /></div>
-										Fast Response</a>
-									</li>
-									<li role="presentation" class="active">
-										<a href="#programming" aria-controls="programming" role="tab" data-toggle="tab">
-										<div class="est-icon"><img src="{$host}img/icon/2.png" alt="icon" /></div>
-										Produk Berkualitas</a>
-									</li>
-									<li role="presentation">
-										<a href="#creative" aria-controls="creative" role="tab" data-toggle="tab">
-										<div class="est-icon"><img src="{$host}img/icon/3.png" alt="icon" /></div>
-										Pengiriman Terjamin</a>
-									</li>
-									<li role="presentation">
-										<a href="#online-business" aria-controls="online-business" role="tab" data-toggle="tab">
-										<div class="est-icon"><img src="{$host}img/icon/4.png" alt="icon" /></div>
-										Barang terjamin</a>
-									</li>
-									<li role="presentation">
-										<a href="#social" aria-controls="social" role="tab" data-toggle="tab">
-										<div class="est-icon"><img src="{$host}img/icon/5.png" alt="icon" /></div>
-										Data Pelanggan Aman</a>
-									</li>
-								</ul>
-								<!-- End Intro Courses Nav  -->
-								<!-- Start Intro Courses Tab panes -->
-								<div class="tab-content padding-t50">
-									<!-- Start single item-->
-									<div role="tabpanel" class="tab-pane fade" id="online">
-										<div class="row">
-											<div class="col-md-6 text-left">
-												<div class="intro-caption padding50">
-													<h2 class="section-title">Aksi Cepat & Ramah</h2>
-													<p>Kami selalu berusaha untuk memberikan aksi cepat untuk setiap pelayanan pesanan atau hanya sekedar bertanya kepada kami</p>
-													<p>Kami bukan yang terbaik tapi kami selalu berusaha memberikan yang terbaik untuk Anda</p>
-													<!--a href="#" class="estut-btn" >find more</a-->
-												</div>
-											</div>
-											<div class="col-md-6 text-right">
-												<div class="intro-img">
-													<!--img src="img/courses/1.png" alt="intro img" /-->
-												</div>
-											</div>
-										</div>
-									</div>
-									<!-- End single item-->
-									<div  role="tabpanel" class="tab-pane fade in active" id="programming">
-										<div class="row">
-											<div class="col-md-6 text-left">
-												<div class="intro-caption padding50">
-													<h2 class="section-title">Bahan & Cetakan</h2>
-													<p>Aldeaz Sejahtera Printing dalam mencetak produk-produk kami menggunakan bahan yang bermutu tinggi</p>
-													<p>Kualitas cetakan merupakan prioritas utama kami demi kepuasan Anda</p>
-													<!--a href="#" class="estut-btn" >find more</a-->
-												</div>
-											</div>
-											<div class="col-md-6 text-right">
-												<div class="intro-img">
-													<!--img src="img/courses/1.png" alt="intro img" /-->
-												</div>
-											</div>
-										</div>
-									</div>
-									<div  role="tabpanel" class="tab-pane fade" id="creative">
-										<div class="row">
-											<div class="col-md-6 text-left">
-												<div class="intro-caption padding50">
-													<h2 class="section-title">Layanan Kiriman</h2>
-													<p>Kami sangat menghargai waktu Anda, kami berusaha memberikan layanan pengiriman dengan cepat dan aman</p>
-													
-													<!--a href="#" class="estut-btn" >find more</a-->
-												</div>
-											</div>
-											<div class="col-md-6 text-right">
-												<div class="intro-img">
-													<!--img src="img/courses/1.png" alt="intro img" /-->
-												</div>
-											</div>
-										</div>
-									</div>
-									<div  role="tabpanel" class="tab-pane fade" id="online-business">
-										<div class="row">
-											<div class="col-md-6 text-left">
-												<div class="intro-caption padding50">
-													<h2 class="section-title">Jaminan Pengiriman</h2>
-													<p>Apabila kiriman Anda rusak atau jumlah kurang karena kesalahan kami, kami akan mengganti 100%</p>
-													
-													<!--a href="#" class="estut-btn" >find more</a-->
-												</div>
-											</div>
-											<div class="col-md-6 text-right">
-												<div class="intro-img">
-													<!--img src="img/courses/1.png" alt="intro img" /-->
-												</div>
-											</div>
-										</div>
-									</div>
-									<div  role="tabpanel" class="tab-pane fade" id="social">
-										<div class="row">
-											<div class="col-md-6 text-left">
-												<div class="intro-caption padding50">
-													<h2 class="section-title">Data Aman</h2>
-													<p>Jangan ragu dan bimbang untuk belanja di aldeaz.id, kami menjamin data Anda akan aman</p>
-													
-													<!--a href="#" class="estut-btn" >find more</a-->
-												</div>
-											</div>
-											<div class="col-md-6 text-right">
-												<div class="intro-img">
-													<!--img src="img/courses/2.png" alt="intro img" /-->
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- End Intro Courses Tab panes -->
-							</div>
-						</div>
+				<div class="owl-controls clickable">
+					<div class="owl-buttons">
+						<div class="owl-prev"><i class="fa fa-angle-left"></i></div>
+						<div class="owl-next"><i class="fa fa-angle-right"></i></div>
 					</div>
-				</div>
-			</section>
-			<!-- End Intro Courses Area -->
-			<!-- Start Online Shop Area -->
-			<section class="online-shopping-area padding100 bg-gray">
-				<div class="container">
-					<!-- Start Area headding -->
-					<div class="row">
-						<div class="col-md-12">
-							<div class="area-headding-pb0 text-center">
-								<h2 class="section-title">Koleksi Buku Kami</h2>
-							</div>
-						</div>
-					</div>
-					<!-- End Area headding -->
-					<!-- Start Filter Menu -->
-					{*
-					<div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-							<div class="filter-menu text-center">
-								<ul class="nav nav-tabs" role="tablist">
-									<li role="presentation" class="active"><a href="#all" aria-controls="all" role="tab" data-toggle="tab">All</a></li>
-									<li role="presentation"><a href="#accessories" aria-controls="accessories" role="tab" data-toggle="tab">accessories</a></li>
-									<li role="presentation"><a href="#uniform" aria-controls="uniform" role="tab" data-toggle="tab">uniform</a></li>
-									<li role="presentation"><a href="#storage" aria-controls="storage" role="tab" data-toggle="tab">storage</a></li>
-									<li role="presentation"><a href="#furniture" aria-controls="furniture" role="tab" data-toggle="tab">furniture</a></li>
-									<li role="presentation"><a href="#electronics" aria-controls="electronics" role="tab" data-toggle="tab">electronics</a></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-					*}
-					<!-- End Filter Menu -->
-					<!-- Start product List -->
-					<div class="row">
-						<div class="tab-content">
-							<!--Start All Product -->
-							<div role="tabpanel" class="tab-pane fade in active" id="all">
-								<div class="online-shop-list owl-pagination-default">
-									{if $data_buku}
-										{foreach from=$data_buku item=row}
-											<div class="col-md-3">
-												<div class="single-product text-center">
-													<div class="pro-thumb">
-														<img src="{$row.foto_buku}" alt="{$row.judul_buku}" style='height:200px !important;' />
-													</div>
-													<div class="pro-info" style='min-height:150px !important;'>
-														<p class="pro-category">{$row.nama_kategori}</p>
-														<font style='font-size:15px !important;'><a href="#">{$row.judul_buku}</a></font>
-													</div>
-												</div>
-											</div>
-										{/foreach}
-									{else}
-										<center>-- Tidak Ada Data Tersedia -- </center>
-									{/if}
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- End product List -->
-				</div>
-			</section>
-			<!-- End Online Shop Area -->
-			<!-- Start Counter Area -->	
-			<!--section class="counter-area bg-1 overlay-bg padding65">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-12 text-center">
-						</div>
-					</div>
-				</div>
-			</section>
-			<!-- End Counter Area -->	
-			<!-- Start Call To Action  Area -->	
-			<!--section class="call-to-action bg-1 overlay-bg padding100">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-12 text-center">
-						</div>
-					</div>
-				</div>
-			</section-->
-			<!-- End Call To Action  Area -->	
-
+				</div>				
+			</div>
+			
+		</div>
+	</div>
+	*}
 <script>
-    /*----------------------------
-     	wow js active
-    ------------------------------ */
-    new WOW().init();
+$(document).ready(function(){
+	$('.bxslider').bxSlider({
+		auto: true,
+	});
+});
 
-	//---------------------------------------------
-	//Nivo slider
-	//---------------------------------------------
-		 $('#ensign-nivoslider').nivoSlider({
-			effect: 'random',
-			slices: 15,
-			boxCols: 8,
-			boxRows: 4,
-			animSpeed: 500,
-			pauseTime: 5000,
-			startSlide: 0,
-			directionNav: true,
-			controlNavThumbs: false,
-			pauseOnHover: true,
-			manualAdvance: false
-		 });
-		 
-		 $('#ensign-nivoslider-v2').nivoSlider({
-			effect: 'random',
-			slices: 15,
-			boxCols: 8,
-			boxRows: 4,
-			animSpeed: 500,
-			pauseTime: 5000,
-			startSlide: 0,
-			directionNav: false,
-            controlNav:true,
-			controlNavThumbs: false,
-			pauseOnHover: false,
-			manualAdvance: true      
-		 });
+	$(".owl-carousel.product_carousel").owlCarousel({
+		//itemsCustom : [[320, 1],[600, 2],[768, 3],[992, 5],[1199, 5]],											   
+		//lazyLoad : true,
+		//navigation : true,
+		//navigationText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
+		//scrollPerPage : true
+		//center: true,
+		//items:2,
+		loop:true,
+    }); 
 	
-	
-    /*----------------------------
-    	Online Shop List
-    ------------------------------ */
-    $(".online-shop-list").owlCarousel({
-        autoPlay: false,
-        slideSpeed: 2000,
-        pagination: true,
-        navigation: false,
-        items: 4,
-        /*transitionStyle : "backSlide",  */
-        /* [This code for animation ] */
-        navigationText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
-    });
-	
-    /*----------------------------
-    	Latest Blog Area
-    ------------------------------ */
-    $(".blog-list").owlCarousel({
-        autoPlay: false,
-        slideSpeed: 2000,
-        pagination: true,
-        navigation: false,
-        items: 3,
-        /*transitionStyle : "backSlide",  */
-        /* [This code for animation ] */
-        navigationText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
-        itemsDesktop: [1199, 3],
-        itemsDesktopSmall: [980, 3],
-        itemsTablet: [768, 2],
-        itemsMobile: [479, 1],
-    });
-	
-    /*-------------------------------
-    	mixItUp
-    ------------------------------- */
-    $('.online-shop-list').mixItUp();
 
 </script>

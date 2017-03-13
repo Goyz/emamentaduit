@@ -43,12 +43,7 @@ class Frontend extends CI_Controller {
 		$this->load->library('cart');
 	}
 	
-	function index(){
-		//$data_tingkatan = $this->mfrontend->getdata('cl_tingkatan', 'result_array');
-		//$this->nsmarty->assign('data_tingkatan', $data_tingkatan);
-		$this->nsmarty->assign( 'judulbesar', "www.aldeaz.id" );
-		$this->nsmarty->assign( 'judulkecil', "Klik -->katalog -->pilih zona -->cari buku -->beli" );
-				
+	function index(){				
 		$this->nsmarty->assign('konten', 'beranda');		
 		$this->nsmarty->display( 'frontend/main-index.html');		
 	}
@@ -63,6 +58,8 @@ class Frontend extends CI_Controller {
 				if($p1 == "beranda"){
 					$this->nsmarty->assign( 'judulbesar', "www.aldeaz.id" );
 					$this->nsmarty->assign( 'judulkecil', "Klik -->katalog -->pilih zona -->cari buku -->beli" );
+				}elseif($p1 == "login"){
+					
 				}elseif($p1 == "carabelanja"){
 					$this->nsmarty->assign( 'judulbesar', "Cara Berbelanja" );
 					$this->nsmarty->assign( 'judulkecil', "Petunjuk Singkat Berbelanja di www.aldeaz.id" );
@@ -125,13 +122,15 @@ class Frontend extends CI_Controller {
 					case "uploadfile":
 						$temp = "frontend/modul/uploadfile-page.html";
 					break;
-					case "form_login":
-						$temp = "frontend/modul/form-login.html";
+					case "login":
+						$temp = "frontend/modul/login.html";
 					break;
-					case "registrasipembeli":
-						$temp = "frontend/modul/registrasi-page.html";
+					case "registrasi":
+						$temp = "frontend/modul/registrasi.html";
 						$this->nsmarty->assign('combo_prov', $this->lib->fillcombo('cl_provinsi', 'return'));
 					break;
+					
+					
 					case "finish_registrasi":
 						$temp = "frontend/modul/finish-registrasi-page.html";
 					break;

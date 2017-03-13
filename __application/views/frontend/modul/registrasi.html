@@ -1,0 +1,244 @@
+<div class="container">
+    <!-- Breadcrumb Start-->
+    <ul class="breadcrumb">
+        <li><a href="{$host}"><i class="fa fa-home"></i></a></li>
+        <li><a href="{$host}registrasi">Registrasi Akun</a></li>
+    </ul>
+    <!-- Breadcrumb End-->
+    <div class="row">
+        <!--Middle Part Start-->
+        <div class="col-sm-9" id="content">
+            <h1 class="title">Registrasi Akun</h1>
+			
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab-sekolah" data-toggle="tab" aria-expanded="true">Sekolah Swasta</a></li>
+				<li class=""><a href="#tab-umum" data-toggle="tab" aria-expanded="false">Umum</a></li>
+			</ul>
+			
+			<div class="tab-content">
+				<div itemprop="sekolah" id="tab-sekolah" class="tab-pane active">
+					<form id='frmregsbrosekolah' url="{$host}submit-registrasi" method='post' enctype="multipart/form-data" class="form-horizontal">
+						<input type="hidden" name="domtype" value="S">
+						<fieldset>
+							<legend>Data Sekolah</legend>
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">NPSN</label>
+								<div class="col-sm-8">
+									<input class="form-control" required id="npsn" name="npsn" type="text">
+								</div>
+							</div>												
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Nama Sekolah</label>
+								<div class="col-sm-8">
+									<input class="form-control" required id="nm_seko" name="nm_seko" type="text">
+								</div>
+							</div>					
+							<div class="form-group required">
+								<label for="input-lastname" class="col-sm-3 control-label">Email Sekolah</label>
+								<div class="col-sm-8">
+									<input class="form-control" required id="email" name="email" type="email">
+								</div>
+							</div>							
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">No. Telp Sekolah</label>
+								<div class="col-sm-8">
+									<input class="form-control" required id="telp_sekolah" name="telp_sekolah" type="text">
+								</div>
+							</div>							
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Nama Kepala Sekolah</label>
+								<div class="col-sm-8">
+									<input class="form-control" required id="kpl_sekolah" name="kpl_sekolah" type="text">
+								</div>
+							</div>							
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">NIP Kepala Sekolah</label>
+								<div class="col-sm-8">
+									<input class="form-control" required id="nip_kepsek" name="nip_kepsek" type="text">
+								</div>
+							</div>							
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">No. HP Kepsek</label>
+								<div class="col-sm-8">
+									<input class="form-control" required id="no_hp_kepsek" name="no_hp_kepsek" type="text">
+								</div>
+							</div>							
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Nama Bendahara Sekolah</label>
+								<div class="col-sm-8">
+									<input class="form-control" required id="nm_bendahara" name="nm_bendahara" type="text">
+								</div>
+							</div>							
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">No. HP Bendahara</label>
+								<div class="col-sm-8">
+									<input class="form-control" required id="no_hp_bendahara" name="no_hp_bendahara" type="text">
+								</div>
+							</div>							
+						</fieldset>
+						<fieldset>
+							<legend>Data Alamat Sekolah</legend>
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Provinsi</label>
+								<div class="col-sm-8">
+									<select class="form-control" required id="provinsi" name="provinsi">	
+										{$combo_prov}
+									</select>
+								</div>
+							</div>							
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Kabupaten</label>
+								<div class="col-sm-8">
+									<select class="form-control" required id="kabupaten" name="kabupaten">	
+									</select>
+								</div>
+							</div>							
+							<div class="form-group">
+								<label for="input-firstname" class="col-sm-3 control-label">Kecamatan</label>
+								<div class="col-sm-8">
+									<select class="form-control" id="kecamatan" name="kecamatan">	
+									
+									</select>
+								</div>
+							</div>		
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Kode Pos</label>
+								<div class="col-sm-2">
+									<input class="form-control" required id="kd_pos" name="kd_pos" type="text">
+								</div>
+							</div>														
+							<div class="form-group required">
+								<label for="input-fax" class="col-sm-3 control-label">Alamat Pengiriman</label>
+								<div class="col-sm-8">
+									<textarea class="form-control" required id="alamat_pengiriman" name="alamat_pengiriman"></textarea>
+								</div>
+							</div>												
+						</fieldset>
+						<div class="buttons">
+							<div class="pull-center">
+								<center><input id="daftarsekolah" class="btn btn-primary" value="Daftar" type="submit"></center>
+							</div>
+						</div>
+						
+					</form>
+				</div>
+				<div id="tab-umum" class="tab-pane">
+				
+					<form data-toggle="validator" role="form" id='frmregsbroumum' url="{$host}submit-registrasi" method='post' enctype="multipart/form-data" class="form-horizontal">
+						<input type="hidden" name="domtype" value="U">						
+						<fieldset id="account">
+							<legend>Data Personal</legend>
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Nama Lengkap</label>
+								<div class="col-sm-8">
+									<input class="form-control validasi" required id="nm_lengkap" name="nm_lengkap" type="text">
+								</div>
+							</div>
+							<div class="form-group required">
+								<label for="input-lastname" class="col-sm-3 control-label">Email</label>
+								<div class="col-sm-8">
+									<input class="form-control validasi" required id="email" name="email" type="email">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="input-telephone" class="col-sm-3 control-label">No. Telp</label>
+								<div class="col-sm-8">
+									<input class="form-control" id="no_telp" name="no_telp" type="tel">
+								</div>
+							</div>
+							<div class="form-group required">
+								<label for="input-fax" class="col-sm-3 control-label">No. Handphone</label>
+								<div class="col-sm-8">
+									<input class="form-control validasi" required id="no_handphone" name="no_handphone" type="text">
+								</div>
+							</div>
+							<div class="form-group required">
+								<label for="input-fax" class="col-sm-3 control-label">Alamat Pengiriman</label>
+								<div class="col-sm-8">
+									<textarea class="form-control validasi" required id="alamat_pengiriman" name="alamat_pengiriman"></textarea>
+								</div>
+							</div>
+						</fieldset>
+						<div class="buttons">
+							<div class="pull-center">
+								<center>
+									<a id="daftarumum" class="btn btn-primary">Daftar</a>
+								</center>
+							</div>
+						</div>
+					</form>				
+			
+				</div>
+			</div>
+			
+        </div>
+        <!--Middle Part End -->
+        <!--Right Part Start -->
+        <aside id="column-right" class="col-sm-3 hidden-xs">
+            <h3 class="subtitle">MKS-Store</h3>
+            <div class="list-group">
+                <ul class="list-item">
+                    <li><a href="{$host}">Beranda</a></li>
+                    <li><a href="#">Bantuan</a></li>
+                    <li><a href="#">Feedback</a></li>
+                    <li><a href="#">Kontak</a></li>
+                    <li><a href="{$host}login">Login</a></li>
+                </ul>
+            </div>
+        </aside>
+        <!--Right Part End -->
+    </div>
+</div>
+
+<script>
+	$(".validasi").validatebox({ required:true }); 
+	$('#provinsi').bind('change', function(){
+		fillCombo(host+'combo-kab-kota', 'kabupaten', '', $(this).val() );
+	});
+	$('#kabupaten').on('change', function(){
+		fillCombo(host+'combo-kecamatan', 'kecamatan', '', $(this).val() );
+	});
+	
+	$('#daftarsekolah').on('click', function(){
+		submit_form('frmregsbrosekolah', function(resp){
+			if(resp == 1){
+				alert("succes");
+			}else if(resp == 2){
+				alert("Data Email Anda Sudah Ada Dalam System Kami!");
+				/*
+				$.unblockUI();
+				$('#modalencuk').html("Data Email Anda Sudah Ada Dalam System Kami!");			
+				$('#productModal').modal('show'); 
+				*/
+			}else if(resp == 3){
+				alert("Data NPSN Anda Sudah Ada Dalam System Kami!");
+				/*
+				$.unblockUI();
+				$('#modalencuk').html("Data NPSN Anda Sudah Ada Dalam System Kami!");			
+				$('#productModal').modal('show'); 					
+				*/
+			}
+		});
+	});
+	
+	$('#daftarumum').on('click', function(){
+		validasi = $('#frmregsbroumum').form('validate');		
+		if(validasi){
+			$.blockUI({ message: '<h3>Data Sedang Diproses...</h3>' });			
+		}		
+		submit_form('frmregsbroumum', function(resp){
+			if(resp == 1){
+				alert("success");
+			}else if(resp == 2){
+				alert("Data Email Anda Sudah Ada Dalam System Kami!");
+				
+				/*
+				$.unblockUI();
+				$('#modalencuk').html("Data Email Anda Sudah Ada Dalam System Kami!");			
+				$('#productModal').modal('show'); 
+				*/
+			}
+			$.unblockUI();
+		});
+	});
+</script>

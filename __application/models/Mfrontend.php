@@ -436,39 +436,57 @@ class Mfrontend extends CI_Model{
 					echo 2; exit; //cek data email exist;
 				}
 				
-				$array_cek_registrasi2 = array( 'npsn' => $data['npsn'] );
-				$cek_registrasi2 = $this->db->get_where('tbl_registrasi', $array_cek_registrasi2)->row_array();
-				if($cek_registrasi2){
-					echo 3; exit; //cek data npsn exist;
+				if($data["domtype"] == "S"){
+					$array_cek_registrasi2 = array( 'npsn' => $data['npsn'] );
+					$cek_registrasi2 = $this->db->get_where('tbl_registrasi', $array_cek_registrasi2)->row_array();
+					if($cek_registrasi2){
+						echo 3; exit; //cek data npsn exist;
+					}
 				}
 				
-				$password_asli = $this->lib->randomString(5, 'angkahuruf');
-				$password = $this->encrypt->encode(strtolower($password_asli));
+				$password_asli = strtolower($this->lib->randomString(5, 'angkahuruf'));
+				$password = $this->encrypt->encode($password_asli);
 				
-				$data_registrasi = array(
-					'jenis_pembeli' => 'SEKOLAH',
-					'nama_user' => $data['npsn'],
-					'password' => $password,
-					'email' => $data['email'],
-					'status' => 1,
-					'npsn' => $data['npsn'],
-					'nama_sekolah' => $data['nmseko'],
-					'nip' => $data['nipkepsek'],
-					'nama_kepala_sekolah' => $data['nmkepsek'],
-					'nama_bendahara' => $data['nmbend'],
-					'no_hp_kepsek' => $data['nohpkepsek'],
-					'no_hp_bendahara' => $data['nohpbend'],
-					'no_telp_sekolah' => $data['notelp'],
-					'cl_provinsi_kode' => $data['prov'],
-					'cl_kab_kota_kode' => $data['kab'],
-					'cl_kecamatan_kode' => $data['kec'],
-					'kode_pos' => $data['kdpos'],
-					'alamat_pengiriman' => $data['almt'],
-					'reg_date' => date('Y-m-d H:i:s'),
-				);
+				if($data["domtype"] == "S"){
+					$data_registrasi = array(
+						'jenis_pembeli' => 'SEKOLAH',
+						'nama_user' => $data['npsn'],
+						'password' => $password,
+						'email' => $data['email'],
+						'status' => 1,
+						'npsn' => $data['npsn'],
+						'nama_sekolah' => $data['nm_seko'],
+						'nip' => $data['nip_kepsek'],
+						'nama_kepala_sekolah' => $data['kpl_sekolah'],
+						'nama_bendahara' => $data['nmbend'],
+						'no_hp_kepsek' => $data['no_hp_kepsek'],
+						'no_hp_bendahara' => $data['no_hp_bendahara'],
+						'no_telp_sekolah' => $data['telp_sekolah'],
+						'kd_prov' => $data['provinsi'],
+						'kd_kab' => $data['kabupaten'],
+						'kd_kec' => $data['kecamatan'],
+						'kode_pos' => $data['kd_pos'],
+						'alamat_pengiriman' => $data['alamat_pengiriman'],
+						'reg_date' => date('Y-m-d H:i:s'),
+					);					
+				}elseif($data["domtype"] == "U"){
+					$data_registrasi = array(
+						'jenis_pembeli' => 'UMUM',
+						'nama_user' => $data['email'],
+						'password' => $password,
+						'email' => $data['email'],
+						'status' => 1,
+						'nama_lengkap' => $data['nm_lengkap'],
+						'no_telp_customer' => $data['no_telp'],
+						'no_hp_customer' => $data['no_handphone'],
+						'alamat_pengiriman' => $data['alamat_pengiriman'],
+						'reg_date' => date('Y-m-d H:i:s'),
+					);					
+				}
+				
 				$insert_registrasi = $this->db->insert('tbl_registrasi', $data_registrasi);
 				if($insert_registrasi){
-					$this->lib->kirimemail('email_registrasi', $data['email'], $data_registrasi, $password_asli);
+					$this->lib->kirimemail('email_registrasi', $data['email'], $data_registrasi, $password_asli, $data["domtype"]);
 				}
 			break;
 			case "komentar":

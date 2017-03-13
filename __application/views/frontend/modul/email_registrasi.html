@@ -3,9 +3,12 @@
 	<table width='80%' style='margin-left:10%;background:#fff;'>
 		<tr>
 			<td style='padding:10px;'>
-				<center><img src="http://jingga.co.id/__projecttemp/aldeaz/logo.png" style="max-width:600px;" id="headerImage" mc:label="header_image" mc:edit="header_image" mc:allowdesigner mc:allowtext /></center>
+				<center><img src="http://jingga.co.id/__projecttemp/aldeaz/logo_mks.png" style="max-width:600px;" id="headerImage" mc:label="header_image" mc:edit="header_image" mc:allowdesigner mc:allowtext /></center>
 			</td>
 		</tr>
+		<tr>
+			<td>&nbsp;</td>
+		</tr>		
 		<tr>
 			<td style='padding:10px;'>
 				TERIMA KASIH SUDAH MELAKUKAN REGISTRASI.
@@ -16,6 +19,7 @@
 		<tr>
 			<td>
 				<table width='100%' style='margin-top:10px;margin-bottom:10px;'>
+					{if $type_registrasi eq "S"}
 					<tr>
 						<td width='25%'>Nama Sekolah</td>
 						<td width='5%'>:</td>
@@ -31,6 +35,19 @@
 						<td>:</td>
 						<td>{$data_registrasi.nama_kepala_sekolah}</td>
 					</tr>
+					{/if}
+					{if $type_registrasi eq "U"}
+					<tr>
+						<td width='25%'>Nama Lengkap</td>
+						<td width='5%'>:</td>
+						<td width='70%'>{$data_registrasi.nama_lengkap}</td>
+					</tr>
+					<tr>
+						<td>No. Handphone</td>
+						<td>:</td>
+						<td>{$data_registrasi.no_hp_customer}</td>
+					</tr>					
+					{/if}
 					<tr>
 						<td colspan='3'>&nbsp;</td>
 					</tr>
@@ -57,7 +74,7 @@
 				<br/>
 				<br/>
 				<br/>
-				CV. Aldeaz Sejahtera Printing - www.aldeaz.id www.aldeaz.com
+				PT. Mulia Kencana Semesta - www.mks-store.id
 			</td>
 		</tr>
 	</table>
