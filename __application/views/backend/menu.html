@@ -61,6 +61,39 @@
 				</li>
 			</ul>
 		</li>
+		<li>
+			<a href="javascript:void(0);"  class="dropdown-toggle" >
+				<i class="icon-book"></i>
+				<span class="menu-text">Laporan</span>
+				<b class="arrow icon-angle-down"></b>
+			</a>
+			<ul class="submenu">
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/rekap_penjualan','');$('#judul_kecil').html('Rekap Penjualan')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Rekapitulasi Penjualan</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/detil_penjualan','');$('#judul_kecil').html('Detail Penjualan')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Detil Penjualan</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/lap_bast','');$('#judul_kecil').html('Penjualan Per-BAST')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Penjualan Per-BAST</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/lap_kwitansi','');$('#judul_kecil').html('Penjualan Per-Kwitansi')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Penjualan Per-KWITANSI</span>
+					</a>
+				</li>
+			</ul>
+		</li>
 		{else}
 		<li>
 			<a href="javascript:void(0);"  class="dropdown-toggle" >
@@ -95,6 +128,8 @@
 				</li>
 			</ul>
 		</li>
+		{/if}
+		{if $auth.flag_group neq 'L'}
 		<li>
 			<a href="javascript:void(0);"  class="dropdown-toggle" >
 				<i class="icon-book"></i>
