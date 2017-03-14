@@ -62,9 +62,9 @@ body {
   font-weight: 700;
   height: 36px;
   padding: 0 8px;
-/* border-radius: 3px; */
-/* -webkit-user-select: none;
-  user-select: none; */
+  border-radius: 3px; 
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .login-submit {
