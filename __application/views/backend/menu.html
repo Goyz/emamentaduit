@@ -12,19 +12,19 @@
 		{if $auth.flag_group neq 'L'}
 		<li>
 			<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/produk','tbl_buku')">
-				<i class="icon-bar-chart"></i>
+				<i class="icon-book"></i>
 				<span class="menu-text">Produk</span>
 			</a>
 		</li>
 		<li>
 			<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/paket','tbl_paket')">
-				<i class="icon-bar-chart"></i>
+				<i class="icon-puzzle-piece"></i>
 				<span class="menu-text">Paket Produk</span>
 			</a>
 		</li>
 		<li>
 			<a href="javascript:void(0);"  class="dropdown-toggle" >
-				<i class="icon-book"></i>
+				<i class="icon-file-text"></i>
 				<span class="menu-text">Transaksi</span>
 				<b class="arrow icon-angle-down"></b>
 			</a>
@@ -63,7 +63,7 @@
 		</li>
 		<li>
 			<a href="javascript:void(0);"  class="dropdown-toggle" >
-				<i class="icon-book"></i>
+				<i class="icon-print"></i>
 				<span class="menu-text">Laporan</span>
 				<b class="arrow icon-angle-down"></b>
 			</a>
@@ -97,7 +97,7 @@
 		{else}
 		<li>
 			<a href="javascript:void(0);"  class="dropdown-toggle" >
-				<i class="icon-book"></i>
+				<i class="icon-print"></i>
 				<span class="menu-text">Laporan</span>
 				<b class="arrow icon-angle-down"></b>
 			</a>
@@ -132,7 +132,7 @@
 		{if $auth.flag_group neq 'L'}
 		<li>
 			<a href="javascript:void(0);"  class="dropdown-toggle" >
-				<i class="icon-book"></i>
+				<i class="icon-list-alt"></i>
 				<span class="menu-text">Master Data</span>
 				<b class="arrow icon-angle-down"></b>
 			</a>
@@ -177,7 +177,7 @@
 		</li>
 		<li>
 			<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/komplain','tbl_komplain');$('#judul_kecil').html('Daftar Komplain Pelanggan')">
-				<i class="icon-bar-chart"></i>
+				<i class="icon-comments"></i>
 				<span class="menu-text">Komplain Pelanggan</span>
 			</a>
 		</li>
@@ -185,13 +185,13 @@
 		{if $auth.flag_group eq 'A'}
 		<li>
 			<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/pengguna','admin');$('#judul_kecil').html('Manajemen User')">
-				<i class="icon-bar-chart"></i>
+				<i class="icon-user"></i>
 				<span class="menu-text">Manajemen User</span>
 			</a>
 		</li>
 		<li>
 			<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backupform','backupform');$('#judul_kecil').html('Manajemen User')">
-				<i class="icon-bar-chart"></i>
+				<i class="icon-download"></i>
 				<span class="menu-text">BackUp System</span>
 			</a>
 		</li>
