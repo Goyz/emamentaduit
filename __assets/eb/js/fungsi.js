@@ -2022,3 +2022,7 @@ function get_pesan(){
 		$('#jml_pesan').html(js.jml);
 	});
 }
+function konversi_pwd_text(id){
+	if($('input#'+id)[0].type=="password")$('input#'+id)[0].type = 'text';
+	else $('input#'+id)[0].type = 'password';
+}

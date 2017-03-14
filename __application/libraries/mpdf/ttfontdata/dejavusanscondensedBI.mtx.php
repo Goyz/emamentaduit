@@ -13,7 +13,7 @@ $desc=array (
 );
 $up=-63;
 $ut=44;
-$ttffile='D:/__www/public_codeigniter/diklat-kemendagri/application/libraries/mpdf/ttfonts/DejaVuSansCondensed-BoldOblique.ttf';
+$ttffile='D:/www_goyz/vpti-imp/appl/libraries/mpdf/ttfonts/DejaVuSansCondensed-BoldOblique.ttf';
 $TTCfontID='0';
 $originalsize=493756;
 $sip=false;

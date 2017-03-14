@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
  
-class Mlpdf {
+class mlpdf {
  
     function pdf()
     {

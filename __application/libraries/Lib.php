@@ -132,9 +132,8 @@ class Lib {
 			case "email_registrasi":
 				$ci->nsmarty->assign('data_registrasi', $p1);
 				$ci->nsmarty->assign('password', $p2);
-				$ci->nsmarty->assign('type_registrasi', $p3);
 				$html = $ci->nsmarty->fetch('frontend/modul/email_registrasi.html');
-				$subject = "EMAIL REGISTRASI WEBSTORE MKS-STORE";
+				$subject = "EMAIL REGISTRASI WEBSTORE ALDEAZ.ID";
 			break;			
 		}
 		

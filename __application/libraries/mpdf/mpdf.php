@@ -15124,7 +15124,7 @@ function OpenTag($tag,$attr)
 	if ($tag == 'SPAN') {
 		$this->spanlvl++;
 		$this->InlineProperties['SPAN'][$this->spanlvl] = $this->saveInlineProperties();
-		if (isset($annot)) { $this->InlineAnnots[$tag][$this->spanlvl] = $annot; }	// *ANNOTATIONS*
+		if (isset($annot)) { $this->InlineAnnots[$tag][$this->spanlvl] = $annot; }	// *ANNOTATIONS*
 	}
 	else { 
 		if (!isset($this->InlineProperties[$tag])) $this->InlineProperties[$tag] = $this->saveInlineProperties(); // mPDF 5.4.13

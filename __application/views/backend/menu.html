@@ -61,6 +61,105 @@
 				</li>
 			</ul>
 		</li>
+		{else}
+		<li>
+			<a href="javascript:void(0);"  class="dropdown-toggle" >
+				<i class="icon-book"></i>
+				<span class="menu-text">Laporan</span>
+				<b class="arrow icon-angle-down"></b>
+			</a>
+			<ul class="submenu">
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/rekap_penjualan','');$('#judul_kecil').html('Rekap Penjualan')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Rekapitulasi Penjualan</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/detil_penjualan','');$('#judul_kecil').html('Detail Penjualan')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Detil Penjualan</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/lap_bast','');$('#judul_kecil').html('Penjualan Per-BAST')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Penjualan Per-BAST</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/lap_kwitansi','');$('#judul_kecil').html('Penjualan Per-Kwitansi')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Penjualan Per-KWITANSI</span>
+					</a>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<a href="javascript:void(0);"  class="dropdown-toggle" >
+				<i class="icon-book"></i>
+				<span class="menu-text">Master Data</span>
+				<b class="arrow icon-angle-down"></b>
+			</a>
+			<ul class="submenu">
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/member_sekolah','tbl_reg');$('#judul_kecil').html('Daftar Member Sekolah')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Member Sekolah</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/tingkatan','cl_tingkatan');$('#judul_kecil').html('Daftar Tingkatan Sekolah')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Tingkatan Sekolah</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/kelas','cl_kelas');$('#judul_kecil').html('Daftar Kelas Sekolah')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Kelas</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/group_sekolah','cl_group_sekolah');$('#judul_kecil').html('Daftar Group Sekolah')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Group Sekolah</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/kategori','cl_kategori');$('#judul_kecil').html('Daftar Kategori Buku')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Kategori Buku</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/edisi','cl_edisi');$('#judul_kecil').html('Daftar Edisi Buku')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Edisi Buku</span>
+					</a>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/komplain','tbl_komplain');$('#judul_kecil').html('Daftar Komplain Pelanggan')">
+				<i class="icon-bar-chart"></i>
+				<span class="menu-text">Komplain Pelanggan</span>
+			</a>
+		</li>
+		{/if}
+		{if $auth.flag_group eq 'A'}
+		<li>
+			<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/pengguna','admin');$('#judul_kecil').html('Manajemen User')">
+				<i class="icon-bar-chart"></i>
+				<span class="menu-text">Manajemen User</span>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backupform','backupform');$('#judul_kecil').html('Manajemen User')">
+				<i class="icon-bar-chart"></i>
+				<span class="menu-text">BackUp System</span>
+			</a>
+		</li>
 		{/if}
 		
 	</ul>
