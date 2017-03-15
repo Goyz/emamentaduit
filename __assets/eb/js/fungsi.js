@@ -275,7 +275,8 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 						}else if(value=='B'){
 							return "Proses";
 						}else if(value=='F'){
-							return "Sudah DiBayar <br/>"+rowData.tanggal_transfer;
+							//return "Sudah DiBayar <br/>"+rowData.tanggal_transfer;
+							return "Sudah DiBayar <br/>";
 						}else{
 							return "-";
 						}
@@ -303,6 +304,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 								return "Proses";
 							}else if(value=='F'){
 								return "Sudah Dikonfirmasi <br/>"+rowData.tanggal_konfirmasi;
+								//return "Sudah Dikonfirmasi <br/>";
 							}else{
 								return "-";
 							}
@@ -331,7 +333,8 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 						}else if(value=='PK'){
 							return "Proses Packing";
 						}else if(value=='F'){
-							return "Proses Pengiriman <br/>"+rowData.tanggal_masuk_gudang;
+							return "Proses Pengiriman <br/>";
+							//return "Proses Pengiriman <br/>"+rowData.tanggal_masuk_gudang;
 						}else{
 							return "-";
 						}
@@ -348,7 +351,8 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 						if(value=='P'){
 							return "Proses Pengiriman";
 						}else if(value=='F'){
-							return "Sudah Dikirim <br/>"+rowData.tanggal_masuk_gudang;
+							return "Sudah Dikirim <br/>";
+							//return "Sudah Dikirim <br/>"+rowData.tanggal_masuk_gudang;
 						}else{
 							return "-";
 						}
@@ -603,7 +607,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 						return "NO : "+value+" <br>Tgl : "+rowData.tgl_konfirmasi
 					}
 				},
-				{field:'file_bukti_bayar',title:'Bukti Bayar',width:150, halign:'center',align:'left',
+				/*{field:'file_bukti_bayar',title:'Bukti Bayar',width:150, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
 						if(value == null){
 							return "Belum Bayar";
@@ -611,7 +615,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 							return "<a href='"+host+"__repository/konfirmasi/"+value+"' target='_blank'>Lihat File</a>"	
 						}
 					}
-				},
+				},*/
 				{field:'no_order',title:'No Order - TGL ',width:200, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
 						return "NO : "+value+" <br>Tgl : "+rowData.tgl_order
