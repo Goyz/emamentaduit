@@ -29,9 +29,9 @@
 		<td>{$i.nama_sekolah|default:'-'}</td>
 		<td>{$i.npsn|default:'-'}</td>
 		<td>{$i.pic|default:'-'}</td>
-		<td align="right">Rp. {$i.jml_buku|number_format:2:',':'.'|default:'-'}</th>
-		<td align="right">{$i.grand_total|number_format:2:',':'.'|default:'-'}</td>
-		<td align="right">Rp.{$i.total_pembayaran|number_format:2:',':'.'|default:'-'}</td>
+		<td style="text-align:right;">Rp. {$i.jml_buku|number_format:2:',':'.'|default:'-'}</th>
+		<td style="text-align:right;">{$i.grand_total|number_format:2:',':'.'|default:'-'}</td>
+		<td style="text-align:right;">Rp.{$i.total_pembayaran|number_format:2:',':'.'|default:'-'}</td>
 	</tr>
 	{/foreach}
 	{else}
@@ -43,9 +43,9 @@
 	<tfoot>
 	<tr style="font-weight:bold;">
 		<td colspan="5" align="center">GRAND TOTAL</td>
-		<td align="right">{$tot_qty|number_format:2:',':'.'|default:'-'}</td>
-		<td align="right">Rp.{$grand_tot|number_format:2:',':'.'|default:'-'}</td>
-		<td align="right">Rp.{$tot_bayar|number_format:2:',':'.'|default:'-'}</td>
+		<td style="text-align:right;">{$tot_qty|number_format:2:',':'.'|default:'-'}</td>
+		<td style="text-align:right;">Rp.{$grand_tot|number_format:2:',':'.'|default:'-'}</td>
+		<td style="text-align:right;">Rp.{$tot_bayar|number_format:2:',':'.'|default:'-'}</td>
 	</tr>
 	</tfoot>
 	</table>

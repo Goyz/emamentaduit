@@ -362,6 +362,7 @@ class Backend extends JINGGA_Controller {
 	function cetak(){
 		$mod=$this->input->post('mod');
 		$param="";
+		$nomor="";
 			switch($mod){
 				case "rekap_penjualan_SEKOLAH":
 				case "rekap_penjualan_UMUM":
@@ -389,7 +390,7 @@ class Backend extends JINGGA_Controller {
 					$param=$this->konversi_tgl(date('Y-m-d'));
 					$file_name=$data['header']['no_bast'];
 					$judul="BERITA ACARA SERAH TERIMA BUKU";
-					$nomor=$data['header']['konfirmasi_no'];
+					$nomor=$data['header']['no_konfirmasi'];
 					//$file_name=$nomor;
 				break;
 			}

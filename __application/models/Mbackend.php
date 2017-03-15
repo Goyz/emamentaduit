@@ -285,6 +285,7 @@ class Mbackend extends CI_Model{
 						LEFT JOIN tbl_uploadfile H ON H.tbl_h_pemesanan_id = A.id
 						LEFT JOIN tbl_terima_barang I ON I.tbl_h_pemesanan_id = A.id
 				".$where." ORDER BY A.id DESC";
+				
 			break;
 			case "tbl_registrasi":
 			case "tbl_registrasi_umum":
