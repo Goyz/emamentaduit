@@ -1,249 +1,234 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<meta charset="UTF-8" />
-	<meta name="format-detection" content="telephone=no" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<link href="image/favicon.png" rel="icon" />
-	<title>MKS Book Store - One Stop Online Book Store</title>
-	<meta name="description" content="Responsive and clean html template design for any kind of ecommerce webshop">
-	<!-- CSS Part Start-->
-	<link rel="stylesheet" type="text/css" href="{$host}__assets/ef/js/bootstrap//css/bootstrap.min.css" />
-	<link rel="stylesheet" type="text/css" href="{$host}__assets/ef/css/font-awesome/css/font-awesome.min.css" />
-	<link rel="stylesheet" type="text/css" href="{$host}__assets/ef/css/stylesheet.css" />
-	<link rel="stylesheet" type="text/css" href="{$host}__assets/ef/css/owl.carousel.css" />
-	<link rel="stylesheet" type="text/css" href="{$host}__assets/ef/css/owl.transitions.css" />
-	<link rel="stylesheet" type="text/css" href="{$host}__assets/ef/css/responsive.css" />
-	<link rel="stylesheet" type="text/css" href="{$host}__assets/ef/css/stylesheet-skin3.css" />
-	<link rel="stylesheet" type="text/css" href="{$host}__assets/eb/easyui/themes/default/easyui.css">	
-	<link rel="stylesheet" type="text/css" href="{$host}__assets/ef/bxslider/jquery.bxslider.css" />
-	<link href='{$host}__assets/ef/css/font.css' rel='stylesheet' type='text/css'>
-	<script>
-		var host = "{$host}";
-		var konten = "{$konten}";
-	</script>
-	<!-- CSS Part End-->
+    <meta charset="UTF-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="image/favicon.png" rel="icon" />
+    <title>MKS Book Store - One Stop Online Book Store</title>
+    <meta name="description" content="Responsive and clean html template design for any kind of ecommerce webshop">
+    <!-- CSS Part Start-->
+    <link rel="stylesheet" type="text/css" href="{$host}__assets/ef/js/bootstrap//css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="{$host}__assets/ef/css/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="{$host}__assets/ef/css/stylesheet.css" />
+    <link rel="stylesheet" type="text/css" href="{$host}__assets/ef/css/owl.carousel.css" />
+    <link rel="stylesheet" type="text/css" href="{$host}__assets/ef/css/owl.transitions.css" />
+    <link rel="stylesheet" type="text/css" href="{$host}__assets/ef/css/responsive.css" />
+    <link rel="stylesheet" type="text/css" href="{$host}__assets/ef/css/stylesheet-skin3.css" />
+    <link rel="stylesheet" type="text/css" href="{$host}__assets/ef/css/datepicker.css" />
+    <link rel="stylesheet" type="text/css" href="{$host}__assets/eb/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="{$host}__assets/ef/bxslider/jquery.bxslider.css" />
+    <link rel="stylesheet" type="text/css" href="{$host}__assets/ef/responsiveslide/responsiveslides.css" />
+    <link href='{$host}__assets/ef/css/font.css' rel='stylesheet' type='text/css'>
+    <script>
+        var host = "{$host}";
+        var konten = "{$konten}";
+
+        var idix = "{$idproduk|default:''}";
+        var jd = "{$judulproduk|default:''}";
+        var ord = "{$no_order|default:''}";
+    </script>
+    <!-- CSS Part End-->
 </head>
+
 <body>
-	<div class="wrapper-wide">
-	  <div id="header">
-		<!-- Top Bar Start-->
-		<nav id="top" class="htop">
-		  <div class="container">
-			<div class="row"> <span class="drop-icon visible-sm visible-xs"><i class="fa fa-align-justify"></i></span>
-			  <div class="pull-left flip left-top">
-				<div class="links">
-				  <ul>
-					<li class="mobile"><i class="fa fa-phone"></i>022 780 2221</li>
-					<li class="email"><a href="mailto:info@marketshop.com"><i class="fa fa-envelope"></i>contact@mks-store.id</a></li>
-				  </ul>
-				</div>
-			  </div>
-			  <div id="top-links" class="nav pull-right flip">
-				<ul>
-				  <li><a href="{$host}login">Login</a></li>
-				  <li><a href="{$host}registrasi">Register</a></li>
-				</ul>
-			  </div>
-			</div>
-		  </div>
-		</nav>
-		<!-- Top Bar End-->
-		<!-- Header Start-->
-		<header class="header-row">
-		  <div class="container">
-			<div class="table-container">
-			  <!-- Logo Start -->
-			  <div class="col-table-cell col-lg-4 col-md-4 col-sm-12 col-xs-12 inner">
-				<div id="logo">
-					<a href="index.html">
-						<img class="img-responsive" style="height:80px !important;width:200px !important;" src="{$host}__assets/images/logo_mks.png" title="MarketShop" alt="MarketShop" />
-					</a>
-				</div>
-			  </div>
-			  <!-- Logo End -->
-			  <!-- Search Start-->
-			  <div class="col-table-cell col-lg-5 col-md-5 col-md-push-0 col-sm-6 col-sm-push-6 col-xs-12">
-				<div id="search" class="input-group">
-				  <input id="filter_name" type="text" name="search" value="" placeholder="Search" class="form-control input-lg" />
-				  <button type="button" class="button-search"><i class="fa fa-search"></i></button>
-				</div>
-			  </div>
-			  <!-- Search End-->
-			  <!-- Mini Cart Start-->
-			  <div class="col-table-cell col-lg-3 col-md-3 col-md-pull-0 col-sm-6 col-sm-pull-6 col-xs-12 inner">
-				<div id="cart">
-					<button type="button" data-toggle="dropdown" data-loading-text="Loading..." class="heading dropdown-toggle"> 
-						<span class="cart-icon pull-left flip"></span> <span id="cart-total">Keranjang Belanja</span>
-					</button>
-				  <ul class="dropdown-menu">
-					<li>
-					  <table class="table">
-						<tbody>
-						  <tr>
-							<td class="text-center"><a href="product.html"><img class="img-thumbnail" title="Xitefun Causal Wear Fancy Shoes" alt="Xitefun Causal Wear Fancy Shoes" src="image/product/sony_vaio_1-50x50.jpg"></a></td>
-							<td class="text-left"><a href="product.html">Xitefun Causal Wear Fancy Shoes</a></td>
-							<td class="text-right">x 1</td>
-							<td class="text-right">$902.00</td>
-							<td class="text-center"><button class="btn btn-danger btn-xs remove" title="Remove" onClick="" type="button"><i class="fa fa-times"></i></button></td>
-						  </tr>
-						  <tr>
-							<td class="text-center"><a href="product.html"><img class="img-thumbnail" title="Aspire Ultrabook Laptop" alt="Aspire Ultrabook Laptop" src="image/product/samsung_tab_1-50x50.jpg"></a></td>
-							<td class="text-left"><a href="product.html">Aspire Ultrabook Laptop</a></td>
-							<td class="text-right">x 1</td>
-							<td class="text-right">$230.00</td>
-							<td class="text-center"><button class="btn btn-danger btn-xs remove" title="Remove" onClick="" type="button"><i class="fa fa-times"></i></button></td>
-						  </tr>
-						</tbody>
-					  </table>
-					</li>
-					<li>
-					  <div>
-						<table class="table table-bordered">
-						  <tbody>
-							<tr>
-							  <td class="text-right"><strong>Sub-Total</strong></td>
-							  <td class="text-right">$940.00</td>
-							</tr>
-							<tr>
-							  <td class="text-right"><strong>Eco Tax (-2.00)</strong></td>
-							  <td class="text-right">$4.00</td>
-							</tr>
-							<tr>
-							  <td class="text-right"><strong>VAT (20%)</strong></td>
-							  <td class="text-right">$188.00</td>
-							</tr>
-							<tr>
-							  <td class="text-right"><strong>Total</strong></td>
-							  <td class="text-right">$1,132.00</td>
-							</tr>
-						  </tbody>
-						</table>
-						<p class="checkout"><a href="cart.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> View Cart</a>&nbsp;&nbsp;&nbsp;<a href="checkout.html" class="btn btn-primary"><i class="fa fa-share"></i> Checkout</a></p>
-					  </div>
-					</li>
-				  </ul>
-				</div>
-			  </div>
-			  <!-- Mini Cart End-->
-			</div>
-		  </div>
-		</header>
-		<!-- Header End-->
-		<!-- Main Menu Start-->
-		<nav id="menu" class="navbar">
-		  <div class="container">
-			<div class="navbar-header"> <span class="visible-xs visible-sm"> Menu <b></b></span></div>
-			<div class="collapse navbar-collapse navbar-ex1-collapse">
-			  <ul class="nav navbar-nav">
-				<li><a class="contact-link" title="Home" href="{$host}"><span>Beranda</span></a></li>
-				<li class="contact-link"><a href="contact-us.html">Bantuan</a></li>				
-				<li class="dropdown information-link"><a>Katalog</a>
-				  <div class="dropdown-menu">
-					<ul>
-					  <li><a href="login.html">Buku Satuan</a></li>
-					  <li><a href="register.html">Buku Paket</a></li>
-					</ul>
-				  </div>
-				</li>
-				<li class="contact-link"><a href="contact-us.html">Feedback</a></li>
-				<li class="contact-link"><a href="contact-us.html">Kontak</a></li>
-			  </ul>
-			</div>
-		  </div>
-		</nav>
-		<!-- Main Menu End-->
-	  </div>
-  
-	<div id="container"></div>
-  
-		<footer id="footer">
-			<div class="fpart-first">
-			  <div class="container">
-				<div class="row">
-				  <div class="contact col-lg-4 col-md-4 col-sm-12 col-xs-12">
-					<h5>Informasi Kontak</h5>
-					<ul>
-					  <li class="address"><i class="fa fa-map-marker"></i> Jl. A. H. Nasution No. 73 Cipadung Bandung</li>
-					  <li class="mobile"><i class="fa fa-phone"></i>022 780 2221</li>
-					  <li class="email"><i class="fa fa-envelope"></i>Email : contact@mks-store.id</a>
-					</ul>
-				  </div>
-				  <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-12">
-					<h5>Information</h5>
-					<ul>
-					  <li><a href="about-us.html">About Us</a></li>
-					  <li><a href="about-us.html">Delivery Information</a></li>
-					  <li><a href="about-us.html">Privacy Policy</a></li>
-					  <li><a href="about-us.html">Terms &amp; Conditions</a></li>
-					</ul>
-				  </div>
-				  <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-12">
-					<h5>Customer Service</h5>
-					<ul>
-					  <li><a href="contact-us.html">Contact Us</a></li>
-					  <li><a href="#">Returns</a></li>
-					  <li><a href="sitemap.html">Site Map</a></li>
-					</ul>
-				  </div>
-				  <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-12">
-					<h5>Extras</h5>
-					<ul>
-					  <li><a href="#">Brands</a></li>
-					  <li><a href="#">Gift Vouchers</a></li>
-					  <li><a href="#">Affiliates</a></li>
-					  <li><a href="#">Specials</a></li>
-					</ul>
-				  </div>
-				  <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-12">
-					<h5>My Account</h5>
-					<ul>
-					  <li><a href="#">My Account</a></li>
-					  <li><a href="#">Order History</a></li>
-					  <li><a href="#">Wish List</a></li>
-					  <li><a href="#">Newsletter</a></li>
-					</ul>
-				  </div>
-				</div>
-			  </div>
-			</div>
-			<div class="fpart-second">
-			  <div class="container">
-				<div id="powered" class="clearfix">
-				  <div class="powered_text pull-left flip">
-					<p>PT. Mulia Kencana Semesta © 2017 | Design By MKS-Store</p>
-				  </div>
-				  <div class="social pull-right flip"> 
-					<a href="#" target="_blank"> 
-						<img data-toggle="tooltip" src="{$host}__assets/ef/image/socialicons/facebook.png" alt="Facebook" title="Facebook">
-					</a> 
-					<a href="#" target="_blank"> 
-						<img data-toggle="tooltip" src="{$host}__assets/ef/image/socialicons/twitter.png" alt="Twitter" title="Twitter"> 
-					</a> 
-				</div>
-			  </div>
-			</div>
-			<div id="back-top">
-				<a data-toggle="tooltip" title="Back to Top" href="javascript:void(0)" class="backtotop">
-					<i style="color:#fff !important;" class="fa fa-chevron-up"></i>
-				</a>
-			</div>
-		</footer>
-		<!--Footer End-->
-</div>
+    <div class="wrapper-wide">
+        <div id="header">
+            <!-- Top Bar Start-->
+            <nav id="top" class="htop">
+                <div class="container">
+                    <div class="row"> <span class="drop-icon visible-sm visible-xs"><i class="fa fa-align-justify"></i></span>
+                        <div class="pull-left flip left-top">
+                            <div class="links">
+                                <ul>
+                                    <li class="mobile"><i class="fa fa-phone"></i>022 780 2221</li>
+                                    <li class="email"><a href="mailto:info@marketshop.com"><i class="fa fa-envelope"></i>contact@mks-store.id</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="top-links" class="nav pull-right flip">
+                            <ul>
+                                {if $auth}
+                                <li><a href="{$host}logoutpembeli">Logout</a></li>
+                                {else}
+                                <li><a href="{$host}login">Login</a></li>
+                                <li><a href="{$host}registrasi">Register</a></li>
+                                {/if}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!-- Top Bar End-->
+            <!-- Header Start-->
+            <header class="header-row">
+                <div class="container">
+                    <div class="table-container">
+                        <!-- Logo Start -->
+                        <div class="col-table-cell col-lg-4 col-md-4 col-sm-12 col-xs-12 inner">
+                            <div id="logo">
+                                <a href="index.html">
+                                    <img class="img-responsive" style="height:80px !important;width:200px !important;" src="{$host}__assets/images/logo_mks.png" title="MarketShop" alt="MarketShop" />
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Logo End -->
+                        <!-- Search Start-->
+                        <div class="col-table-cell col-lg-5 col-md-5 col-md-push-0 col-sm-6 col-sm-push-6 col-xs-12">
+                            <center>
+                                <h3 style="color:#006C3D !important;">ONE STOP ONLINE BOOK STORE</h3></center>
+                        </div>
+                        <!-- Search End-->
+                        <!-- Mini Cart Start-->
+                        <div class="col-table-cell col-lg-3 col-md-3 col-md-pull-0 col-sm-6 col-sm-pull-6 col-xs-12 inner">
+                            <div id="cart">
+                                <button type="button" id="krjblj" onClick="kumpulAction('krj');" data-toggle="dropdown" data-loading-text="Loading..." class="heading dropdown-toggle">
+                                    <span class="cart-icon pull-left flip"></span> <span id="cart-total">Keranjang Belanja</span>
+                                </button>
+                                <ul id="keranjangbelonjo" class="dropdown-menu"></ul>
+                            </div>
+                        </div>
+                        <!-- Mini Cart End-->
+                    </div>
+                </div>
+            </header>
+            <!-- Header End-->
+            <!-- Main Menu Start-->
+            <nav id="menu" class="navbar">
+                <div class="container">
+                    <div class="navbar-header"> <span class="visible-xs visible-sm"> Menu <b></b></span></div>
+                    <div class="collapse navbar-collapse navbar-ex1-collapse">
+                        <ul class="nav navbar-nav">
+                            {if $auth}
+                            <li><a class="contact-link" title="Home" href="{$host}"><span>Profile</span></a></li>
+							<li><a class="contact-link" title="Data Pesanan" href="{$host}datapesanan"><span>Data Pesanan</span></a></li>
+							{*
+							<li class="dropdown information-link"><a>Pesanan</a>
+                                <div class="dropdown-menu">
+                                    <ul>
+                                        <li><a href="{$host}katalog">Konfirmasi</a></li>
+                                        <li><a href="{$host}katalogpaket">Lacak Pesanan</a></li>
+                                        <li><a href="{$host}katalogpaket">Riwayat Pesanan</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+							*}
+                            {else}
+                            <li><a class="contact-link" title="Home" href="{$host}"><span>Beranda</span></a></li>
+                            {/if}
 
-<!-- JS Part Start-->
-<script type="text/javascript" src="{$host}__assets/ef/js/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="{$host}__assets/ef/js/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="{$host}__assets/ef/js/jquery.easing-1.3.min.js"></script>
-<script type="text/javascript" src="{$host}__assets/ef/js/jquery.dcjqaccordion.min.js"></script>
-<script type="text/javascript" src="{$host}__assets/ef/js/owl.carousel.min.js"></script>
-<script type="text/javascript" src="{$host}__assets/ef/bxslider/jquery.bxslider.js"></script>
-<script type="text/javascript" src="{$host}__assets/eb/easyui/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="{$host}__assets/ef/js/blockui.js"></script>
-<script type="text/javascript" src="{$host}__assets/ef/js/custom.js"></script>
-<script type="text/javascript" src="{$host}__assets/ef/js/main.js"></script>
+                            <li class="dropdown information-link"><a>Katalog</a>
+                                <div class="dropdown-menu">
+                                    <ul>
+                                        <li><a href="{$host}katalog">Buku Satuan</a></li>
+                                        <li><a href="{$host}katalogpaket">Buku Paket</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="contact-link"><a href="contact-us.html">Bantuan</a></li>							
+                            <li class="contact-link"><a href="contact-us.html">Testimoni</a></li>
+                            <li class="contact-link"><a href="contact-us.html">Kontak</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- Main Menu End-->
+        </div>
 
-	</div>
+        <div id="container"></div>
+
+        <footer id="footer">
+            <div class="fpart-first">
+                <div class="container">
+                    <div class="row">
+                        <div class="contact col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <h5>Informasi Kontak</h5>
+                            <ul>
+                                <li class="address"><i class="fa fa-map-marker"></i> Jl. A. H. Nasution No. 73 Cipadung Bandung</li>
+                                <li class="mobile"><i class="fa fa-phone"></i>022 780 2221</li>
+                                <li class="email"><i class="fa fa-envelope"></i>Email : contact@mks-store.id</a>
+                            </ul>
+                        </div>
+                        <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                            <h5>Information</h5>
+                            <ul>
+                                <li><a href="about-us.html">About Us</a></li>
+                                <li><a href="about-us.html">Delivery Information</a></li>
+                                <li><a href="about-us.html">Privacy Policy</a></li>
+                                <li><a href="about-us.html">Terms &amp; Conditions</a></li>
+                            </ul>
+                        </div>
+                        <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                            <h5>Customer Service</h5>
+                            <ul>
+                                <li><a href="contact-us.html">Contact Us</a></li>
+                                <li><a href="#">Returns</a></li>
+                                <li><a href="sitemap.html">Site Map</a></li>
+                            </ul>
+                        </div>
+                        <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                            <h5>Extras</h5>
+                            <ul>
+                                <li><a href="#">Brands</a></li>
+                                <li><a href="#">Gift Vouchers</a></li>
+                                <li><a href="#">Affiliates</a></li>
+                                <li><a href="#">Specials</a></li>
+                            </ul>
+                        </div>
+                        <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                            <h5>My Account</h5>
+                            <ul>
+                                <li><a href="#">My Account</a></li>
+                                <li><a href="#">Order History</a></li>
+                                <li><a href="#">Wish List</a></li>
+                                <li><a href="#">Newsletter</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="fpart-second">
+                <div class="container">
+                    <div id="powered" class="clearfix">
+                        <div class="powered_text pull-left flip">
+                            <p>PT. Mulia Kencana Semesta © 2017 | Design By MKS-Store</p>
+                        </div>
+                        <div class="social pull-right flip">
+                            <a href="#" target="_blank">
+                                <img data-toggle="tooltip" src="{$host}__assets/ef/image/socialicons/facebook.png" alt="Facebook" title="Facebook">
+                            </a>
+                            <a href="#" target="_blank">
+                                <img data-toggle="tooltip" src="{$host}__assets/ef/image/socialicons/twitter.png" alt="Twitter" title="Twitter">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div id="back-top">
+                    <a data-toggle="tooltip" title="Back to Top" href="javascript:void(0)" class="backtotop">
+                        <i style="color:#fff !important;" class="fa fa-chevron-up"></i>
+                    </a>
+                </div>
+        </footer>
+        <!--Footer End-->
+        </div>
+
+        <!-- JS Part Start-->
+        <script type="text/javascript" src="{$host}__assets/ef/js/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="{$host}__assets/ef/js/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="{$host}__assets/ef/js/jquery.easing-1.3.min.js"></script>
+        <script type="text/javascript" src="{$host}__assets/ef/js/jquery.dcjqaccordion.min.js"></script>
+        <script type="text/javascript" src="{$host}__assets/ef/js/owl.carousel.min.js"></script>
+        <script type="text/javascript" src="{$host}__assets/ef/bxslider/jquery.bxslider.js"></script>
+        <script type="text/javascript" src="{$host}__assets/eb/easyui/jquery.easyui.min.js"></script>
+        <script type="text/javascript" src="{$host}__assets/ef/responsiveslide/responsiveslides.js"></script>
+        <script type="text/javascript" src="{$host}__assets/ef/js/blockui.js"></script>
+        <script type="text/javascript" src="{$host}__assets/ef/js/jquery.maskMoney.min.js"></script>
+        <script type="text/javascript" src="{$host}__assets/ef/js/bootstrap-datepicker.min.js"></script>
+        <script type="text/javascript" src="{$host}__assets/ef/js/custom.js"></script>
+        <script type="text/javascript" src="{$host}__assets/ef/js/main.js"></script>
+
+    </div>
 </body>
+
 </html>

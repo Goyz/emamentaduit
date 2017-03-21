@@ -1,0 +1,45 @@
+<li>
+	{if $data_cart}
+		<table class="table">
+			<tbody>
+				<tr style="background:#E3F4D1 !important;font-weight:bold !important;">
+					<td class="text-center">Judul Buku</td>
+					<td class="text-center">Qty</td>
+					<td class="text-center">Harga (Rp)</td>
+					<td class="text-center">Subtotal (Rp)</td>
+					<td class="text-center">::</td>
+				</tr>
+				{foreach from=$data_cart item=rows}
+				<tr>
+					<td class="text-left">{$rows.name}</td>
+					<td class="text-right">{$rows.qty}</td>
+					<td class="text-right">{$rows.price}</td>
+					<td class="text-right">{$rows.subtotal}</td>
+					<td class="text-center">
+						<button class="btn btn-danger btn-xs remove" title="Remove" onClick="" type="button">
+							<i class="fa fa-times"></i>
+						</button>
+					</td>
+				</tr>
+				{/foreach}
+			</tbody>
+		</table>
+	{else}
+		<center> Tidak Ada Data </center>
+	{/if}
+</li>
+<li>
+    <div>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td class="text-right"><strong>Total Belanja</strong></td>
+                    <td class="text-right">Rp. {$tot_price|default:''}</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="checkout">
+			<a href="{$host}selesaibelanja" class="btn btn-primary"><i class="fa fa-share"></i> Selesai Belanja</a>
+		</p>
+    </div>
+</li>

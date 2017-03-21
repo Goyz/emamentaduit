@@ -14,17 +14,23 @@
                     <h2 class="subtitle">Login User</h2>
                     <p style="text-align:center !important;"><b>Silahkan Login Menggunakan Data Dapodik / Pembeli Umum</b></p>
                     <br/>
-					<form>
+					<form data-toggle="validator" role="form" id='formlogin' url="{$host}submit-login" method='post' enctype="multipart/form-data" class="form-horizontal">
 						<div class="form-group">
 							<label class="control-label" for="input-email">E-Mail Address</label>
-							<input name="email" value="" placeholder="E-Mail Address" id="input-email" class="form-control" type="text">
+							<input name="userpmb" required id="userpmb" class="form-control" type="text">
 						</div>
 						<div class="form-group">
 							<label class="control-label" for="input-password">Password</label>
-							<input name="password" value="" placeholder="Password" id="input-password" class="form-control" type="password">
+							<input name="pwdpmb" id="userpmb" class="form-control" type="password">
 							<br>
 						</div>	
-						<input value="Login" class="btn btn-primary" id="logincustomer" type="submit">
+						<div class="form-group">
+							<p id="hasilnya" style="text-align:center !important;"></p>
+						</div>
+						
+						<a id="loginuser" class="btn btn-primary">Login</a>
+						&nbsp;&nbsp;&nbsp;
+						<a id="loginuser" class="btn btn-danger">Login Dapodik</a>
 					</form>
 					<br/>
 					<br/>
@@ -38,7 +44,7 @@
 					<form>
 						<div class="form-group">
 							<label class="control-label" for="input-email">E-Mail Address</label>
-							<input name="email" value="" placeholder="E-Mail Address" id="input-email" class="form-control" type="text">
+							<input name="email" id="input-email" class="form-control" type="text">
 						</div>
 					</form>
 					<br/>
@@ -63,3 +69,20 @@
         <!--Right Part End -->
     </div>
 </div>
+
+<script>
+	$(".validasi").validatebox({ required:true }); 
+
+	$('#loginuser').on('click', function(){
+		submit_form('formlogin', function(resp){
+			if(resp == 1){
+				alert("Anda Sudah Masuk Kedalam System Webstore Kami. Selamat Belanja");
+				window.location.href = host;
+			}else{
+				$.unblockUI();
+				$('#hasilnya').html(resp);
+			}
+		});
+	});
+
+</script>

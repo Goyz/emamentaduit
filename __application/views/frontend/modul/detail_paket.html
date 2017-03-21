@@ -1,0 +1,148 @@
+<div class="container">
+    <!-- Breadcrumb Start-->
+    <ul class="breadcrumb">
+        <li itemscope="" ><a href="{$host}" itemprop="url"><span itemprop="title"><i class="fa fa-home"></i></span></a></li>
+        <li itemscope="" ><a href="{$host}katalog" itemprop="url"><span itemprop="title">Katalog Buku Paket</span></a></li>
+        <li itemscope="" ><a href="{$host}detailproduk/{$idx}/{$judulproduk}" itemprop="url"><span itemprop="title">{$data_paket.nama_paket}</span></a></li>
+    </ul>
+	
+	<div class="row">
+	    <div id="content" class="col-sm-12">
+            <div >
+                <h3 class="title" itemprop="name">{$data_paket.nama_paket}</h3>
+                <div class="row product-info">
+                    <div class="col-sm-4">
+						<ul class="rslides" id='slider3'>
+							<li>
+								<img src="{$host}__repository/paket-image.png" />
+							</li>
+						</ul>
+						<ul id="slider3-pager" class="list-unstyled" style="margin-top:10px;">
+							<li><a href="javascript:void(0);"><img src="{$host}__repository/paket-image.png" style='width:30px;height:30px;' alt=""></a></li>
+						</ul>
+						
+					</div>
+                    <div class="col-sm-8">
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#tab-description" data-toggle="tab" aria-expanded="true">Deskripsi Buku</a></li>
+						</ul>
+						
+						<div class="tab-content">
+							<div itemprop="description" id="tab-description" class="tab-pane active">
+								<div class="table-responsive">
+									<table class="table table-bordered">
+										<tbody>
+											<tr>
+											  <td>Lokasi Anda</td>
+											  <td>{$provinsi|default:'-'}</td>
+											</tr>
+											<tr>
+											  <td>Estimasi Pengiriman</td>
+											  <td>{$estimasi|default:'-'}</td>
+											</tr>				
+											<tr>
+											  <td>Penerbit</td>
+											  <td>Kementerian Pendidikan dan Kebudayaan</td>
+											</tr>
+											<tr>
+											  <td>Ukuran Buku</td>
+											  <td>0,0 cm x 0,0 cm x 0,0 cm</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>		
+							</div>
+						</div>
+					
+					</div>
+                </div>
+				<div class="row">
+					
+					<form id='frmsbmpaket' url="{$host}keranjang-belanja-masuk-paket" method='post' enctype="multipart/form-data" class="form-horizontal">
+						<div class="table-responsive">
+							<table class="table">
+								<thead> 
+									<tr style='background:#E3F4D1;'>
+										<th style='text-align:center' width="5%">Kode Buku</th>
+										<th style='text-align:center' width="30%">Judul Buku</th>
+										<th style='text-align:center' width="10%">Harga Zona {$zona}</th>
+										<th style='text-align:center' width="3%">Qty</th>
+										<th style='text-align:center' width="3%">::</th>
+									</tr>
+								</thead>
+								<tbody>
+								{if $data_buku}
+									{foreach from=$data_buku item=rows}
+										<tr id="{$rows.kode_buku}">
+											<td style='text-align:center'>{$rows.kode_buku}</td>
+											<td>{$rows.judul_buku}</td>
+											<td style='text-align:center'>{$rows.harga_buku}</td>
+											<td>
+												<input type="hidden" name="iid[]" value="{$rows.id}" />
+												<input type="hidden" name="prc[]" value="{$rows.harga_real}" />
+												<input type="hidden" name="jdl[]" value="{$rows.judul_buku}" />
+												<input value="10" size="1" id="input-quantity" name="qty[]" class="ff form-control validasi" required type="text">
+											</td>
+											<td class="text-center">
+												<a class="btn btn-danger btn-xs remove" title="Hapus Item" onClick="hapusrow('{$rows.kode_buku}')">
+													<i class="fa fa-times"></i>
+												</a>
+											</td>
+										</tr>
+									{/foreach}
+								{else}
+									<tr>
+										<td colspan='4' style='text-align:center'>:: Tidak Ada Data Detail Paket ::</td>
+									</tr>
+								{/if}
+								</tbody>
+							</table>
+							{if $data_buku}
+								<a id="button-cart" style="float:right;" href="javascript:void(0);" class="btn btn-primary btn-lg">Beli Paket</a>
+							{/if}
+						</div>
+					</form>
+				
+				</div>
+			</div>
+        </div>
+	</div>
+
+
+</div>
+
+<script>
+	$(".validasi").validatebox({ required:true }); 
+
+	function hapusrow(idx){
+		if(confirm('Anda Yakin Menghapus Item Ini?')){
+			$("#"+idx).remove();
+		}
+	}
+	
+	$('#button-cart').on('click', function(){
+		if(confirm('Anda Yakin Membeli Buku Yang Dipilih ?')){
+			validasi = $('#frmsbmpaket').form('validate');		
+			if(validasi){
+				$.blockUI({ message: '<h3>Data Sedang Diproses...</h3>' });			
+			}		
+			submit_form('frmsbmpaket', function(resp){
+				if(resp == 1){
+					$("#krjblj").trigger("click");
+					$('html, body').animate( { scrollTop:0 } , 'fast');
+					$('.ff').val(10);				
+				}else if(resp == 2){
+					alert("Data Email Anda Sudah Ada Dalam System Kami!");
+					
+					/*
+					$.unblockUI();
+					$('#modalencuk').html("Data Email Anda Sudah Ada Dalam System Kami!");			
+					$('#productModal').modal('show'); 
+					*/
+				}
+				$.unblockUI();
+			});
+		}
+	});
+
+</script>

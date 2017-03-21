@@ -35,8 +35,10 @@ $route['backup-repository'] = 'backend/backupsystem/repository';
 
 
 /* Routes Front End Routes */
-$route['beranda'] = 'frontend/getdisplay/main_page/beranda';
-$route['loading-beranda'] = 'frontend/getdisplay/loading_page/beranda';
+$route['beranda'] = 'frontend/getdisplay/main_page/beranda'; //kepake
+$route['loading-beranda'] = 'frontend/getdisplay/loading_page/beranda'; //kepake
+
+$route['loading-profile'] = 'frontend/getdisplay/loading_page/profile';
 
 $route['tracking'] = 'frontend/getdisplay/main_page/tracking';
 $route['loading-tracking'] = 'frontend/getdisplay/loading_page/tracking';
@@ -47,46 +49,59 @@ $route['loading-histori'] = 'frontend/getdisplay/loading_page/histori';
 $route['kontak'] = 'frontend/getdisplay/main_page/kontak';
 $route['loading-kontak'] = 'frontend/getdisplay/loading_page/kontak';
 
-$route['katalog'] = 'frontend/getdisplay/main_page/katalog';
-$route['loading-katalog'] = 'frontend/getdisplay/loading_page/katalog';
-$route['paginationdata'] = 'frontend/getdisplay/loading_page/datapaging';
-$route['filtering-data'] = 'frontend/getdisplay/loading_page/filterdt';
-$route['cari-data'] = 'frontend/getdisplay/loading_page/crdt';
+$route['katalog'] = 'frontend/getdisplay/main_page/katalog'; //kepake
+$route['loading-katalog'] = 'frontend/getdisplay/loading_page/katalog'; //kepake
+$route['paginationdata'] = 'frontend/getdisplay/loading_page/datapaging'; //kepake
+$route['filtering-data'] = 'frontend/getdisplay/loading_page/filterdt'; //kepake
+$route['cari-data'] = 'frontend/getdisplay/loading_page/crdt'; //kepake
 
 $route['katalogpaket'] = 'frontend/getdisplay/main_page/katalogpaket';
 $route['loading-katalogpaket'] = 'frontend/getdisplay/loading_page/katalogpaket';
 $route['paginationdatapaket'] = 'frontend/getdisplay/loading_page/katalogpaketpaging';
 $route['filtering-datapaket'] = 'frontend/getdisplay/loading_page/filterdtpaket';
-$route['detil-paket'] = 'frontend/getdisplay/loading_page/detail_paket';
+
+$route['detailpaket/(:any)/(:any)'] = 'frontend/getdisplay/main_page/detailpaket/$1/$2';
+$route['loading-detailpaket'] = 'frontend/getdisplay/loading_page/detailpaket/'; //kepake
 
 $route['kategori/(:any)'] = 'frontend/getdisplay/main_page/kategori/$1';
 $route['loading-kategori/(:any)'] = 'frontend/getdisplay/loading_page/kategori/$1';
 
-$route['detil-produk'] = 'frontend/getdisplay/loading_page/detail_produk';
+$route['detailproduk/(:any)/(:any)'] = 'frontend/getdisplay/main_page/detailproduk/$1/$2'; //kepake
+$route['loading-detailproduk'] = 'frontend/getdisplay/loading_page/detailproduk/'; //kepake
+
 $route['harga-per-zona'] = 'frontend/getdisplay/loading_page/zona_pengiriman';
 
 $route['session-zona'] = 'frontend/getdisplay/loading_page/combo_zona';
 $route['pilih-zona'] = 'frontend/cruddata/session_zona';
 
-$route['keranjang-belanja'] = 'frontend/getdisplay/loading_page/keranjangnya';
+$route['keranjang-belanja'] = 'frontend/getdisplay/loading_page/keranjangnya'; // kepake
 $route['banyak-belanja'] = 'frontend/getdisplay/loading_page/total_item';
-$route['keranjang-belanja-masuk'] = 'frontend/keranjang_belanja/add';
-$route['keranjang-belanja-masuk-paket'] = 'frontend/keranjang_belanja/add_paket';
+$route['keranjang-belanja-masuk'] = 'frontend/keranjang_belanja/add'; // kepake
+$route['keranjang-belanja-masuk-paket'] = 'frontend/keranjang_belanja/add_paket'; // kepake
 $route['perbaharui-keranjang'] = 'frontend/getdisplay/loading_page/update_keranjang';
 $route['hapus-keranjang'] = 'frontend/getdisplay/loading_page/hapusitem_keranjang';
 
-$route['selesai-belanja'] = 'frontend/getdisplay/main_page/selesaibelanja';
-$route['loading-selesaibelanja'] = 'frontend/getdisplay/loading_page/checkout_belanja';
+$route['selesaibelanja'] = 'frontend/getdisplay/main_page/selesaibelanja'; // kepake
+$route['loading-selesaibelanja'] = 'frontend/getdisplay/loading_page/selesaibelanja'; //kepake
+$route['submit-transaksi'] = 'frontend/cruddata/form/checkout'; //kepake
+$route['finish'] = 'frontend/getdisplay/loading_page/finish_semuanya';
+
+$route['datapesanan'] = 'frontend/getdisplay/main_page/datapesanan'; // kepake
+$route['loading-datapesanan'] = 'frontend/getdisplay/loading_page/datapesanan'; // kepake
+
 $route['loading-formcheckout'] = 'frontend/getdisplay/loading_page/form_isian_checkout';
 $route['combo-kab-kota'] = 'frontend/getdisplay/loading_page/combo_kab_kota';
 $route['combo-kecamatan'] = 'frontend/getdisplay/loading_page/combo_kecamatan';
-$route['submit-transaksi'] = 'frontend/cruddata/form/checkout';
-$route['finish'] = 'frontend/getdisplay/loading_page/finish_semuanya';
 
-$route['konfirmasi'] = 'frontend/getdisplay/main_page/konfirmasi';
-$route['loading-konfirmasi'] = 'frontend/getdisplay/loading_page/konfirmasi_pemb';
+$route['konfirmasi/(:any)'] = 'frontend/getdisplay/main_page/konfirmasi/$1'; // kepake
+$route['loading-konfirmasi'] = 'frontend/getdisplay/loading_page/konfirmasi_pemb'; // kepake
+$route['submit-konfirmasi'] = 'frontend/cruddata/form/konf'; //kepake
+
+$route['detailorder/(:any)'] = 'frontend/getdisplay/main_page/detailorder/$1'; // kepake
+$route['loading-detailorder'] = 'frontend/getdisplay/loading_page/detail_order'; // kepake
+
 $route['loading-formkonf'] = 'frontend/getdisplay/loading_page/konfrom';
-$route['submit-konfirmasi'] = 'frontend/cruddata/form/konf';
+
 $route['cetak-bast'] = 'frontend/generatepdf/bastnya';
 $route['cetak-kwitansi'] = 'frontend/generatepdf/kwitansinya';
 $route['cetak-tanda-terima'] = 'frontend/generatepdf/tandaterima';

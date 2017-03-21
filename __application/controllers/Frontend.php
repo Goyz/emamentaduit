@@ -13,7 +13,7 @@ class Frontend extends CI_Controller {
 		header("Cache-Control: private");
 		header("Pragma: no-cache");
 		
-		$this->auth = unserialize(base64_decode($this->session->userdata('aldeaz_pembeli')));
+		$this->auth = unserialize(base64_decode($this->session->userdata('mkspembeli')));
 		$this->host	= $this->config->item('base_url');
 		
 		$this->client_id		= 'bkk13am';
@@ -40,15 +40,20 @@ class Frontend extends CI_Controller {
 		$this->nsmarty->assign('sekolah_endpoint', $this->sekolah_endpoint);
 		$this->nsmarty->assign('sess_endpoint', $this->sess_endpoint);
 		
-		$this->load->library('cart');
+		$this->load->library(array('cart', 'encrypt'));
 	}
 	
 	function index(){				
-		$this->nsmarty->assign('konten', 'beranda');		
+		if($this->auth){
+			$this->nsmarty->assign('konten', 'profile');
+		}else{
+			$this->nsmarty->assign('konten', 'beranda');		
+		}
+		
 		$this->nsmarty->display( 'frontend/main-index.html');		
 	}
 	
-	function getdisplay($type="", $p1="", $p2="", $p3=""){
+	function getdisplay($type="", $p1="", $p2="", $p3="", $p4=""){
 		$zona_pilihan = $this->session->userdata('zonaxtreme');
 		switch($type){
 			case "main_page":				
@@ -63,27 +68,23 @@ class Frontend extends CI_Controller {
 				}elseif($p1 == "carabelanja"){
 					$this->nsmarty->assign( 'judulbesar', "Cara Berbelanja" );
 					$this->nsmarty->assign( 'judulkecil', "Petunjuk Singkat Berbelanja di www.aldeaz.id" );
-				}elseif($p1 == "katalog"){
-					$code = $this->input->get('code');
-					echo $code;exit;
-					if($code){
-						//$token = $this->lib->oauthtoken($this->client_id, $this->client_secret, $code, $this->redirect_uri, $this->token_endpoint);
-						//$getidentity = $this->lib->oauthidentity($token['access_token'], $this->profile_endpoint);
-						
-						//print_r($token);exit;
-					}
-				
-					$this->nsmarty->assign( 'judulbesar', "Katalog Buku" );
-					$this->nsmarty->assign( 'judulkecil', "Temukan Buku Yang Anda Butuhkan" );
+				}elseif($p1 == "datapesanan"){				
+				}elseif($p1 == "katalog"){				
+				}elseif($p1 == "detailproduk"){				
+					$this->nsmarty->assign( 'idproduk', $p2 );
+					$this->nsmarty->assign( 'judulproduk', $p3 );
+				}elseif($p1 == "detailpaket"){				
+					$this->nsmarty->assign( 'idproduk', $p2 );
+					$this->nsmarty->assign( 'judulproduk', $p3 );
 				}elseif($p1 == "katalogpaket"){
-					$this->nsmarty->assign( 'judulbesar', "Katalog Paket Buku" );
-					$this->nsmarty->assign( 'judulkecil', "Paket Buku Memudahkan Belanja Anda" );
+					
 				}elseif($p1 == "lacakpesanan"){
 					$this->nsmarty->assign( 'judulbesar', "Lacak Pesanan" );
 					$this->nsmarty->assign( 'judulkecil', "Lacak & Ketahui Data Pesanan Anda" );
+				}elseif($p1 == "detailorder"){
+					$this->nsmarty->assign( 'no_order', $p2 );
 				}elseif($p1 == "konfirmasi"){
-					$this->nsmarty->assign( 'judulbesar', "Konfirmasi Pembayaran" );
-					$this->nsmarty->assign( 'judulkecil', "Konfirmasikan Pembayaran Yang Sudah Anda Lakukan." );
+					$this->nsmarty->assign( 'no_order', $p2 );
 				}elseif($p1 == "riwayat"){
 					$this->nsmarty->assign( 'judulbesar', "Riwayat Pesanan" );
 					$this->nsmarty->assign( 'judulkecil', "Lacak & Ketahui Data Riwayat Pesanan Anda di www.aldeaz.id" );
@@ -94,14 +95,12 @@ class Frontend extends CI_Controller {
 					$this->nsmarty->assign( 'judulbesar', "Pembatalan Pesanan" );
 					$this->nsmarty->assign( 'judulkecil', "Layanan Pembatalan Pesanan Anda." );
 				}elseif($p1 == "registrasipembeli"){
-					$this->nsmarty->assign( 'judulbesar', "Registrasi" );
-					$this->nsmarty->assign( 'judulkecil', "Daftar Dalam Web Store Kami." );
+				
 				}elseif($p1 == "komentarpelanggan"){
 					$this->nsmarty->assign( 'judulbesar', "Komentar Anda" );
 					$this->nsmarty->assign( 'judulkecil', "Kirimkan Komentar Anda Melalui Form Dibawah Ini." );
 				}elseif($p1 == "selesaibelanja"){
-					$this->nsmarty->assign( 'judulbesar', "Keranjang Belanja" );
-					$this->nsmarty->assign( 'judulkecil', "Perhatikan Barang Yang Anda Belanjakan." );
+					
 				}elseif($p1 == "uploadfile"){
 					$this->nsmarty->assign( 'judulbesar', "Upload File" );
 					$this->nsmarty->assign( 'judulkecil', "Upload File BAST & Tanda Terima" );
@@ -129,7 +128,9 @@ class Frontend extends CI_Controller {
 						$temp = "frontend/modul/registrasi.html";
 						$this->nsmarty->assign('combo_prov', $this->lib->fillcombo('cl_provinsi', 'return'));
 					break;
-					
+					case "profile":
+						$temp = "frontend/modul/profile.html";
+					break;
 					
 					case "finish_registrasi":
 						$temp = "frontend/modul/finish-registrasi-page.html";
@@ -156,25 +157,60 @@ class Frontend extends CI_Controller {
 					case "kontak":
 						$temp = "frontend/modul/kontak-page.html";
 					break;
+					case "detail_order":
+						$temp = "frontend/modul/detail_order.html";
+					break;
+					case "datapesanan":
+						$temp = "frontend/modul/datapesanan.html";
+						$data_pesanan = $this->mfrontend->getdata('data_pesanan_user', 'result_array');
+						foreach($data_pesanan as $k=>$v){
+							if($this->auth["jenis_pembeli"] == "UMUM"){
+								$cek_data_konfirmasi = $this->db->get_where("tbl_konfirmasi", array("tbl_h_pemesanan_id"=>$v["id"]) )->row_array();
+								if($cek_data_konfirmasi){
+									if($cek_data_konfirmasi["flag"] == "P"){
+										$data_pesanan[$k]['flag_konfirm'] = 2; //Menunggu verifikasi
+									}elseif($cek_data_konfirmasi["flag"] == "F"){										
+										$data_pesanan[$k]['flag_konfirm'] = 1; //Sudah Konfirmasi
+									}
+								}else{
+									$data_pesanan[$k]['flag_konfirm'] = 0; //Belum Konfirmasi
+								}
+							}
+							$data_pesanan[$k]['total_pesanan'] = "Rp. ".number_format($v['grand_total'],0,",",".");
+							
+						}
+						$this->nsmarty->assign('data_pesanan', $data_pesanan);
+					break;
 					case "katalogpaket":
-						if(isset($zona_pilihan)){
-							$flag_window = "oye"; // kgk nongol maning
-						}else{
-							$flag_window = "uye"; // nongol window pilihan zona nya
-						}
-						
-						$temp = "frontend/modul/paketkatalog-page.html";
-						$data_buku = $this->mfrontend->getdata('data_buku_paket', 'result_array', 0, 9);
+						$temp = "frontend/modul/paketkatalog.html";
+						$data_buku = $this->mfrontend->getdata('data_buku_paket', 'result_array', 0, 16);
 						foreach($data_buku as $k=>$v){
+							$total_harga = 0;
+							$get_harga = $this->mfrontend->getdata("data_paket_detail", "result_array", $v["id"]);
+							if($zona_pilihan){
+								foreach($get_harga as $x => $y){
+									$total_harga += $y['harga_zona_'.$zona_pilihan['zona_pilihan']];
+								}
+							}
+							
 							$data_buku[$k]['foto_buku'] = $this->host."__repository/paket-image.png";
+							$data_buku[$k]['harga_paket'] = number_format($total_harga,0,",",".");
+							
+							$data_buku[$k]['id_encrpyt'] = $this->encrypt->encode($v['id']);
+							$data_buku[$k]['id_url'] = $this->lib->base64url_encode($v['id']);
+							$data_buku[$k]['judul_url'] = $this->lib->clean(strtolower($v['nama_paket']),"-");							
 						}
-						
+												
 						$total_data = $this->db->count_all("tbl_paket");
-						$limit = 9;
+						$limit = 16;
 						$total_paging = $total_data / $limit;
-						$total_paging = floor($total_paging);
+						if(is_int($total_paging) == true){
+							$total_paging = $total_paging;
+						}else{
+							$total_paging = ceil($total_paging);
+						}
 						$array_paging = array();
-						for($i=0; $i <= $total_paging; $i++){
+						for($i=0; $i <= ($total_paging-1); $i++){
 							$j = ($i + 1);
 							if(isset($mulai)){
 								$mulai = $mulai + $limit;
@@ -188,35 +224,66 @@ class Frontend extends CI_Controller {
 						
 						$this->nsmarty->assign('array_paging', $array_paging);
 						$this->nsmarty->assign('data_buku', $data_buku);
-						$this->nsmarty->assign('flag_window', $flag_window);
+						$this->nsmarty->assign('zona', $zona_pilihan['zona_pilihan']);						
 					break;
 					case "katalogpaketpaging":
-						$temp = "frontend/modul/paketkatalogpaging-page.html";
+						$temp = "frontend/modul/paketkatalogpaging.html";
 						$type = $this->input->post('dtype');
 						$limit = $this->input->post('lmt');
 						$explim = explode("-",$limit);
 						
 						$data_buku = $this->mfrontend->getdata('data_buku_paket', 'result_array', $explim[0], $explim[1]);
 						foreach($data_buku as $k=>$v){
+							$total_harga = 0;
+							$get_harga = $this->mfrontend->getdata("data_paket_detail", "result_array", $v["id"]);
+							if($zona_pilihan){
+								foreach($get_harga as $x => $y){
+									$total_harga += $y['harga_zona_'.$zona_pilihan['zona_pilihan']];
+								}
+							}
+							
 							$data_buku[$k]['foto_buku'] = $this->host."__repository/paket-image.png";
+							$data_buku[$k]['harga_paket'] = number_format($total_harga,0,",",".");
+							
+							$data_buku[$k]['id_encrpyt'] = $this->encrypt->encode($v['id']);
+							$data_buku[$k]['id_url'] = $this->lib->base64url_encode($v['id']);
+							$data_buku[$k]['judul_url'] = $this->lib->clean(strtolower($v['nama_paket']),"-");	
 						}
 						
 						$this->nsmarty->assign('type', $type);
 						$this->nsmarty->assign('data_buku', $data_buku);
+						$this->nsmarty->assign('zona', $zona_pilihan['zona_pilihan']);	
 					break;
 					case "filterdtpaket":
-						$temp = "frontend/modul/paketkatalogsearch-page.html";
-						$data_buku = $this->mfrontend->getdata('data_buku_paket', 'result_array', 0, 9);
+						$temp = "frontend/modul/paketkatalogfilterdata.html";
+						$data_buku = $this->mfrontend->getdata('data_buku_paket', 'result_array', 0, 16);
 						foreach($data_buku as $k=>$v){
+							$total_harga = 0;
+							$get_harga = $this->mfrontend->getdata("data_paket_detail", "result_array", $v["id"]);
+							if($zona_pilihan){
+								foreach($get_harga as $x => $y){
+									$total_harga += $y['harga_zona_'.$zona_pilihan['zona_pilihan']];
+								}
+							}
+							
 							$data_buku[$k]['foto_buku'] = $this->host."__repository/paket-image.png";
+							$data_buku[$k]['harga_paket'] = number_format($total_harga,0,",",".");
+							
+							$data_buku[$k]['id_encrpyt'] = $this->encrypt->encode($v['id']);
+							$data_buku[$k]['id_url'] = $this->lib->base64url_encode($v['id']);
+							$data_buku[$k]['judul_url'] = $this->lib->clean(strtolower($v['nama_paket']),"-");	
 						}
 						
 						$total_data = $this->mfrontend->getdata('hitung_data_filter_paket', 'num_rows');
-						$limit = 9;
+						$limit = 16;
 						$total_paging = $total_data / $limit;
-						$total_paging = floor($total_paging);
+						if(is_int($total_paging) == true){
+							$total_paging = $total_paging;
+						}else{
+							$total_paging = ceil($total_paging);
+						}
 						$array_paging = array();
-						for($i=0; $i <= $total_paging; $i++){
+						for($i=0; $i <= ($total_paging-1); $i++){
 							$j = ($i + 1);
 							if(isset($mulai)){
 								$mulai = $mulai + $limit;
@@ -231,36 +298,42 @@ class Frontend extends CI_Controller {
 						
 						$this->nsmarty->assign('array_paging', $array_paging);						
 						$this->nsmarty->assign('data_buku', $data_buku);
-						$this->nsmarty->assign('crfilter', $crfilter);					
+						$this->nsmarty->assign('crfilter', $crfilter);			
+						$this->nsmarty->assign('zona', $zona_pilihan['zona_pilihan']);							
 					break;
-					case "detail_paket":
-						$id = $this->input->post('isds');
-						$temp = "frontend/modul/produkwindowpaket-page.html";
+					case "detailpaket":
+						$id = $this->input->post("idix");
+						$id = $this->lib->base64url_decode($id);
+						
+						$idx = $this->input->post("idix");
+						$judulproduk = $this->input->post("jd");
+						
+						$temp = "frontend/modul/detail_paket.html";
 						$data_buku = $this->mfrontend->getdata('data_paket_detail', 'result_array', $id);
+						$data_paket = $this->db->get_where("tbl_paket", array("id"=>$id))->row_array();
 						
 						foreach($data_buku as $k=>$v){	
-							$data_buku[$k]['harga_zona_1'] = "Rp. ".number_format($v['harga_zona_1'],0,",",".");
-							$data_buku[$k]['harga_zona_2'] = "Rp. ".number_format($v['harga_zona_2'],0,",",".");
-							$data_buku[$k]['harga_zona_3'] = "Rp. ".number_format($v['harga_zona_3'],0,",",".");
-							$data_buku[$k]['harga_zona_4'] = "Rp. ".number_format($v['harga_zona_4'],0,",",".");
-							$data_buku[$k]['harga_zona_5'] = "Rp. ".number_format($v['harga_zona_5'],0,",",".");
+							if($zona_pilihan){
+								$data_buku[$k]['harga_real'] = $v['harga_zona_'.$zona_pilihan['zona_pilihan']];
+								$data_buku[$k]['harga_buku'] = "Rp. ".number_format($v['harga_zona_'.$zona_pilihan['zona_pilihan']],0,",",".");
+							}else{
+								$data_buku[$k]['harga_real'] = 0;
+								$data_buku[$k]['harga_buku'] = "Rp. 0";
+							}
 						}
 						
-						$this->nsmarty->assign('zona', $zona_pilihan['zona_pilihan']);
+						$this->nsmarty->assign('zona', $zona_pilihan['zona_pilihan']);						
 						$this->nsmarty->assign('data_buku', $data_buku);
-						$this->nsmarty->assign('idpaket', $id);
+						$this->nsmarty->assign('data_paket', $data_paket);
+						$this->nsmarty->assign('judulproduk', $judulproduk);
+						$this->nsmarty->assign('idx', $idx);
+						$this->nsmarty->assign('id', $this->encrypt->encode($id));
 					break;					
 					
-					case "katalog":
-						if(isset($zona_pilihan)){
-							$flag_window = "oye"; // kgk nongol maning
-						}else{
-							$flag_window = "uye"; // nongol window pilihan zona nya
-						}
-						
-						$temp = "frontend/modul/katalog-page.html";
+					case "katalog":						
+						$temp = "frontend/modul/katalog.html";
 						$id_tingkatan = $this->db->get_where('cl_tingkatan', array('tingkatan'=>strtoupper($p2)))->row_array();
-						$data_buku = $this->mfrontend->getdata('data_buku', 'result_array', $id_tingkatan['id'], 0, 9);
+						$data_buku = $this->mfrontend->getdata('data_buku', 'result_array', $id_tingkatan['id'], 0, 16);
 
 						foreach($data_buku as $k=>$v){
 							if(isset($zona_pilihan)){
@@ -273,6 +346,10 @@ class Frontend extends CI_Controller {
 							}else{
 								$data_buku[$k]['foto_buku'] = $this->host."__repository/no-image.jpeg";
 							}
+							
+							$data_buku[$k]['id_encrpyt'] = $this->encrypt->encode($v['id']);
+							$data_buku[$k]['id_url'] = $this->lib->base64url_encode($v['id']);
+							$data_buku[$k]['judul_url'] = $this->lib->clean(strtolower($v['judul_buku']),"-");
 						}
 						$data_tingkatan = $this->db->get('cl_tingkatan')->result_array();
 						$array_tingkatan = array();
@@ -289,11 +366,15 @@ class Frontend extends CI_Controller {
 						$data_kategori = $this->db->get('cl_kategori')->result_array();
 						
 						$total_data = $this->db->count_all("tbl_buku");
-						$limit = 9;
+						$limit = 16;
 						$total_paging = $total_data / $limit;
-						$total_paging = floor($total_paging);
+						if(is_int($total_paging) == true){
+							$total_paging = $total_paging;
+						}else{
+							$total_paging = ceil($total_paging);
+						}
 						$array_paging = array();
-						for($i=0; $i <= $total_paging; $i++){
+						for($i=0; $i <= ($total_paging-1); $i++){
 							$j = ($i + 1);
 							if(isset($mulai)){
 								$mulai = $mulai + $limit;
@@ -310,47 +391,60 @@ class Frontend extends CI_Controller {
 						$this->nsmarty->assign('data_pengguna', $data_pengguna);
 						$this->nsmarty->assign('data_kategori', $data_kategori);
 						$this->nsmarty->assign('data_buku', $data_buku);
-						$this->nsmarty->assign('flag_window', $flag_window);
+						$this->nsmarty->assign('zona', $zona_pilihan['zona_pilihan']);
 					break;
 					case "datapaging":
-						$temp = "frontend/modul/katalogpaging-page.html";
-						$type = $this->input->post('dtype');
+						$temp = "frontend/modul/katalogpaging.html";
 						$limit = $this->input->post('lmt');
 						$explim = explode("-",$limit);
 						
 						$data_buku = $this->mfrontend->getdata('data_buku', 'result_array', "", $explim[0], $explim[1]);
 						foreach($data_buku as $k=>$v){
-							$data_buku[$k]['harga_buku_bener'] = number_format($v['harga_zona_'.$zona_pilihan['zona_pilihan']],0,",",".");
+							if(isset($zona_pilihan)){
+								$data_buku[$k]['harga_buku_bener'] = number_format($v['harga_zona_'.$zona_pilihan['zona_pilihan']],0,",",".");
+							}
 							if($data_buku[$k]['foto_buku'] != null){
 								$data_buku[$k]['foto_buku'] = $this->host."__repository/produk/".$v['foto_buku'];
 							}else{
 								$data_buku[$k]['foto_buku'] = $this->host."__repository/no-image.jpeg";
 							}
-							
+							$data_buku[$k]['id_encrpyt'] = $this->encrypt->encode($v['id']);
+							$data_buku[$k]['id_url'] = $this->lib->base64url_encode($v['id']);
+							$data_buku[$k]['judul_url'] = $this->lib->clean(strtolower($v['judul_buku']),"-");
 						}
 						
-						$this->nsmarty->assign('type', $type);
 						$this->nsmarty->assign('data_buku', $data_buku);
 					break;
 					case "filterdt":
 					case "crdt":					
-						$temp = "frontend/modul/katalogfilterdata-page.html";
-						$data_buku = $this->mfrontend->getdata('data_buku', 'result_array', "", 0, 9);
+						$temp = "frontend/modul/katalogfilterdata.html";
+						$data_buku = $this->mfrontend->getdata('data_buku', 'result_array', "", 0, 16);
+						
 						foreach($data_buku as $k=>$v){
-							$data_buku[$k]['harga_buku_bener'] = number_format($v['harga_zona_'.$zona_pilihan['zona_pilihan']],0,",",".");
+							if(isset($zona_pilihan)){
+								$data_buku[$k]['harga_buku_bener'] = number_format($v['harga_zona_'.$zona_pilihan['zona_pilihan']],0,",",".");
+							}							
+							
 							if($data_buku[$k]['foto_buku'] != null){
 								$data_buku[$k]['foto_buku'] = $this->host."__repository/produk/".$v['foto_buku'];
 							}else{
 								$data_buku[$k]['foto_buku'] = $this->host."__repository/no-image.jpeg";
 							}
+							$data_buku[$k]['id_encrpyt'] = $this->encrypt->encode($v['id']);
+							$data_buku[$k]['id_url'] = $this->lib->base64url_encode($v['id']);
+							$data_buku[$k]['judul_url'] = $this->lib->clean(strtolower($v['judul_buku']),"-");
 						}
 						
 						$total_data = $this->mfrontend->getdata('hitung_data_filter', 'num_rows');
-						$limit = 9;
+						$limit = 16;
 						$total_paging = $total_data / $limit;
-						$total_paging = floor($total_paging);
+						if(is_int($total_paging) == true){
+							$total_paging = $total_paging;
+						}else{
+							$total_paging = ceil($total_paging);
+						}
 						$array_paging = array();
-						for($i=0; $i <= $total_paging; $i++){
+						for($i=0; $i <= ($total_paging-1); $i++){
 							$j = ($i + 1);
 							if(isset($mulai)){
 								$mulai = $mulai + $limit;
@@ -361,6 +455,7 @@ class Frontend extends CI_Controller {
 							$array_paging[$i]['angka'] = $j;
 							$array_paging[$i]['limitnya'] = $mulai."-".$limit;
 						}
+						
 						$typefilter = $this->input->post('ty');
 						$idfilter = $this->input->post('isd');
 						$crfilter = $this->input->post('cr');
@@ -395,34 +490,48 @@ class Frontend extends CI_Controller {
 						$this->nsmarty->assign('nama_kategori', strtoupper($p2));
 						$this->nsmarty->assign('data_buku', $data_buku);
 					break;
-					case "detail_produk":
-						$id = $this->input->post('isds');
-						$temp = "frontend/modul/produkwindow-page.html";
+					case "detailproduk":
+						$id = $this->input->post("idix");
+						$id = $this->lib->base64url_decode($id);
+						
+						$idx = $this->input->post("idix");
+						$judulproduk = $this->input->post("jd");
+												
+						$temp = "frontend/modul/detail_produk.html";
 						$data_buku = $this->mfrontend->getdata('data_buku_detail', 'row_array', $id);
 						$data_fotobuku = $this->db->get_where('tbl_foto_buku', array('tbl_buku_id'=>$id))->result_array();
-						//$estimasi = $this->db->get_where('cl_provinsi', array('kode_prov'=>$zona_pilihan['kode_provinsi']))->row_array();
-						$estimasi = $this->db->get_where('cl_zona', array('zona_code'=>$zona_pilihan['zona_pilihan']))->row_array();
-						$harga_buku = number_format($data_buku['harga_zona_'.$zona_pilihan['zona_pilihan']],0,",",".");
-						
-						for($i = 1; $i <= 5; $i++){
-							$data_buku['harga_zona_'.$i] = "Rp. ".number_format($data_buku['harga_zona_'.$i],0,",",".");
-							$data_buku['harga_pemerintah_zona_'.$i] = "Rp. ".number_format($data_buku['harga_pemerintah_zona_'.$i],0,",",".");
-						}
-						foreach($data_fotobuku as $k=>$v){
-							if($data_fotobuku[$k]['foto_buku'] != null){
-								$data_fotobuku[$k]['foto_buku'] = $this->host."__repository/produk/".$v['foto_buku'];
+												
+						if($zona_pilihan){
+							$estimasi = $this->db->get_where('cl_zona', array('zona_code'=>$zona_pilihan['zona_pilihan']))->row_array();
+							$harga_buku = number_format($data_buku['harga_zona_'.$zona_pilihan['zona_pilihan']],0,",",".");
+							for($i = 1; $i <= 5; $i++){
+								$data_buku['harga_zona_'.$i] = "Rp. ".number_format($data_buku['harga_zona_'.$i],0,",",".");
+								$data_buku['harga_pemerintah_zona_'.$i] = "Rp. ".number_format($data_buku['harga_pemerintah_zona_'.$i],0,",",".");
 							}
+							
+							$this->nsmarty->assign('zona', $zona_pilihan['zona_pilihan']);
+							$this->nsmarty->assign('estimasi', $estimasi['estimasi']);
+							$this->nsmarty->assign('harga_buku', $harga_buku);	
+							$this->nsmarty->assign('provinsi', $zona_pilihan['provinsi']);							
+						}
+						
+						if($data_fotobuku){
+							foreach($data_fotobuku as $k=>$v){
+								if($data_fotobuku[$k]['foto_buku'] != null){
+									$data_fotobuku[$k]['foto_buku'] = $this->host."__repository/produk/".$v['foto_buku'];
+								}
+							}
+						}else{
+							$data_fotobuku[0]['foto_buku'] = $this->host."__repository/no-image.jpeg";
 						}
 						
 						//print_r($data_buku);exit;
 						
-						$this->nsmarty->assign('zona', $zona_pilihan['zona_pilihan']);
-						//$this->nsmarty->assign('estimasi', $estimasi['estimasi_lama_pengiriman']);
-						$this->nsmarty->assign('estimasi', $estimasi['estimasi']);
-						//$this->nsmarty->assign('provinsi', $zona_pilihan['provinsi']);
-						$this->nsmarty->assign('harga_buku', $harga_buku);
 						$this->nsmarty->assign('data_buku', $data_buku);
 						$this->nsmarty->assign('data_fotobuku', $data_fotobuku);
+						$this->nsmarty->assign('judulproduk', $judulproduk);
+						$this->nsmarty->assign('idx', $idx);
+						$this->nsmarty->assign('id', $this->encrypt->encode($id));
 					break;
 					case "zona_pengiriman":
 						$zona = $this->input->post('znpn');
@@ -439,8 +548,9 @@ class Frontend extends CI_Controller {
 						exit;
 					break;
 					case "keranjangnya":
-						$temp = "frontend/modul/keranjangbelanja-page.html";
+						$temp = "frontend/modul/keranjangbelanja.html";
 						$data_cart = $this->cart->contents();
+						$tot_price = 0;
 						foreach($data_cart as $key => $v){
 							$datafoto = $this->db->get_where('tbl_foto_buku', array('tbl_buku_id'=>$v['id']) )->row_array();
 							if($datafoto['foto_buku'] != null){
@@ -450,8 +560,11 @@ class Frontend extends CI_Controller {
 							}
 							$data_cart[$key]['price'] = number_format($v['price'],0,",",".");
 							$data_cart[$key]['subtotal'] = number_format($v['subtotal'],0,",",".");
+							
+							$tot_price += $v['subtotal'];
 						}
 						$this->nsmarty->assign('data_cart', $data_cart);
+						$this->nsmarty->assign('tot_price', number_format($tot_price,0,",","."));
 					break;
 					case "update_keranjang":
 					case "hapusitem_keranjang":
@@ -486,9 +599,12 @@ class Frontend extends CI_Controller {
 						echo $jumlah_item;
 						exit;
 					break;
-					case "checkout_belanja":
-						$temp = "frontend/modul/checkout-page.html";
+					case "selesaibelanja":
+						$temp = "frontend/modul/selesai_belanja.html";
 						$data_cart = $this->cart->contents();
+						$estimasi = $this->db->get_where('cl_zona', array('zona_code'=>$zona_pilihan['zona_pilihan']))->row_array();
+						$tot_price = 0;
+						$tot_qty = 0;
 						foreach($data_cart as $key => $v){
 							$datafoto = $this->db->get_where('tbl_foto_buku', array('tbl_buku_id'=>$v['id']) )->row_array();
 							if($datafoto['foto_buku'] != null){
@@ -498,10 +614,29 @@ class Frontend extends CI_Controller {
 							}						
 							$data_cart[$key]['price'] = number_format($v['price'],0,",",".");
 							$data_cart[$key]['subtotal'] = number_format($v['subtotal'],0,",",".");
+							$tot_price += $v['subtotal'];
+							$tot_qty += $v['qty'];
 						}
-						$this->nsmarty->assign('combo_jasa_pengiriman', $this->lib->fillcombo('cl_jasa_pengiriman', 'return') );
-						$this->nsmarty->assign('combo_metode_pembayaran', $this->lib->fillcombo('cl_metode_pembayaran', 'return') );						
 						$this->nsmarty->assign('data_cart', $data_cart);
+						$this->nsmarty->assign('tot_price', number_format($tot_price,0,",","."));						
+						$this->nsmarty->assign('tot_qty', number_format($tot_qty,0,",","."));	
+						
+						$this->nsmarty->assign('zona', $zona_pilihan['zona_pilihan']);
+						$this->nsmarty->assign('estimasi', $estimasi['estimasi']);
+												
+						if($this->auth["jenis_pembeli"] == "UMUM"){
+							$this->nsmarty->assign('combo_jasa_pengiriman', $this->lib->fillcombo('cl_jasa_pengiriman', 'return') );
+							$this->nsmarty->assign('combo_metode_pembayaran', $this->lib->fillcombo('cl_metode_pembayaran', 'return') );						
+							
+							$this->nsmarty->assign('combo_prov', $this->lib->fillcombo('cl_provinsi_old', 'return', (isset($this->auth) ? $this->auth['cl_provinsi_kode'] : "" ) ));
+							$this->nsmarty->assign('combo_kab', $this->lib->fillcombo('cl_kab_kota_old', 'return', (isset($this->auth) ? $this->auth['cl_kab_kota_kode'] : "" ), (isset($this->auth) ? $this->auth['cl_provinsi_kode'] : "" ) ));
+							$this->nsmarty->assign('combo_kec', $this->lib->fillcombo('cl_kecamatan_old', 'return', (isset($this->auth) ? $this->auth['cl_kecamatan_kode'] : "" ), (isset($this->auth) ? $this->auth['cl_kab_kota_kode'] : "" ) ));													
+						}elseif($this->auth["jenis_pembeli"] == "SEKOLAH"){
+							$this->nsmarty->assign('combo_prov', $this->lib->fillcombo('cl_provinsi', 'return', (isset($this->auth) ? $this->auth['cl_provinsi_kode'] : "" ) ));
+							$this->nsmarty->assign('combo_kab', $this->lib->fillcombo('cl_kab_kota', 'return', (isset($this->auth) ? $this->auth['cl_kab_kota_kode'] : "" ) ));
+							$this->nsmarty->assign('combo_kec', $this->lib->fillcombo('cl_kecamatan', 'return', (isset($this->auth) ? $this->auth['cl_kecamatan_kode'] : "" ), (isset($cek_data) ? $cek_data['cl_kab_kota_kode'] : "" ) ));						
+						}
+						
 					break;
 					case "form_isian_checkout":
 						$temp = "frontend/modul/isian_checkout-page.html";
@@ -552,6 +687,7 @@ class Frontend extends CI_Controller {
 								$arraynya['tgl_order'] = $data_header_pesanan['tgl_order'];
 								$arraynya['grand_total'] = number_format($data_header_pesanan['grand_total'],0,",",".");
 								$arraynya['detail_pesanan'] = array();
+								$totalqty = 0;
 								foreach($data_detail_pesanan as $k=>$v){
 									$arraynya['detail_pesanan'][$k]['kelas'] = $v['kelas'];
 									$arraynya['detail_pesanan'][$k]['nama_group'] = $v['nama_group'];
@@ -559,7 +695,11 @@ class Frontend extends CI_Controller {
 									$arraynya['detail_pesanan'][$k]['qty'] = number_format($v['qty'],0,",",".");
 									$arraynya['detail_pesanan'][$k]['harga'] = number_format($v['harga'],0,",",".");
 									$arraynya['detail_pesanan'][$k]['subtotal'] = number_format($v['subtotal'],0,",",".");
+									$totalqty += $v['qty'];
 								}
+								$arraynya['total_qty'] = number_format($totalqty,0,",",".");
+								$arraynya['jasa_pengiriman'] = $data_header_pesanan["jasa_pengiriman"];
+								$arraynya['metode_pembayaran'] = $data_header_pesanan["metode_pembayaran"];
 							}
 							$this->nsmarty->assign('arraynya', $arraynya);
 							$this->nsmarty->assign('pesan', "Terima Kasih telah berbelanja di AldeaZ.ID : SILAHKAN CEK EMAIL ANDA.");
@@ -570,7 +710,17 @@ class Frontend extends CI_Controller {
 					break;
 					
 					case "konfirmasi_pemb":
-						$temp = "frontend/modul/konfirmasi-page.html";
+						$temp = "frontend/modul/konfirmasi.html";
+						
+						$no_order = $this->input->post("ord");
+						$cek_no_order = $this->db->get_where("tbl_h_pemesanan", array("no_order"=>$no_order) )->row_array();
+						if($cek_no_order){ 
+							$cek_no_order["grand_total"] = "Rp. ".number_format($cek_no_order['grand_total'],0,",",".");
+							$this->nsmarty->assign( 'data_order', $cek_no_order ); 
+							$this->nsmarty->assign( 'cek_order', "true" ); 
+						}else{ 
+							$this->nsmarty->assign( 'cek_order', "false" ); 
+						}	
 					break;
 					case "konfrom":
 						$temp = "frontend/modul/konfirmasiform-page.html";
@@ -886,6 +1036,7 @@ class Frontend extends CI_Controller {
 		switch($type){
 			case "add":
 				$id = $this->input->post('iipx');
+				$id = $this->encrypt->decode($id);
 				$zona = $this->input->post('zn');
 				$qty = $this->input->post('yqt');
 				$harga = $this->mfrontend->getdata('zona_pengiriman', 'row_array', $id, $zona);
@@ -920,40 +1071,53 @@ class Frontend extends CI_Controller {
 				}
 			break;
 			case "add_paket":
+				/*
 				$id = $this->input->post('iipx');
 				$qty = $this->input->post('yqt');
 				$zona = $this->input->post('zn');
 				$data_paket = $this->mfrontend->getdata('data_paket_detail', 'result_array', $id);
+				*/
+				$post = array();
+				foreach($_POST as $k=>$v){
+					if($this->input->post($k)!=""){
+						$post[$k] = $this->db->escape_str($this->input->post($k));
+					}else{
+						$post[$k] = null;
+					}
+				}
 				$data_cart = $this->cart->contents();
 				
-				foreach($data_paket as $k =>$v){
+				foreach($post['iid'] as $x => $i){
 					$flag = true;
-					if($data_cart){
-						foreach ($data_cart as $item) {
-							if($item['id'] == $v['id']) {
-								$qtyd = $item['qty'] + $qty;
+					if(count($data_cart) > 0){
+
+						foreach ($data_cart as $item ) {
+							if($item['id'] == $i) {
+								$qtyd = $item['qty'] + $post["qty"][$x];
 								$data_update = array(
 									'rowid' => $item['rowid'],
 									'qty' => $qtyd,
-									'price' => $v['harga_zona_'.$zona],
+									'price' => $post["prc"][$x],
 								);
 								$this->cart->update($data_update);
 								$flag = false;
 							}
 						}
-					}
+						
+					}	
+					
 					if($flag){
-						$data_cart = array(
-							'id' =>  $v['id'],
-							'qty' => $qty,
-							'price' => $v['harga_zona_'.$zona],
-							'name' => $v['judul_buku'],
-							'options' => array('jml_hal' => $v['jml_hal'])
+						$datacart = array(
+							'id' =>  $i,
+							'qty' => $post["qty"][$x],
+							'price' => $post["prc"][$x],
+							'name' => $post["jdl"][$x],
+							'options' => array('jml_hal' => 0)
 						);
-						$this->cart->insert($data_cart);
-					}
+						$this->cart->insert($datacart);
+					}	
 				}
-				
+								
 				echo 1;
 			break;
 			case "update":
@@ -991,12 +1155,12 @@ class Frontend extends CI_Controller {
 		
 		if($type == 'session_zona'){
 			//$data_zona = $this->db->get_where('cl_provinsi', array('kode_prov'=>$post['kdprv']))->row_array();
-			$sess = array();
-			$sess['zona_pilihan'] = $post['kdprv'];
+			//$sess = array();
+			//$sess['zona_pilihan'] = $post['kdprv'];
 			//$sess['provinsi'] = $data_zona['provinsi'];
 			//$sess['kode_provinsi'] = $data_zona['kode_prov'];
-			$this->session->set_userdata("zonaxtreme", $sess);
-			echo 1;
+			//$this->session->set_userdata("zonaxtreme", $sess);
+			//echo 1;
 		}else{
 			if(isset($post['editstatus'])){$editstatus = $post['editstatus'];unset($post['editstatus']);}
 			else $editstatus = null;
@@ -1047,11 +1211,11 @@ class Frontend extends CI_Controller {
 			if(count($cek_user) > 0){
 				if($pass == $this->encrypt->decode($cek_user['password'])){
 					$sess = array();
-					$sess['zona_pilihan'] = 1;
-					//$sess['provinsi'] = $data_zona['provinsi'];
+					$sess['zona_pilihan'] = $cek_user["zona_pengiriman"];
+					$sess['provinsi'] = $cek_user['provinsi'];
 					//$sess['kode_provinsi'] = $data_zona['kode_prov'];
 					$this->session->set_userdata("zonaxtreme", $sess);
-					$this->session->set_userdata('aldeaz_pembeli', base64_encode(serialize($cek_user)));
+					$this->session->set_userdata('mkspembeli', base64_encode(serialize($cek_user)));
 					//header("Location: ".$this->host);
 					echo 1;
 				}else{
@@ -1078,6 +1242,15 @@ class Frontend extends CI_Controller {
 			header("Location: ".$this->host);
 		}
 	}	
+	
+	function tester(){			
+		echo "<pre>";
+		print_r($this->auth);
+		//print_r($this->cart->contents());
+		
+		//$this->cart->destroy();	
+		
+	}
 	
 	function test(){			
 		$curl = curl_init();

@@ -7,7 +7,7 @@
 class Mfrontend extends CI_Model{
 	function __construct(){
 		parent::__construct();
-		$this->auth = unserialize(base64_decode($this->session->userdata('aldeaz_pembeli')));
+		$this->auth = unserialize(base64_decode($this->session->userdata('mkspembeli')));
 	}
 	
 	function getdata($type="", $balikan="", $p1="", $p2="",$p3="",$p4=""){
@@ -19,12 +19,20 @@ class Mfrontend extends CI_Model{
 		switch($type){
 			case "data_login_pembeli":
 				$sql = "
-					SELECT A.*, B.provinsi, C.kab_kota, D.kecamatan
+					SELECT A.*, B.provinsi, C.kab_kota, D.kecamatan, B.zona as zona_pengiriman
 					FROM tbl_registrasi A
-					LEFT JOIN cl_provinsi B ON B.kode_prov = A.cl_provinsi_kode
-					LEFT JOIN cl_kab_kota C ON C.kode_kab_kota = A.cl_kab_kota_kode
-					LEFT JOIN cl_kecamatan D ON D.kode_kecamatan = A.cl_kecamatan_kode
+					LEFT JOIN cl_provinsi_indo B ON B.kode_prov = A.cl_provinsi_kode
+					LEFT JOIN cl_kab_kota_indo C ON C.kode_kab_kota = A.cl_kab_kota_kode
+					LEFT JOIN cl_kecamatan_indo D ON D.kode_kecamatan = A.cl_kecamatan_kode
 					WHERE A.nama_user = '".$p1."'
+				";
+			break;
+			case "data_pesanan_user":
+				$sql = "
+					SELECT A.*, DATE_FORMAT(A.tgl_order,'%d %b %y') as tgl_orderr
+					FROM tbl_h_pemesanan A
+					WHERE A.tbl_registrasi_id = '".$this->auth["id"]."'
+					ORDER BY A.tgl_order DESC
 				";
 			break;
 			case "data_buku_paket":
@@ -306,6 +314,26 @@ class Mfrontend extends CI_Model{
 					WHERE cl_kab_kota_kode = '".$p2."'
 				";
 			break;
+			case "cl_provinsi_old":
+				$sql = "
+					SELECT kode_prov as id, provinsi as txt
+					FROM cl_provinsi_indo
+				";
+			break;
+			case "cl_kab_kota_old":
+				$sql = "
+					SELECT kode_kab_kota as id, kab_kota as txt
+					FROM cl_kab_kota_indo
+					WHERE cl_provinsi_kode = '".$p2."'
+				";
+			break;
+			case "cl_kecamatan_old":
+				$sql = "
+					SELECT kode_kecamatan as id, kecamatan as txt
+					FROM cl_kecamatan_indo
+					WHERE cl_kab_kota_kode = '".$p2."'
+				";
+			break;
 			case "cl_jasa_pengiriman":
 				$sql = "
 					SELECT id, jasa_pengiriman as txt
@@ -462,9 +490,9 @@ class Mfrontend extends CI_Model{
 						'no_hp_kepsek' => $data['no_hp_kepsek'],
 						'no_hp_bendahara' => $data['no_hp_bendahara'],
 						'no_telp_sekolah' => $data['telp_sekolah'],
-						'kd_prov' => $data['provinsi'],
-						'kd_kab' => $data['kabupaten'],
-						'kd_kec' => $data['kecamatan'],
+						'cl_provinsi_kode' => $data['provinsi'],
+						'cl_kab_kota_kode' => $data['kabupaten'],
+						'cl_kecamatan_kode' => $data['kecamatan'],
 						'kode_pos' => $data['kd_pos'],
 						'alamat_pengiriman' => $data['alamat_pengiriman'],
 						'reg_date' => date('Y-m-d H:i:s'),
@@ -479,6 +507,10 @@ class Mfrontend extends CI_Model{
 						'nama_lengkap' => $data['nm_lengkap'],
 						'no_telp_customer' => $data['no_telp'],
 						'no_hp_customer' => $data['no_handphone'],
+						'cl_provinsi_kode' => $data['provinsi'],
+						'cl_kab_kota_kode' => $data['kabupaten'],
+						'cl_kecamatan_kode' => $data['kecamatan'],
+						'kode_pos' => $data['kd_pos'],						
 						'alamat_pengiriman' => $data['alamat_pengiriman'],
 						'reg_date' => date('Y-m-d H:i:s'),
 					);					
@@ -518,6 +550,8 @@ class Mfrontend extends CI_Model{
 				$insert_registrasi = $this->db->insert('tbl_komentar', $data_komentar);
 			break;
 			case "checkout":				
+				$kdmarketing = null;
+				/*
 				if(isset($data['kdmar'])){
 					$dbmarketing = $this->load->database('marketing',true);
 					$array_cek_kdmarketing = array( 'member_user' => $data['kdmar'] );
@@ -532,94 +566,23 @@ class Mfrontend extends CI_Model{
 				}else{
 					$kdmarketing = null;
 				}
+				*/
 				
-				if($data['typ'] == 'skull'){
-					/*
-					if($data['ckdt'] == 'TIDAK ADA'){
-						$cek_email = $this->db->get_where('tbl_registrasi', array('email'=>$data['email']) )->row_array();
-						if($cek_email){
-							echo 3; exit; //"Email Sudah Ada";
-						}
-					
-						$data_registrasi = array(
-							'jenis_pembeli' => 'SEKOLAH',
-							'email' => $data['email'],
-							'status' => 1,
-							'npsn' => $data['npsn'],
-							'nama_sekolah' => $data['nmseko'],
-							'nip' => $data['nipkepsek'],
-							'nama_kepala_sekolah' => $data['nmkepsek'],
-							'nama_bendahara' => $data['nmbend'],
-							'no_hp_kepsek' => $data['nohpkepsek'],
-							'no_hp_bendahara' => $data['nohpbend'],
-							'no_telp_sekolah' => $data['notelp'],
-							'cl_provinsi_kode' => $data['prov'],
-							'cl_kab_kota_kode' => $data['kab'],
-							'cl_kecamatan_kode' => $data['kec'],
-							'kode_pos' => $data['kdpos'],
-							'alamat_pengiriman' => $data['almt'],
-							'reg_date' => date('Y-m-d H:i:s'),
-						);
-						$insert_registrasi = $this->db->insert('tbl_registrasi', $data_registrasi);
-						if($insert_registrasi){
-							$data_pembeli = $this->db->get_where('tbl_registrasi', array('npsn'=>$data['npsn'], 'jenis_pembeli'=>'SEKOLAH') )->row_array();
-							$id = $data_pembeli['id'];
-						}else{
-							$id = null;
-						}
-					}elseif($data['ckdt'] == 'ADA'){
-						$data_pembeli = $this->db->get_where('tbl_registrasi', array('npsn'=>$data['npsn'], 'jenis_pembeli'=>'SEKOLAH') )->row_array();
-						$id = $data_pembeli['id'];
-					}
-					*/
-					
-					$id = $this->auth['id'];
-					$nama_pemesan = $this->auth['nama_sekolah'];
-					$flag = "B";
-					
-				}elseif($data['typ'] == 'umu'){
-					if($data['ckdt'] == 'TIDAK ADA'){
-						$cek_email = $this->db->get_where('tbl_registrasi', array('email'=>$data['email']) )->row_array();
-						if($cek_email){
-							echo 3; exit; //"Email Sudah Ada";
-						}
-						
-						$data_registrasi = array(
-							'jenis_pembeli' => 'UMUM',
-							'email' => $data['email'],
-							'status' => 1,
-							'nama_lengkap' => $data['nm_cust'],
-							'no_hp_customer' => $data['nhp'],
-							'no_telp_customer' => $data['ntlp'],
-							'cl_provinsi_kode' => $data['prov'],
-							'cl_kab_kota_kode' => $data['kab'],
-							'cl_kecamatan_kode' => $data['kec'],
-							'kode_pos' => $data['kdpos'],
-							'alamat_pengiriman' => $data['pngrmn'],
-							'reg_date' => date('Y-m-d H:i:s'),
-						);
-						$insert_registrasi = $this->db->insert('tbl_registrasi', $data_registrasi);
-						if($insert_registrasi){
-							$data_pembeli = $this->db->get_where('tbl_registrasi', array('email'=>trim($data['email']), 'jenis_pembeli'=>'UMUM' ) )->row_array();
-							$id = $data_pembeli['id'];
-						}else{
-							$id = null;
-						}
-					}elseif($data['ckdt'] == 'ADA'){
-						$data_pembeli = $this->db->get_where('tbl_registrasi', array('email'=>trim($data['email']), 'jenis_pembeli'=>'UMUM' ) )->row_array();
-						if($data_pembeli){
-							$id = $data_pembeli['id'];
-						}else{
-							$id = null;
-						}
-					}
-					$nama_pemesan = $data['nm_cust'];
+				$acak_no_order = "";
+				
+				if($this->auth["jenis_pembeli"] == "UMUM"){
+					$email = $this->auth['email'];
+					$nama_pemesan = $this->auth["nama_lengkap"];
 					$flag = "P";
+				}elseif($this->auth["jenis_pembeli"] == "SEKOLAH"){	
+					$flag = "B";
+					$nama_pemesan = $this->auth["nama_sekolah"];
+					$email = $this->auth['email'];
 				}
 				
-				if($id != null){
-					$data_cart = $this->cart->contents();
-					$zona_pilihan = $this->session->userdata("zonaxtreme");
+				$data_cart = $this->cart->contents();
+				$zona_pilihan = $this->session->userdata("zonaxtreme");
+				if($data_cart){
 					$tot = 0;
 					foreach($data_cart as $k => $v){
 						$tot += $v['subtotal'];
@@ -642,21 +605,20 @@ class Mfrontend extends CI_Model{
 						$acak_no_order 	= "ORD".$acak_string."-".$order_urutnya;
 					}
 					
-					$pajak = 0 * $tot;
-					$grand_total = ($tot + $pajak);
 					$data_header_pesanan = array(
 						'no_order' => $acak_no_order,
 						'tgl_order' => date('Y-m-d H:i:s'),
 						'cl_jasa_pengiriman_id' => $data['jasa_pengiriman'],
 						'cl_metode_pembayaran_id' => $data['metode_pembayaran'],
-						'tbl_registrasi_id' => $id,
+						'tbl_registrasi_id' => $this->auth["id"],
 						'sub_total' => $tot,
-						'pajak' => $pajak,
-						'grand_total' => $grand_total,
+						'grand_total' => $tot,
 						'status' => $flag,
 						'create_date' => date('Y-m-d H:i:s'),
 						'zona' => $zona_pilihan['zona_pilihan'],
-						'kode_marketing' => $kdmarketing
+						'kode_marketing' => $kdmarketing,
+						'alamat_pengiriman_registrasi' => $data['alamat_pengiriman'],
+						'alamat_pengiriman_lain' =>$data['alamat_pengiriman_lain']
 					);
 					$insert_header = $this->db->insert('tbl_h_pemesanan', $data_header_pesanan);
 					if($insert_header){
@@ -678,7 +640,7 @@ class Mfrontend extends CI_Model{
 						}
 						$this->db->insert_batch('tbl_d_pemesanan', $array_batch);
 						
-						if($data['typ'] == 'skull'){
+						if($this->auth["jenis_pembeli"] == "SEKOLAH"){
 							$sql_maxkonf = "
 								SELECT MAX(no_konfirmasi) as konfirmasi_no
 								FROM tbl_konfirmasi
@@ -701,16 +663,16 @@ class Mfrontend extends CI_Model{
 							'pemesan' => $nama_pemesan,
 							'no_order' => $acak_no_order,
 							'tot' => number_format($tot,0,",","."),
-							'pajak' => number_format($pajak,0,",","."),
-							'grand_total' => number_format($grand_total,0,",","."),
+							'pajak' => 0, //number_format($pajak,0,",","."),
+							'grand_total' => number_format($tot,0,",","."),
 						);
-						$this->lib->kirimemail('email_invoice', $this->auth['email'], $data_cart, $array_email);
+						$this->lib->kirimemail('email_invoice', $email, $data_cart, $array_email);
 						
 						$this->cart->destroy();
 					}
-				}else{
 					
 				}
+				
 			break;
 			case "konf":
 				$sts_crud = 'falseto';
@@ -742,7 +704,7 @@ class Mfrontend extends CI_Model{
 					
 					$total_pembayaran = trim($data['jml_trf']);
 					$total_pembayaran = str_replace(".", "", $total_pembayaran);
-					if($data_inv['status'] == 'P'){
+					if($data_inv['status'] == 'P'){ // konfirmasi untuk pembeli umum
 						$array_insert = array(
 							'no_konfirmasi' => $acak_no_konf,
 							'tgl_konfirmasi' => date('Y-m-d'),
@@ -763,7 +725,7 @@ class Mfrontend extends CI_Model{
 							$this->lib->kirimemail('email_konfirmasi', $email['email'], $data['inv']);
 						}
 
-					}elseif($data_inv['status'] == 'B'){
+					}elseif($data_inv['status'] == 'B'){ // konfirmasi untuk pembeli sekolah
 						$array_update = array(
 							'no_konfirmasi' => $acak_no_konf,
 							'tgl_konfirmasi' => date('Y-m-d'),

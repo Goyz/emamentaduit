@@ -379,4 +379,20 @@ class Lib {
 		return $result_obj;
 	}
 	//end fungsi get identity
+	
+	//Class String Sanitizer
+	function clean($string,$pengganti) {
+		$string = str_replace(' ', $pengganti, $string); // Replaces all spaces with hyphens.
+		return preg_replace('/[^A-Za-z0-9\-]/', $pengganti, $string); // Removes special chars.
+	}	
+	
+	// Encode Decode URL
+	function base64url_encode($data) { 
+	  return rtrim(strtr(base64_encode($data), '+/', '-_'), '='); 
+	} 
+
+	function base64url_decode($data) { 
+	  return base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT)); 
+	} 	
+	// End Encode Decode URL
 }

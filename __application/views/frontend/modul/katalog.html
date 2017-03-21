@@ -1,0 +1,250 @@
+<div class="container">
+    <!-- Breadcrumb Start-->
+    <ul class="breadcrumb">
+        <li><a href="{$host}"><i class="fa fa-home"></i></a></li>
+        <li><a href="{$host}katalog">Katalog Buku Satuan</a></li>
+    </ul>
+	
+	<div class="row">
+        <!--Left Part Start -->
+        <aside id="column-left" class="col-sm-3 hidden-xs">
+            <h3 class="subtitle">Filtering Data</h3>
+            <div class="box-category">
+				<ul id="cat_accordion">
+                    <li class="cutom-parent-li"><a href="javascript:void(0);" class="cutom-parent">Tingkatan<span class="dcjq-icon"></span></a> <span class="down"></span>
+                        <ul style="display: block;">
+							{foreach from=$data_tingkatan item=row}                           
+								<li class="cutom-parent-li"><a href="javascript:void(0);" class="cutom-parent">{$row.tingkatan}<span class="dcjq-icon"></span></a> <span class="down"></span>
+									<ul style="display: none;">
+									{if $row.detil}
+										{foreach from=$row.detil item=riw}
+											<li><a  href='javascript:void(0);' onClick="loaddatabook('tingk','{$riw.id}');">{$riw.nama_kelas}</a></li>
+										{/foreach}
+									{/if}
+									</ul>
+								</li>
+						   {/foreach}
+                        </ul>
+                    </li>
+                    <li class="cutom-parent-li"><a href="javascript:void(0);" class="cutom-parent">Kategori<span class="dcjq-icon"></span></a> <span class="down"></span>
+                        <ul style="display: block;">
+							{foreach from=$data_kategori item=rows}                          
+								<li><a href="javascript:void(0);" onClick="loaddatabook('kate','{$rows.id}');">{$rows.nama_kategori}</a></li>
+						   {/foreach}
+                        </ul>
+                    </li>
+                    <li class="cutom-parent-li"><a href="javascript:void(0);" class="cutom-parent">Pengguna Buku<span class="dcjq-icon"></span></a> <span class="down"></span>
+                        <ul style="display: block;">
+							{foreach from=$data_pengguna item=rowss}                        
+								<li><a href="javascript:void(0);" onClick="loaddatabook('grp','{$rowss.id}');">{$rowss.nama_group}</a></li>
+							{/foreach}
+                        </ul>
+                    </li>
+				</ul>
+			</div>
+		</aside>
+		
+		<div id="content" class="col-sm-9">
+            <div class="product-filter">
+                <div class="row">
+                    <div class="col-md-2 col-sm-5">
+                        <div class="btn-group">
+                            <button type="button" id="list-view" class="btn btn-default" data-toggle="tooltip" title="" data-original-title="List"><i class="fa fa-th-list"></i></button>
+                            <button type="button" id="grid-view" class="btn btn-default selected" data-toggle="tooltip" title="" data-original-title="Grid"><i class="fa fa-th"></i></button>
+                        </div>
+					</div>
+                    <div class="col-sm-2 ">
+                        <label class="control-label" for="input-sort">Cari Data</label>
+                    </div>
+                    <div class="col-md-4 col-sm-2 ">
+						<input type="text" class="form-control col-sm-3" />
+						{*
+						<select id="input-sort" class="form-control col-sm-3">
+                            <option value="" selected="selected">Default</option>
+                            <option value="">Name (A - Z)</option>
+                            <option value="">Name (Z - A)</option>
+                            <option value="">Price (Low &gt; High)</option>
+                            <option value="">Price (High &gt; Low)</option>
+                            <option value="">Rating (Highest)</option>
+                            <option value="">Rating (Lowest)</option>
+                            <option value="">Model (A - Z)</option>
+                            <option value="">Model (Z - A)</option>
+                        </select>
+						*}
+                    </div>
+                </div>
+            </div>
+				
+			<div id="kontenproduk">
+				
+				<div id="konten-buku" class="row products-category" style="margin-top: 10px !important;">
+					{if $data_buku}
+						{foreach from=$data_buku item=row}
+							<div style="min-height:350px !important;" class="product-layout product-grid col-lg-3 col-md-3 col-sm-4 col-xs-12">
+								<div class="product-thumb">
+									<div class="image">
+										<img src="{$row.foto_buku}" alt=" {$row.judul_buku} " title=" {$row.judul_buku} " class="img-responsive">
+									</div>
+									<div>
+										<div class="caption">
+											<h4><a href="{$host}detailproduk/{$row.id_url}/{$row.judul_url}"> {$row.judul_buku} </a></h4>
+											<p class="description"> {$row.deskripsi_buku|default:''} </p>
+											<p class="price"> 
+												{if $auth}
+													<span class="price-new">Rp. {$row.harga_buku_bener|default:''}</span> 
+												{else}
+													<span class="price-new">Login Untuk Melihat Harga</span> 
+												{/if}
+											</p>
+										</div>
+										<div class="button-group">
+											{if $auth}
+												<a class="btn-primary" type="button" onclick='sendcart("{$row.id_encrpyt}")'><span>Beli</span></a>
+											{/if}
+										</div>
+									</div>
+								</div>
+							</div>
+						{/foreach}
+					{else}
+					
+					{/if}
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col-sm-6 text-left">
+						<ul class="pagination">
+							{foreach from=$array_paging item=pag}
+								{if $pag.angka eq '1'}
+									<li id="{$pag.angka}" class="active isipaging"><a href="javascript:void(0);" onclick="pagjs('{$pag.limitnya}','','','','{$pag.angka}');">{$pag.angka}</a></li>
+								{else}
+									<li id="{$pag.angka}" class="isipaging"><a href="javascript:void(0);" onclick="pagjs('{$pag.limitnya}','','','','{$pag.angka}');">{$pag.angka}</a></li>
+								{/if}
+							{/foreach}
+						</ul>
+					</div>
+				</div>
+            
+			</div>
+
+		</div>
+		
+	</div>
+</div>
+
+<script>
+$('#cat_accordion').cutomAccordion({
+	saveState: false,
+	autoExpand: true
+});
+
+/*---------------------------------------------------
+    Product List
+----------------------------------------------------- */
+$('#list-view').on("click", function() {
+	$(".products-category > .clearfix.visible-lg-block").remove();
+	$('#content .product-layout').attr('class', 'product-layout product-list col-xs-12');
+  localStorage.setItem('display', 'list');		
+	$('.btn-group').find('#list-view').addClass('selected');
+	$('.btn-group').find('#grid-view').removeClass('selected');
+	return false;
+});
+
+/*---------------------------------------------------
+   Product Grid
+----------------------------------------------------- */
+$(document).on('click', '#grid-view', function(e){
+	$('#content .product-layout').attr('class', 'product-layout product-grid col-lg-3 col-md-3 col-sm-4 col-xs-12');
+		
+$screensize = $(window).width();
+    if ($screensize > 1199) {
+		$(".products-category > .clearfix").remove();
+        $('.product-grid:nth-child(4n)').after('<span class="clearfix visible-lg-block"></span>');
+    }
+    if ($screensize < 1199) {
+		$(".products-category > .clearfix").remove();
+        $('.product-grid:nth-child(4n)').after('<span class="clearfix visible-lg-block visible-md-block"></span>');
+    }
+	if ($screensize < 991) {
+		$(".products-category > .clearfix").remove();
+        $('.product-grid:nth-child(3n)').after('<span class="clearfix visible-lg-block visible-sm-block"></span>');
+    }
+$( window ).resize(function() {
+    $screensize = $(window).width();
+    if ($screensize > 1199) {
+        $(".products-category > .clearfix").remove();
+        $('.product-grid:nth-child(4n)').after('<span class="clearfix visible-lg-block"></span>');
+    } 
+    if ($screensize < 1199) {
+        $(".products-category > .clearfix").remove();
+        $('.product-grid:nth-child(4n)').after('<span class="clearfix visible-lg-block visible-md-block"></span>');
+    }
+	if ($screensize < 991) {
+        $(".products-category > .clearfix").remove();
+        $('.product-grid:nth-child(3n)').after('<span class="clearfix visible-lg-block visible-sm-block"></span>');
+    }
+	if ($screensize < 767) {
+        $(".products-category > .clearfix").remove();
+    }
+});
+localStorage.setItem('display', 'grid');
+$('.btn-group').find('#grid-view').addClass('selected');
+$('.btn-group').find('#list-view').removeClass('selected');
+	});
+if (localStorage.getItem('display') == 'list') {
+	$('#list-view').trigger('click');
+} else {
+	$('#grid-view').trigger('click');
+}
+
+$('[data-toggle=\'tooltip\']').tooltip( { container: 'body' } );
+
+/*---------------------------------------------------
+   END Product Grid - Templating
+----------------------------------------------------- */
+
+function sendcart(iid){
+	var posting = {};
+	posting['zn'] = '{$zona}';
+	posting['iipx'] = iid;
+	posting['yqt'] = 1;
+	$.post(host+'keranjang-belanja-masuk', posting, function(resp){
+		if(resp){
+			//alert('Buku telah ditambahkan, bisa di lihat di keranjang belanja di kanan atas! atau silahkan lanjutkan belanja');
+			$("#krjblj").trigger("click");
+			$('html, body').animate( { scrollTop:0 } , 'fast');			
+		}else{
+			alert('Terjadi Kegagalan System, Coba Lagi!');
+		}
+	});
+}
+
+function pagjs(delimeter, typ, ixds, srch, pagangka){
+	$('#konten-buku').html('');
+	$.post(host+'paginationdata', { 'lmt':delimeter, 'ty':typ, 'isd':ixds, 'cr':srch }, function(rp){
+		parspro = $.parseJSON(rp);
+		$('#konten-buku').html(parspro.page);
+		$(".isipaging").removeClass("active");
+		$("#"+pagangka).addClass("active");
+	});	
+}
+
+function searchdt(){
+	var vlcr = $('#cari').val();
+	$('#konten-utama-buku').html('');
+	$.post(host+'filtering-data', { 'cr':vlcr }, function(rpload){
+		parsload = $.parseJSON(rpload);
+		$('#konten-utama-buku').html(parsload.page);
+	});
+}
+
+function loaddatabook(typ, ixd){
+	$('#kontenproduk').html('');
+	$.post(host+'filtering-data', { 'ty':typ, 'isd':ixd }, function(rpload){
+		parsload = $.parseJSON(rpload);
+		$('#kontenproduk').html(parsload.page);
+	});
+}
+
+
+</script>

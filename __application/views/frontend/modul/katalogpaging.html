@@ -1,0 +1,31 @@
+{if $data_buku}
+	{foreach from=$data_buku item=row}
+		<div style="min-height:350px !important;" class="product-layout product-grid col-lg-3 col-md-3 col-sm-4 col-xs-12">
+			<div class="product-thumb">
+				<div class="image">
+					<img src="{$row.foto_buku}" alt=" {$row.judul_buku} " title=" {$row.judul_buku} " class="img-responsive">
+				</div>
+				<div>
+					<div class="caption">
+						<h4><a href="{$host}detailproduk/{$row.id_url}/{$row.judul_url}"> {$row.judul_buku} </a></h4>
+						<p class="description"> {$row.deskripsi_buku|default:''} </p>
+						<p class="price"> 
+							{if $auth}
+								<span class="price-new">Rp. {$row.harga_buku_bener|default:''}</span> 
+							{else}
+								<span class="price-new">Login Untuk Melihat Harga</span> 
+							{/if}
+						</p>
+					</div>
+					<div class="button-group">
+						{if $auth}
+							<a class="btn-primary" type="button" onclick='sendcart("{$row.id_encrpyt}")'><span>Beli</span></a>
+						{/if}
+					</div>
+				</div>
+			</div>
+		</div>
+	{/foreach}
+{else}
+	
+{/if}

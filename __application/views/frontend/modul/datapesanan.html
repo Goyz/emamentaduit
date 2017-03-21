@@ -1,0 +1,55 @@
+<div class="container">
+    <!-- Breadcrumb Start-->
+    <ul class="breadcrumb">
+        <li><a href="{$host}"><i class="fa fa-home"></i></a></li>
+        <li><a href="{$host}datapesanan">Data Pesanan</a></li>
+    </ul>
+
+	<div class="row">
+		<!--Middle Part Start-->
+		<div id="content" class="col-sm-12">
+			<h1 class="title">Data Riwayat Pesanan</h1>
+			<div class="table-responsive">
+				<table class="table table-bordered table-hover">
+					<thead>
+						<tr>
+							<td class="text-center" width="20%">No. Order</td>
+							<td class="text-center" width="10%">Tanggal Order</td>
+							<td class="text-center" width="20%">Total Harga</td>
+							<td class="text-center" width="25%">Action</td>
+						</tr>
+					</thead>
+					<tbody>
+						{if $data_pesanan}
+							{foreach from=$data_pesanan item=rows}
+								<tr>
+									<td class="text-center">{$rows.no_order}</td>
+									<td class="text-center">{$rows.tgl_orderr}</td>
+									<td class="text-right">{$rows.total_pesanan}</td>
+									<td class="text-right">
+										<a href="{$host}konfirmasi/{$rows.no_order}">Detail Order</a>
+										{if $auth.jenis_pembeli eq "UMUM"}
+											{if $rows.flag_konfirm eq 0}
+												&nbsp;&nbsp;|&nbsp;&nbsp;
+												<a href="{$host}konfirmasi/{$rows.no_order}">Konfirmasi Pembayaran</a>
+											{elseif $rows.flag_konfirm eq 1}
+												&nbsp;&nbsp;|&nbsp;&nbsp;
+												<span>Sudah Bayar</span>
+											{elseif $rows.flag_konfirm eq 2}
+												&nbsp;&nbsp;|&nbsp;&nbsp;
+												<span>Menunggu Verifikasi Pembayaran</span>
+											{/if}
+										{/if}
+									</td>
+								</tr>
+							{/foreach}
+						{else}
+						
+						{/if}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!--Middle Part End -->
+	</div>
+</div>

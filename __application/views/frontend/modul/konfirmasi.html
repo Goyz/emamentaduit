@@ -1,0 +1,142 @@
+<div class="container">
+    <!-- Breadcrumb Start-->
+    <ul class="breadcrumb">
+        <li><a href="{$host}"><i class="fa fa-home"></i></a></li>
+        <li><a href="{$host}datapesanan">Data Pesanan</a></li>
+        <li><a href="javascript:void(0);" onclick="location.reload();">Konfirmasi {$data_order.no_order|default:""}</a></li>
+    </ul>
+
+{if $cek_order eq "true"}
+	<div class="row">
+		<div id="content" class="col-sm-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">Form Konfirmasi Pembayaran</h4>
+				</div>
+				<div id="collapse-shipping" class="panel-collapse collapse in">
+					<div class="panel-body">
+						<form data-toggle="validator" role="form" id='frmkonfirmasi' url="{$host}submit-konfirmasi" method='post' enctype="multipart/form-data" class="form-horizontal">
+							<div class="form-group">
+								<label for="input-firstname" class="col-sm-3 control-label">No. Order</label>
+								<div class="col-sm-8">
+									<div class="form-control">
+										<input type="hidden" name="inv" value="{$data_order.no_order}">
+										{$data_order.no_order}
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="input-firstname" class="col-sm-3 control-label">Total Harga</label>
+								<div class="col-sm-8">
+									<div class="form-control">
+										{$data_order.grand_total}
+									</div>
+								</div>
+							</div>
+							
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Nama Bank Pengirim</label>
+								<div class="col-sm-8">
+									<select class="form-control validasi" required id="bank_pengirim" name="bank_pengirim" >	
+										<option value=""> -- Pilih -- </option>
+										<option value="BRI">BANK BRI</option>
+										<option value="MANDIRI">BANK MANDIRI</option>
+										<option value="BNI">BANK BNI</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Atas Nama Bank Pengirim</label>
+								<div class="col-sm-8">
+									<input class="form-control validasi" required id="atas_nama" name="atas_nama" type="text">
+								</div>
+							</div>	
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Nama Bank Pengirim</label>
+								<div class="col-sm-8">
+									<select class="form-control validasi" required id="bank_tujuan" name="bank_tujuan" >	
+										<option value=""> -- Pilih -- </option>
+										<option value="BRI">BANK BRI</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Jumlah Transfer</label>
+								<div class="col-sm-8">
+									<input class="form-control validasi" required id="jml_trf" name="jml_trf" type="text">
+								</div>
+							</div>								
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Tanggal Transfer</label>
+								<div class="col-sm-4">
+									<input class="form-control validasi" required id="tgl_trf" name="tgl_trf" type="text">
+								</div>
+							</div>			
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Bukti Bayar</label>
+								<div class="col-sm-8">
+									<input class="validasi" type="file" id="bkt_byr" name="bkt_byr" />
+								</div>
+							</div>			
+							
+							<div class="buttons">
+								<div class="pull-center">
+									<center>
+										<a id="submitkonfirm" class="btn btn-primary" >Submit<a/>
+										&nbsp;
+										<a href="{$host}datapesanan" class="btn btn-danger" >Kembali<a/>
+									</center>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{else}
+	<div class="row">
+		<!--Middle Part Start-->
+		<div id="content" class="col-sm-12">
+			<center><h1 class="title">No. Order Tidak Valid</h1></center>
+		</div>
+	</div>
+{/if}
+
+</div>
+
+<script>
+	$('#tgl_trf').datepicker({
+		format: 'yyyy-mm-dd',
+	});	
+	
+	$("#jml_trf").maskMoney({
+		precision:0,
+		thousands:'.'
+	});	
+	
+	$(".validasi").validatebox({ required:true }); 	
+	$('#submitkonfirm').on('click', function(){
+		validasi = $('#frmkonfirmasi').form('validate');		
+		if(validasi){
+			$.blockUI({ message: '<h3>Data Sedang Diproses...</h3>' });			
+		}		
+		submit_form('frmkonfirmasi', function(resp){
+			if(resp == 1){
+				alert("Sukses Melakukan Konfirmasi Pembayaran");
+				window.location.href = host+'datapesanan';
+			}else if(resp == 2){
+				alert("Data Email Anda Sudah Ada Dalam System Kami!");
+				
+				/*
+				$.unblockUI();
+				$('#modalencuk').html("Data Email Anda Sudah Ada Dalam System Kami!");			
+				$('#productModal').modal('show'); 
+				*/
+			}
+			$.unblockUI();
+		});
+	});
+
+
+</script>

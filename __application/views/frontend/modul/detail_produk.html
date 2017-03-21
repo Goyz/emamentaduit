@@ -1,0 +1,276 @@
+<div class="container">
+    <!-- Breadcrumb Start-->
+    <ul class="breadcrumb">
+        <li itemscope="" ><a href="{$host}" itemprop="url"><span itemprop="title"><i class="fa fa-home"></i></span></a></li>
+        <li itemscope="" ><a href="{$host}katalog" itemprop="url"><span itemprop="title">Katalog Buku Satuan</span></a></li>
+        <li itemscope="" ><a href="{$host}detailproduk/{$idx}/{$judulproduk}" itemprop="url"><span itemprop="title">{$data_buku.judul_buku}</span></a></li>
+    </ul>
+	
+	<div class="row">
+	    <div id="content" class="col-sm-12">
+            <div >
+                <h3 class="title" itemprop="name">{$data_buku.judul_buku}</h3>
+                <div class="row product-info">
+                    <div class="col-sm-6">
+						<ul class="rslides" id='slider3'>
+							{foreach from=$data_fotobuku item=rw}
+								<li>
+									<img src="{$rw.foto_buku}" />
+								</li>
+							{/foreach}
+						</ul>
+						<ul id="slider3-pager" class="list-unstyled" style="margin-top:10px;">
+							{foreach from=$data_fotobuku item=rws}
+								<li><a href="javascript:void(0);"><img src="{$rws.foto_buku}" style='width:30px;height:30px;' alt=""></a></li>
+							{/foreach}
+						</ul>
+						
+					</div>
+                    <div class="col-sm-6">
+                        {if $auth}
+						<div class="table-responsive">
+							<table class="table">
+								<thead>
+									  <tr>
+										<th>Zona</th>
+										<th>Harga Retail</th>
+										<th>Harga Pemerintah</th>
+									  </tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>1</td>
+										<td>{$data_buku.harga_zona_1}</td>
+										<td>{$data_buku.harga_pemerintah_zona_1}</td>
+									</tr>
+									<tr>
+										<td>2</td>
+										<td>{$data_buku.harga_zona_2}</td>
+										<td>{$data_buku.harga_pemerintah_zona_2}</td>
+									</tr>
+									<tr>
+										<td>3</td>
+										<td>{$data_buku.harga_zona_3}</td>
+										<td>{$data_buku.harga_pemerintah_zona_3}</td>
+									</tr>
+									<tr>
+										<td>4</td>
+										<td>{$data_buku.harga_zona_4}</td>
+										<td>{$data_buku.harga_pemerintah_zona_4}</td>
+									</tr>
+									<tr>
+										<td>5</td>
+										<td>{$data_buku.harga_zona_5}</td>
+										<td>{$data_buku.harga_pemerintah_zona_5}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+		
+						<ul class="price-box">
+                            <li class="price">
+								<span itemprop="price">Rp. {$harga_buku}
+									<span itemprop="availability" content="In Stock"></span>
+								</span>
+                            </li>
+                            <li></li>
+                            <li>Zona Pengiriman : {$zona}</li>
+                        </ul>
+                        <div id="product">
+                            <div class="cart">
+                                <div>
+                                    <div class="qty">
+                                        <label class="control-label" for="input-quantity">Quantity</label>
+                                        <input value="1" size="2" id="input-quantity" class="form-control" type="text">
+                                        <a class="qtyBtn plus" href="javascript:void(0);">+</a>
+                                        <br>
+                                        <a class="qtyBtn mines" href="javascript:void(0);">-</a>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <a id="button-cart" href="javascript:void(0);" onClick="submitcart('{$id}')" class="btn btn-primary btn-lg">Beli</a>
+                                </div>
+                            </div>
+                        </div>
+						{else}
+							<ul class="price-box">
+                            <li class="price">
+								<span itemprop="price">
+									<center>Login Untuk Melihat Harga</center>
+									<span itemprop="availability" content="In Stock"></span>
+								</span>
+                            </li>
+                            <li></li>
+                            <li></li>
+                        </ul>
+						{/if}
+                    </div>
+                </div>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab-description" data-toggle="tab" aria-expanded="true">Deskripsi Buku</a></li>
+                    <li class=""><a href="#tab-review" data-toggle="tab" aria-expanded="false">Komentar</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div itemprop="description" id="tab-description" class="tab-pane active">
+						<div class="table-responsive">
+							<table class="table table-bordered">
+								<tbody>
+									<tr>
+									  <td>Lokasi Anda</td>
+									  <td>{$provinsi|default:'-'}</td>
+									</tr>
+									<tr>
+									  <td>Estimasi Pengiriman</td>
+									  <td>{$estimasi|default:'-'}</td>
+									</tr>				
+									<tr>
+									  <td>Edisi</td>
+									  <td>{$data_buku.nama_edisi}</td>
+									</tr>
+									<tr>
+									  <td>Kelas</td>
+									  <td>{$data_buku.kelas}</td>
+									</tr>
+									<tr>
+									  <td>Kategori</td>
+									  <td>{$data_buku.nama_kategori}</td>
+									</tr>
+									<tr>
+									  <td>ISBN</td>
+									  <td>{$data_buku.isbn}</td>
+									</tr>
+									<tr>
+									  <td>Penerbit</td>
+									  <td>{$data_buku.penerbit}</td>
+									</tr>
+									<tr>
+									  <td>Kode Buku</td>
+									  <td>{$data_buku.kode_buku}</td>
+									</tr>
+									<tr>
+									  <td>Jumlah Hal.</td>
+									  <td>{$data_buku.jml_hal}</td>
+									</tr>
+									<tr>
+									  <td>Ukuran Buku</td>
+									  <td>{$data_buku.ukuran_buku}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>		
+					</div>
+					<div id="tab-review" class="tab-pane">
+                        <form class="form-horizontal">
+                            <div id="review">
+                                <div>
+                                    <table class="table table-striped table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width: 50%;"><strong><span>harvey</span></strong></td>
+                                                <td class="text-right"><span>20/01/2016</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                                                    <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-striped table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width: 50%;"><strong><span>Andrson</span></strong></td>
+                                                <td class="text-right"><span>20/01/2016</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                                                    <div class="rating"> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="text-right"></div>
+                            </div>
+                            <h2>Write a review</h2>
+                            <div class="form-group required">
+                                <div class="col-sm-12">
+                                    <label for="input-name" class="control-label">Your Name</label>
+                                    <input class="form-control" id="input-name" value="" name="name" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group required">
+                                <div class="col-sm-12">
+                                    <label for="input-review" class="control-label">Your Review</label>
+                                    <textarea class="form-control" id="input-review" rows="5" name="text"></textarea>
+                                    <div class="help-block"><span class="text-danger">Note:</span> HTML is not translated!</div>
+                                </div>
+                            </div>
+                            <div class="form-group required">
+                                <div class="col-sm-12">
+                                    <label class="control-label">Rating</label>
+                                    &nbsp;&nbsp;&nbsp; Bad&nbsp;
+                                    <input value="1" name="rating" type="radio"> &nbsp;
+                                    <input value="2" name="rating" type="radio"> &nbsp;
+                                    <input value="3" name="rating" type="radio"> &nbsp;
+                                    <input value="4" name="rating" type="radio"> &nbsp;
+                                    <input value="5" name="rating" type="radio"> &nbsp;Good
+                                </div>
+                            </div>
+                            <div class="buttons">
+                                <div class="pull-right">
+                                    <button class="btn btn-primary" id="button-review" type="button">Continue</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+			</div>
+        </div>
+	</div>
+
+</div>
+
+<script>
+	$(document).ready(function(){
+		$("#slider3").responsiveSlides({
+			manualControls: '#slider3-pager',
+			maxwidth: 540
+		});
+		
+		$(".qtyBtn").on("click", function() {
+			if($(this).hasClass("plus")){
+				var qty = $(".qty #input-quantity").val();
+				qty++;
+				$(".qty #input-quantity").val(qty);
+			}else{
+				var qty = $(".qty #input-quantity").val();
+				qty--;
+				if(qty>0){
+					$(".qty #input-quantity").val(qty);
+				}
+			}
+			return false;
+		});	
+		
+	});
+
+	function submitcart(iid){
+		var posting = {};
+		posting['zn'] = '{$zona}';
+		posting['iipx'] = iid;
+		posting['yqt'] = $('#input-quantity').val();
+		$.post(host+'keranjang-belanja-masuk', posting, function(resp){
+			if(resp){
+				//alert('Buku telah ditambahkan, bisa di lihat di keranjang belanja di kanan atas! atau silahkan lanjutkan belanja');
+				$("#krjblj").trigger("click");
+				$('html, body').animate( { scrollTop:0 } , 'fast');
+				$('#input-quantity').val(1);				
+			}else{
+				alert('Terjadi Kegagalan System, Coba Lagi!');
+			}
+		});
+	}
+	
+</script>

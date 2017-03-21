@@ -1,62 +1,124 @@
-<div class="product-info" style="width:100% !important; margin-left:-20px !important;">
+<div class="container">
 	{if $type eq 'checkout'}
-	<table class="table table-bordered">
-		<tbody>
-			<tr>
-				<td width='20%'>No. Order</td>
-				<td width='80%'>{$arraynya.no_order}</td>
-			</tr>
-			<tr>
-				<td width='20%'>Tanggal Order</td>
-				<td width='80%'>{$arraynya.no_order|date_format:"%d %b %Y"|default:'-'}</td>
-			</tr>
-			<tr>
-				<td width='20%'>Grand Total</td>
-				<td width='80%'>{$arraynya.grand_total}</td>
-			</tr>
-		</tbody>
-	</table>
-	<table class="table table-bordered">
-		<thead>
-			<tr>
-				<th>Kelas</th>
-				<th>Jenis</th>
-				<th>Judul Buku</th>
-				<th>Qty</th>
-				<th>Harga</th>
-				<th>Total</th>
-			</tr>
-		</thead>
-		<tbody>
-			{foreach from=$arraynya.detail_pesanan item=rows}
-				<tr>
-					<td>{$rows.kelas}</td>
-					<td>{$rows.nama_group}</td>
-					<td>{$rows.judul_buku}</td>
-					<td>{$rows.qty}</td>
-					<td>{$rows.harga}</td>
-					<td>{$rows.subtotal}</td>
-				</tr>
-			{/foreach}
-		</tbody>
-	</table>
-	<br/>
-	<br/>
-	{/if}
-	<div class="price-box-3">
-		{$pesan}
-	</div>
-	<div class="" style='display:inline !important;'>
-		<hr>
-		<div class="action-cart">
-			<a id='selesai_finish' class="checkout" href="javascript:void(0);">OK</a>
-		</div>
-	</div>
-</div>
 
-<script>
-	$('#selesai_finish').on('click', function(){
-		$('#button_close').show();
-		location.href = "{$host}beranda";
-	});
-</script>
+	   <!-- Breadcrumb Start-->
+		<ul class="breadcrumb">
+			<li><a href="{$host}"><i class="fa fa-home"></i></a></li>
+			<li><a href="{$host}katalog">Katalog</a></li>
+			<li><a href="{$host}selesaibelanja">Ringkasan Belanjaan Anda</a></li>
+		</ul>
+		
+		<div class="panel panel-default">
+			<div class="panel-heading"> 
+				<h4 class="panel-title"><i class="fa fa-user"></i> Informasi Pesanan</h4>
+			</div>
+			<div id="collapse-shipping" class="panel-collapse collapse in">
+				<div class="panel-body">
+				
+					<div class="form-horizontal">
+						<div class="form-group required">
+							<label for="input-firstname" class="col-sm-3 control-label">No. Order</label>
+							<div class="col-sm-8">
+								<div class="form-control">{$arraynya.no_order}</div>
+							</div>
+						</div>	
+						<div class="form-group required">
+							<label for="input-firstname" class="col-sm-3 control-label">Tanggal Order</label>
+							<div class="col-sm-8">
+								<div class="form-control">{$arraynya.no_order|date_format:"%d %b %Y"|default:'-'}</div>
+							</div>
+						</div>	
+						<div class="form-group required">
+							<label for="input-firstname" class="col-sm-3 control-label">Grand Total</label>
+							<div class="col-sm-8">
+								<div class="form-control">Rp. {$arraynya.grand_total}</div>
+							</div>
+						</div>	
+						<div class="form-group required">
+							<label for="input-firstname" class="col-sm-3 control-label">Ekspedisi</label>
+							<div class="col-sm-8">
+								<div class="form-control">{$arraynya.jasa_pengiriman}</div>
+							</div>
+						</div>	
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title"><i class="fa fa-shopping-cart"></i> Detail Pesanan Anda</h4>
+			</div>
+			<div class="panel-body">
+				<table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <td class="text-center">Judul Buku</td>
+                            <td class="text-center">Quantity</td>
+                            <td class="text-center">Harga</td>
+                            <td class="text-center">SubTotal</td>
+                        </tr>
+                    </thead>
+					<tbody>
+						{foreach from=$arraynya.detail_pesanan item=rows}
+							<tr>
+								<td>{$rows.judul_buku}</td>
+								<td class="text-right">{$rows.qty}</td>
+								<td class="text-right">Rp. {$rows.harga}</td>
+								<td class="text-right">Rp. {$rows.subtotal}</td>
+							</tr>
+						{/foreach}
+					</tbody>
+					<tfoot>
+                        <tr>
+                            <td class="text-right" colspan="3"><strong>Total Harga</strong></td>
+                            <td class="text-right">Rp. {$arraynya.grand_total}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right" colspan="3"><strong>Total Quantity</strong></td>
+                            <td class="text-right">{$arraynya.total_qty} Item</td>
+                        </tr>
+                    </tfoot>
+				</table>
+			</div>
+		</div>
+		
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title"><i class="fa fa-credit-card"></i> Informasi Billing Pesanan</h4>
+			</div>
+			<div id="collapse-shipping" class="panel-collapse collapse in">
+				<div class="panel-body">
+
+					<div class="form-horizontal">
+						<div class="form-group required">
+							<label for="input-firstname" class="col-sm-3 control-label">Metode Pembayaran</label>
+							<div class="col-sm-8">
+								<div class="form-control">{$arraynya.metode_pembayaran}</div>
+							</div>
+						</div>							
+						<div class="form-group required">
+							<label for="input-firstname" class="col-sm-3 control-label">Informasi Rekening Bank</label>
+							<div class="col-sm-8">
+								<div class="form-control" style="height:auto !important;">
+									Rekening BRI KCB UjungBerung <br/>
+									A/N PT. Mulia Kencana Semesta <br/>
+									No. Rekening : 035401001654308
+								</div>
+							</div>
+						</div>	
+					</div>
+					
+					<br/>
+					<h5><font color="red">Setelah melakukan pembayaran harap mengisi form konfirmasi pada website kami, agar pesanan anda segera kami kirim</font></h5>
+				</div>
+			</div>
+		</div>
+		
+		<div class="buttons">
+			<div class="pull-left"><a href="{$host}katalog" class="btn btn-default">Belanja Lagi</a></div>
+		</div>
+
+	{/if}
+</div>
