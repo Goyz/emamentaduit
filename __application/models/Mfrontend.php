@@ -418,6 +418,9 @@ class Mfrontend extends CI_Model{
 		}
 		
 		switch($table){
+			case "tbl_reg_dapotik":
+				$table="tbl_registrasi";
+			break;
 			case "uploadfile":
 				$array_cek_invoice = array( 'no_order' => $data['inv'] );
 				$cek_invoice = $this->db->get_where('tbl_h_pemesanan', $array_cek_invoice)->row_array();

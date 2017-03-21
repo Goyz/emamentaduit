@@ -160,32 +160,6 @@
 							</div>
 						</div>							
 						
-						{*
-						<div class="form-group ">
-							<label for="input-firstname" class="col-sm-3 control-label">Provinsi</label>
-							<div class="col-sm-8">
-								<select class="form-control" readonly id="provinsi_umum" name="provinsi">	
-									{$combo_prov}
-								</select>
-							</div>
-						</div>							
-						<div class="form-group ">
-							<label for="input-firstname" class="col-sm-3 control-label">Kabupaten</label>
-							<div class="col-sm-8">
-								<select class="form-control" readonly id="kabupaten_umum" name="kabupaten">	
-									{$combo_kab}
-								</select>
-							</div>
-						</div>							
-						<div class="form-group">
-							<label for="input-firstname" class="col-sm-3 control-label">Kecamatan</label>
-							<div class="col-sm-8">
-								<select class="form-control" readonly id="kecamatan_umum" name="kecamatan">		
-									{$combo_kec}
-								</select>
-							</div>
-						</div>
-						*}
 						<div class="form-group ">
 							<label for="input-firstname" class="col-sm-3 control-label">Kode Pos</label>
 							<div class="col-sm-2">
@@ -233,34 +207,74 @@
 <script>	
 	$(".validasi").validatebox({ required:true }); 
 	$('#sbmblj').on('click', function(){
-		validasi = $('#frmbelanja').form('validate');
-		if(validasi){
-			$.blockUI({ message: '<h3>Data Sedang Diproses...</h3>' });			
-		}
-		submit_form('frmbelanja', function(resp){
-			var jsn = JSON.parse(resp);
-			if(jsn.msg == 1){
-				$.post(host+'finish', { 'type':'checkout', 'no_order':jsn.no_order } , function(s){
-					parsinganxs = $.parseJSON(s);
-					$('#container').html(parsinganxs.page);
-				});
-			}else if(jsn.msg == 2){
-				alert("Kode Marketing Tidak Ditemukan!! Mohon Masukkan Kode Marketing Dengan Benar");
-				//$.unblockUI();
-				//$('#modalencuk').html("Kode Marketing Tidak Ditemukan!! Mohon Masukkan Kode Marketing Dengan Benar");			
-				//$('#productModal').modal('show'); 
-			}else if(jsn.msg == 3){
-				alert("Email Sudah Terdaftar Oleh User Lain!! Silahkan Coba Dengan Email Lainnya.");
-				//$.unblockUI();
-				//$('#modalencuk').html("Email Sudah Terdaftar Oleh User Lain!! Silahkan Coba Dengan Email Lainnya.");			
-				//$('#productModal').modal('show'); 
-			}else if(jsn.msg == 0){
-				alert("Terjadi Kegagalan Sistem! Mohon Coba Beberapa Saat Lagi.");
-				//$('#modalencuk').html("Terjadi Kegagalan Sistem! Mohon Coba Beberapa Saat Lagi.");			
-				//$('#productModal').modal('show'); 
+		if(confirm('Anda Yakin Untuk Submit Transaksi ?')){
+			validasi = $('#frmbelanja').form('validate');
+			if(validasi){
+				$.blockUI({ message: '<h3>Data Sedang Diproses...</h3>' });			
 			}
-			
-			$.unblockUI();
-		});
+			submit_form('frmbelanja', function(resp){
+				var jsn = JSON.parse(resp);
+				if(jsn.msg == 1){
+					$.post(host+'finish', { 'type':'checkout', 'no_order':jsn.no_order } , function(s){
+						parsinganxs = $.parseJSON(s);
+						$('#container').html(parsinganxs.page);
+					});
+				}else if(jsn.msg == 2){
+					alert("Kode Marketing Tidak Ditemukan!! Mohon Masukkan Kode Marketing Dengan Benar");
+					//$.unblockUI();
+					//$('#modalencuk').html("Kode Marketing Tidak Ditemukan!! Mohon Masukkan Kode Marketing Dengan Benar");			
+					//$('#productModal').modal('show'); 
+				}else if(jsn.msg == 3){
+					alert("Email Sudah Terdaftar Oleh User Lain!! Silahkan Coba Dengan Email Lainnya.");
+					//$.unblockUI();
+					//$('#modalencuk').html("Email Sudah Terdaftar Oleh User Lain!! Silahkan Coba Dengan Email Lainnya.");			
+					//$('#productModal').modal('show'); 
+				}else if(jsn.msg == 0){
+					alert("Terjadi Kegagalan Sistem! Mohon Coba Beberapa Saat Lagi.");
+					//$('#modalencuk').html("Terjadi Kegagalan Sistem! Mohon Coba Beberapa Saat Lagi.");			
+					//$('#productModal').modal('show'); 
+				}
+				
+				$.unblockUI();
+			});
+		}
 	});
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+						{* Backup Aplikasi
+						<div class="form-group ">
+							<label for="input-firstname" class="col-sm-3 control-label">Provinsi</label>
+							<div class="col-sm-8">
+								<select class="form-control" readonly id="provinsi_umum" name="provinsi">	
+									{$combo_prov}
+								</select>
+							</div>
+						</div>							
+						<div class="form-group ">
+							<label for="input-firstname" class="col-sm-3 control-label">Kabupaten</label>
+							<div class="col-sm-8">
+								<select class="form-control" readonly id="kabupaten_umum" name="kabupaten">	
+									{$combo_kab}
+								</select>
+							</div>
+						</div>							
+						<div class="form-group">
+							<label for="input-firstname" class="col-sm-3 control-label">Kecamatan</label>
+							<div class="col-sm-8">
+								<select class="form-control" readonly id="kecamatan_umum" name="kecamatan">		
+									{$combo_kec}
+								</select>
+							</div>
+						</div>
+						*}

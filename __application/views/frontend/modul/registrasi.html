@@ -11,11 +11,12 @@
             <h1 class="title">Registrasi Akun</h1>
 			
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="#tab-sekolah" data-toggle="tab" aria-expanded="true">Sekolah Swasta</a></li>
-				<li class=""><a href="#tab-umum" data-toggle="tab" aria-expanded="false">Pembeli Umum</a></li>
+				{* <li class="active"><a href="#tab-sekolah" data-toggle="tab" aria-expanded="true">Sekolah Swasta</a></li> *}
+				<li class="active"><a href="#tab-umum" data-toggle="tab" aria-expanded="true">Pembeli Umum</a></li>
 			</ul>
 			
 			<div class="tab-content">
+				{*
 				<div itemprop="sekolah" id="tab-sekolah" class="tab-pane active">
 					<form id='frmregsbrosekolah' url="{$host}submit-registrasi" method='post' enctype="multipart/form-data" class="form-horizontal">
 						<input type="hidden" name="domtype" value="S">
@@ -122,7 +123,8 @@
 						
 					</form>
 				</div>
-				<div id="tab-umum" class="tab-pane">
+				*}
+				<div itemprop="umum" id="tab-umum" class="tab-pane active">
 				
 					<form data-toggle="validator" role="form" id='frmregsbroumum' url="{$host}submit-registrasi" method='post' enctype="multipart/form-data" class="form-horizontal">
 						<input type="hidden" name="domtype" value="U">						

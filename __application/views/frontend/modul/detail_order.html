@@ -4,6 +4,156 @@
         <li><a href="{$host}"><i class="fa fa-home"></i></a></li>
         <li><a href="{$host}datapesanan">Data Pesanan</a></li>
     </ul>
+{if $cek_order eq "true"}
+	<div class="row">
+		<!--Middle Part Start-->
+		<div id="content" class="col-sm-12">
+			<h1 class="title">Detail Order {$no_order}</h1>
+			
+			{if $auth.jenis_pembeli eq "UMUM"}
+				<div class="table-responsive">
+					<table class="table table-bordered">
+						<tbody>
+							<tr>
+								<td width="25%">Nama Customer</td>
+								<td width="80%">{$data_customer.nama_lengkap|default:'-'}</td>
+							</tr>
+							<tr>
+								<td>Zona Pengiriman</td>
+								<td>{$data_invoice.zona|default:'-'}</td>
+							</tr>
+							<tr>
+								<td>Grand Total</td>
+								<td>Rp. {$data_invoice.grand_total|default:'-'}</td>
+							</tr>
+							<tr>
+								<td>Jasa Pengiriman</td>
+								<td>{$data_invoice.jasa_pengiriman|default:'-'}</td>
+							</tr>
+							<tr>
+								<td>Metode Pembayaran</td>
+								<td>{$data_invoice.metode_pembayaran|default:'-'}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="table-responsive">
+					<table class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<td class="text-center" width="20%">Status Pembayaran</td>
+								<td class="text-center" width="20%">Status Konfirmasi</td>
+								<td class="text-center" width="20%">Status Pengiriman</td>
+								<td class="text-center" width="20%">No. Resi</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="text-center" >{$data_tracking.status_pembayaran|default:"-"}</td>
+								<td class="text-center" >{$data_tracking.status_konfirmasi|default:"-"}</td>
+								<td class="text-center" >{$data_tracking.status_tracking|default:"-"}</td>
+								<td class="text-center" >{$data_tracking.no_resi|default:"-"}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			{elseif $auth.jenis_pembeli eq "SEKOLAH"}
+				<div class="table-responsive">
+					<table class="table table-bordered">
+						<tbody>
+							<tr>
+								<td width="25%">Nama Sekolah</td>
+								<td width="80%">{$data_customer.nama_sekolah|default:'-'}</td>
+							</tr>
+							<tr>
+								<td>Zona Pengiriman</td>
+								<td>{$data_invoice.zona|default:'-'}</td>
+							</tr>
+							<tr>
+								<td>Grand Total</td>
+								<td>Rp. {$data_invoice.grand_total|default:'-'}</td>
+							</tr>
+							<tr>
+								<td>Jasa Pengiriman</td>
+								<td>{$data_invoice.jasa_pengiriman|default:'-'}</td>
+							</tr>
+							<tr>
+								<td>Metode Pembayaran</td>
+								<td>{$data_invoice.metode_pembayaran|default:'-'}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="table-responsive">
+					<table class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<td class="text-center" width="20%">Status Pembayaran</td>
+								<td class="text-center" width="20%">Status Konfirmasi</td>
+								<td class="text-center" width="20%">Status Pengiriman</td>
+								<td class="text-center" width="20%">No. Resi</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="text-center" >{$data_tracking.status_pembayaran|default:"-"}</td>
+								<td class="text-center" >{$data_tracking.status_konfirmasi|default:"-"}</td>
+								<td class="text-center" >{$data_tracking.status_tracking|default:"-"}</td>
+								<td class="text-center" >{$data_tracking.no_resi|default:"-"}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			{/if}
+			
+			<div class="buttons">
+				<div class="pull-center">
+					<center>
+						{if $auth.jenis_pembeli eq "SEKOLAH"}
+							<a id='ctk_bast' href='javascript:void(0);' class="btn btn-primary">Cetak BAST</a> 
+							<a id='ctk_kwt' href='javascript:void(0);' class="btn btn-primary">Cetak KWITANSI</a> 
+							<a id='ctk_tt' href='javascript:void(0);' class="btn btn-primary">Cetak Tanda Terima</a> 
+							<a id='ctk_sp' href='javascript:void(0);' class="btn btn-primary">Cetak Surat Pesanan</a> 
+						{/if}
+						<a href="{$host}datapesanan" class="btn btn-danger" >Kembali<a/>
 
-	
+					</center>
+				</div>
+			</div>
+		</div>
+	</div>
+{else}
+	<div class="row">
+		<!--Middle Part Start-->
+		<div id="content" class="col-sm-12">
+			<center><h1 class="title">No. Order Tidak Valid</h1></center>
+		</div>
+	</div>
+{/if}
+
 </div>
+
+{if $auth.jenis_pembeli eq "SEKOLAH"}
+	<script>
+		$('#ctk_bast').on('click', function(){
+			var post = {};
+			post['invo'] = "{$no_order}";
+			openWindowWithPost(host+'cetak-bast', post);
+		});	
+		$('#ctk_kwt').on('click', function(){
+			var post = {};
+			post['invo'] = "{$no_order}";
+			openWindowWithPost(host+'cetak-kwitansi', post);
+		});	
+		$('#ctk_tt').on('click', function(){
+			var post = {};
+			post['invo'] = "{$no_order}";
+			openWindowWithPost(host+'cetak-tanda-terima', post);
+		});	
+		$('#ctk_sp').on('click', function(){
+			var post = {};
+			post['invo'] = "{$no_order}";
+			openWindowWithPost(host+'cetak-surat-pesanan', post);
+		});	
+	</script>
+{/if}

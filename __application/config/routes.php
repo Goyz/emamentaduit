@@ -38,6 +38,7 @@ $route['backup-repository'] = 'backend/backupsystem/repository';
 $route['beranda'] = 'frontend/getdisplay/main_page/beranda'; //kepake
 $route['loading-beranda'] = 'frontend/getdisplay/loading_page/beranda'; //kepake
 
+$route['profile'] = 'frontend/getdisplay/loading_page/profile';
 $route['loading-profile'] = 'frontend/getdisplay/loading_page/profile';
 
 $route['tracking'] = 'frontend/getdisplay/main_page/tracking';
@@ -102,10 +103,10 @@ $route['loading-detailorder'] = 'frontend/getdisplay/loading_page/detail_order';
 
 $route['loading-formkonf'] = 'frontend/getdisplay/loading_page/konfrom';
 
-$route['cetak-bast'] = 'frontend/generatepdf/bastnya';
-$route['cetak-kwitansi'] = 'frontend/generatepdf/kwitansinya';
-$route['cetak-tanda-terima'] = 'frontend/generatepdf/tandaterima';
-$route['cetak-surat-pesanan'] = 'frontend/generatepdf/suratpesanan';
+$route['cetak-bast'] = 'frontend/generatepdf/bastnya'; //kepake
+$route['cetak-kwitansi'] = 'frontend/generatepdf/kwitansinya'; //kepake
+$route['cetak-tanda-terima'] = 'frontend/generatepdf/tandaterima'; //kepake
+$route['cetak-surat-pesanan'] = 'frontend/generatepdf/suratpesanan'; //kepake
 
 $route['lacakpesanan'] = 'frontend/getdisplay/main_page/lacakpesanan';
 $route['loading-lacakpesanan'] = 'frontend/getdisplay/loading_page/lacakpesan';

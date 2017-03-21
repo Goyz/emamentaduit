@@ -7,18 +7,10 @@
     <!-- Breadcrumb End-->
     <div class="row">
         <!--Middle Part Start-->
-        <div class="col-sm-9" id="content">
-			{*
-		   {if $auth.jenis_pembeli eq "SEKOLAH"}
-				<h3 class="title">Data Profile {$auth.nama_sekolah}</h3>
-			{elseif $auth.jenis_pembeli eq "UMUM"}
-				<h3 class="title">Data Profile {$auth.nama_lengkap}</h3>
-			{/if}
-			*}
-			
+        <div class="col-sm-9" id="content">			
 			<ul class="nav nav-tabs">
 				{if $auth.jenis_pembeli eq "SEKOLAH"}
-					<li class="active"><a href="#tab-sekolah" data-toggle="tab" aria-expanded="true">Sekolah Swasta</a></li>
+					<li class="active"><a href="#tab-sekolah" data-toggle="tab" aria-expanded="true">Sekolah</a></li>
 				{elseif $auth.jenis_pembeli eq "UMUM"}
 					<li class="active"><a href="#tab-umum" data-toggle="tab" aria-expanded="true">Pembeli Umum</a></li>
 				{/if}
@@ -34,101 +26,103 @@
 							<div class="form-group readonly">
 								<label for="input-firstname" class="col-sm-3 control-label">NPSN</label>
 								<div class="col-sm-8">
-									<input class="form-control" readonly id="npsn" name="npsn" type="text">
+									<div class="form-control">{$auth.npsn|default:'-'}</div>
 								</div>
 							</div>												
 							<div class="form-group readonly">
 								<label for="input-firstname" class="col-sm-3 control-label">Nama Sekolah</label>
 								<div class="col-sm-8">
-									<input class="form-control" readonly id="nm_seko" name="nm_seko" type="text">
+									<div class="form-control">{$auth.nama_sekolah|default:'-'}</div>
 								</div>
 							</div>					
 							<div class="form-group readonly">
 								<label for="input-lastname" class="col-sm-3 control-label">Email Sekolah</label>
 								<div class="col-sm-8">
-									<input class="form-control" readonly id="email" name="email" type="email">
+									<div class="form-control">{$auth.email|default:'-'}</div>
 								</div>
 							</div>							
 							<div class="form-group readonly">
 								<label for="input-firstname" class="col-sm-3 control-label">No. Telp Sekolah</label>
 								<div class="col-sm-8">
-									<input class="form-control" readonly id="telp_sekolah" name="telp_sekolah" type="text">
+									<div class="form-control">{$auth.no_telp_sekolah|default:'-'}</div>
 								</div>
 							</div>							
 							<div class="form-group readonly">
 								<label for="input-firstname" class="col-sm-3 control-label">Nama Kepala Sekolah</label>
 								<div class="col-sm-8">
-									<input class="form-control" readonly id="kpl_sekolah" name="kpl_sekolah" type="text">
+									<div class="form-control">{$auth.nama_kepala_sekolah|default:'-'}</div>
 								</div>
 							</div>							
 							<div class="form-group readonly">
 								<label for="input-firstname" class="col-sm-3 control-label">NIP Kepala Sekolah</label>
 								<div class="col-sm-8">
-									<input class="form-control" readonly id="nip_kepsek" name="nip_kepsek" type="text">
+									<div class="form-control">{$auth.nip|default:'-'}</div>
 								</div>
 							</div>							
 							<div class="form-group readonly">
 								<label for="input-firstname" class="col-sm-3 control-label">No. HP Kepsek</label>
 								<div class="col-sm-8">
-									<input class="form-control" readonly id="no_hp_kepsek" name="no_hp_kepsek" type="text">
+									<div class="form-control">{$auth.no_hp_kepsek|default:'-'}</div>
 								</div>
 							</div>							
 							<div class="form-group readonly">
 								<label for="input-firstname" class="col-sm-3 control-label">Nama Bendahara Sekolah</label>
 								<div class="col-sm-8">
-									<input class="form-control" readonly id="nm_bendahara" name="nm_bendahara" type="text">
+									<div class="form-control">{$auth.nama_bendahara|default:'-'}</div>
 								</div>
 							</div>							
 							<div class="form-group readonly">
 								<label for="input-firstname" class="col-sm-3 control-label">No. HP Bendahara</label>
 								<div class="col-sm-8">
-									<input class="form-control" readonly id="no_hp_bendahara" name="no_hp_bendahara" type="text">
+									<div class="form-control">{$auth.no_hp_bendahara|default:'-'}</div>
 								</div>
 							</div>							
 						</fieldset>
 						<fieldset>
 							<legend>Data Alamat Sekolah</legend>
+							<div class="form-group">
+								<label for="input-firstname" class="col-sm-3 control-label">Zona Pengiriman</label>
+								<div class="col-sm-8">
+									<div class="form-control">{$auth.zona_pengiriman|default:'-'}</div>
+								</div>
+							</div>														
 							<div class="form-group readonly">
 								<label for="input-firstname" class="col-sm-3 control-label">Provinsi</label>
 								<div class="col-sm-8">
-									<select class="form-control" readonly id="provinsi" name="provinsi">	
-										{$combo_prov}
-									</select>
+									<div class="form-control">{$auth.prov|default:'-'}</div>
 								</div>
 							</div>							
 							<div class="form-group readonly">
 								<label for="input-firstname" class="col-sm-3 control-label">Kabupaten</label>
 								<div class="col-sm-8">
-									<select class="form-control" readonly id="kabupaten" name="kabupaten">	
-									</select>
+									<div class="form-control">{$auth.kab|default:'-'}</div>
 								</div>
 							</div>							
 							<div class="form-group">
 								<label for="input-firstname" class="col-sm-3 control-label">Kecamatan</label>
 								<div class="col-sm-8">
-									<select class="form-control" id="kecamatan" name="kecamatan">	
-									
-									</select>
+									<div class="form-control">{$auth.kec|default:'-'}</div>
+								</div>
+							</div>		
+							<div class="form-group">
+								<label for="input-firstname" class="col-sm-3 control-label">Desa</label>
+								<div class="col-sm-8">
+									<div class="form-control">{$auth.desa|default:'-'}</div>
 								</div>
 							</div>		
 							<div class="form-group readonly">
 								<label for="input-firstname" class="col-sm-3 control-label">Kode Pos</label>
 								<div class="col-sm-2">
-									<input class="form-control" readonly id="kd_pos" name="kd_pos" type="text">
+									<div class="form-control">{$auth.kode_pos|default:'-'}</div>
 								</div>
 							</div>														
 							<div class="form-group readonly">
 								<label for="input-fax" class="col-sm-3 control-label">Alamat Pengiriman</label>
 								<div class="col-sm-8">
-									<textarea class="form-control" readonly id="alamat_pengiriman" name="alamat_pengiriman"></textarea>
+									<div class="form-control">{$auth.alamat_pengiriman|default:'-'}</div>
 								</div>
 							</div>												
 						</fieldset>
-						<div class="buttons">
-							<div class="pull-center">
-								<center><input id="daftarsekolah" class="btn btn-primary" value="Daftar" type="submit"></center>
-							</div>
-						</div>
 						
 					</form>
 				</div>
@@ -165,6 +159,12 @@
 						</fieldset>
 						<fieldset>
 							<legend>Data Alamat</legend>
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Zona Pengiriman</label>
+								<div class="col-sm-8">
+									<input class="form-control validasi" readonly value="{$auth.provinsi}" type="text">
+								</div>
+							</div>							
 							<div class="form-group required">
 								<label for="input-firstname" class="col-sm-3 control-label">Provinsi</label>
 								<div class="col-sm-8">
@@ -211,9 +211,8 @@
             <div class="list-group">
                 <ul class="list-item">
                     <li><a href="{$host}">Data Profile</a></li>
-                    <li><a href="#">Konfirmasi</a></li>
-                    <li><a href="#">Lacak Pesanan</a></li>
-                    <li><a href="#">Riwayat</a></li>
+                    <li><a href="{$host}datapesanan">Data Pesanan</a></li>
+                    <li><a href="{$host}katalog">Katalog</a></li>
                     <li><a href="{$host}logoutpembeli">Logout</a></li>
                 </ul>
             </div>

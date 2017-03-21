@@ -12,7 +12,7 @@
 			<div class="table-responsive">
 				<table class="table table-bordered table-hover">
 					<thead>
-						<tr>
+						<tr style="background:#E3F4D1 !important;font-weight:bold !important;">
 							<td class="text-center" width="20%">No. Order</td>
 							<td class="text-center" width="10%">Tanggal Order</td>
 							<td class="text-center" width="20%">Total Harga</td>
@@ -27,8 +27,19 @@
 									<td class="text-center">{$rows.tgl_orderr}</td>
 									<td class="text-right">{$rows.total_pesanan}</td>
 									<td class="text-right">
-										<a href="{$host}konfirmasi/{$rows.no_order}">Detail Order</a>
+										<a href="{$host}detailorder/{$rows.no_order}">Detail Order</a>
 										{if $auth.jenis_pembeli eq "UMUM"}
+											{if $rows.flag_konfirm eq 0}
+												&nbsp;&nbsp;|&nbsp;&nbsp;
+												<a href="{$host}konfirmasi/{$rows.no_order}">Konfirmasi Pembayaran</a>
+											{elseif $rows.flag_konfirm eq 1}
+												&nbsp;&nbsp;|&nbsp;&nbsp;
+												<span>Sudah Bayar</span>
+											{elseif $rows.flag_konfirm eq 2}
+												&nbsp;&nbsp;|&nbsp;&nbsp;
+												<span>Menunggu Verifikasi Pembayaran</span>
+											{/if}
+										{elseif $auth.jenis_pembeli eq "SEKOLAH"}	
 											{if $rows.flag_konfirm eq 0}
 												&nbsp;&nbsp;|&nbsp;&nbsp;
 												<a href="{$host}konfirmasi/{$rows.no_order}">Konfirmasi Pembayaran</a>
@@ -44,7 +55,9 @@
 								</tr>
 							{/foreach}
 						{else}
-						
+							<tr>
+								<td class="text-center" colspan="4">:: Tidak Ada Data Pesanan ::</td>
+							</tr>
 						{/if}
 					</tbody>
 				</table>

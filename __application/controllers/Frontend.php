@@ -18,7 +18,7 @@ class Frontend extends CI_Controller {
 		
 		$this->client_id		= 'bkk13am';
 		$this->client_secret	= 'ae044c5653e256aa8a0a53ed3cbd9db6';
-		$this->redirect_uri		= 'http://www.aldeaz.id/katalog';
+		$this->redirect_uri		= 'http://localhost:81/public_codeigniter/mks/profile';
 		
 		$this->token_endpoint		= 'http://data.dikdasmen.kemdikbud.go.id/sso/token';
 		$this->authorize_endpoint	= 'http://data.dikdasmen.kemdikbud.go.id/sso/auth';
@@ -29,7 +29,6 @@ class Frontend extends CI_Controller {
 		$host = $this->host;
 		$this->nsmarty->assign('host',$this->host);
 		$this->nsmarty->assign('auth', $this->auth);
-		
 		
 		$this->nsmarty->assign('client_id', $this->client_id);
 		$this->nsmarty->assign('client_secret', $this->client_secret);
@@ -61,8 +60,72 @@ class Frontend extends CI_Controller {
 				$jumlah_item = count($data_cart);
 				
 				if($p1 == "beranda"){
-					$this->nsmarty->assign( 'judulbesar', "www.aldeaz.id" );
-					$this->nsmarty->assign( 'judulkecil', "Klik -->katalog -->pilih zona -->cari buku -->beli" );
+				
+				}elseif($p1 == "profile"){
+					$code = $this->input->get('code');
+					//echo $code;exit;
+					if($code){
+						$token = $this->lib->oauthtoken($this->client_id, $this->client_secret, $code, $this->redirect_uri, $this->token_endpoint);
+						if(isset($token['error'])){
+							echo "Error : <b>".$token['error']." </b> Pesan : <b>".$token['error_description']."</b>";exit;
+						}
+						//print_r($token);exit;
+						$getidentity = $this->lib->oauthidentity($token['access_token'], $this->profile_endpoint);
+						$infosp = $this->lib->oauthidentity($token['access_token'], $this->infosp);
+						$cek_user=$this->mfrontend->getdata('data_login_dapotik','row_array',$getidentity['username']);
+						//echo "<pre>";print_r($infosp);echo "</pre>";exit;
+						if(isset($cek_user['email'])){
+							$sess = array();
+							$sess['zona_pilihan'] = $infosp['zona'];
+							$this->session->set_userdata("zonaxtreme", $sess);
+							$this->session->set_userdata('aldeaz_pembeli', base64_encode(serialize($cek_user)));
+							header("Location: " . $this->host ."katalog");
+						}else{
+							$data=array('email'=>$getidentity['username'],
+										'nama_user'=>$getidentity['username'],
+										'nama_lengkap'=>$getidentity['nama'],
+										'no_telp_sekolah'=>$getidentity['no_telepon'],
+										'kode_wilayah'=>$getidentity['kode_wilayah'],
+										'sekolah_id'=>$getidentity['sekolah_id'],
+										'peran_id'=>$getidentity['peran_id'],
+										'jenis_pembeli'=>'SEKOLAH',
+										'status'=>1,
+										'pengguna_id'=>$getidentity['pengguna_id'],
+										'alamat_pengiriman'=>$infosp['alamat'],
+										'nama_sekolah'=>$infosp['nama_sekolah'],
+										'nama_kepala_sekolah'=>$infosp['nama_kepsek'],
+										'nip'=>$infosp['nip_kepsek'],
+										'nama_bendahara'=>$infosp['nama_operator'],
+										'npsn'=>$infosp['npsn'],
+										'kd_prov'=>$infosp['kd_prov'],
+										'cl_provinsi_kode'=>$infosp['kd_prov'],
+										'prov'=>$infosp['prov'],
+										'kd_kab'=>$infosp['kd_kab'],
+										'cl_kab_kota_kode'=>$infosp['kd_kab'],
+										'kab'=>$infosp['kab'],
+										'kd_kec'=>$infosp['kd_kec'],
+										'kec'=>$infosp['kec'],
+										'desa'=>$infosp['desa'],
+										'kode_pos'=>$infosp['kode_pos'],
+										'email_kepsek'=>$infosp['email_kepsek'],
+										'email_operator'=>$infosp['email_operator'],
+										'no_hp_kepsek'=>$infosp['hp_kepsek'],
+										'no_hp_bendahara'=>$infosp['hp_operator']
+										
+							);
+							$simpan_dapotik=$this->mfrontend->simpansavedata('tbl_reg_dapotik',$data,'add');
+							if($simpan_dapotik==1){
+								$cek_user=$this->mfrontend->getdata('data_login_dapotik','row_array',$getidentity['username']);
+								$sess = array();
+								$sess['zona_pilihan'] = $infosp['zona'];
+								$this->session->set_userdata("zonaxtreme", $sess);
+								$this->session->set_userdata('aldeaz_pembeli', base64_encode(serialize($cek_user)));
+								header("Location: " . $this->host ."katalog");
+							}else{
+								echo "FAILED SAVE ";exit;
+							}
+						}
+					}
 				}elseif($p1 == "login"){
 					
 				}elseif($p1 == "carabelanja"){
@@ -126,7 +189,7 @@ class Frontend extends CI_Controller {
 					break;
 					case "registrasi":
 						$temp = "frontend/modul/registrasi.html";
-						$this->nsmarty->assign('combo_prov', $this->lib->fillcombo('cl_provinsi', 'return'));
+						$this->nsmarty->assign('combo_prov', $this->lib->fillcombo('cl_provinsi_old', 'return'));
 					break;
 					case "profile":
 						$temp = "frontend/modul/profile.html";
@@ -159,6 +222,23 @@ class Frontend extends CI_Controller {
 					break;
 					case "detail_order":
 						$temp = "frontend/modul/detail_order.html";
+						
+						$no_order = $this->input->post("ord");
+						$data_invoice = $this->mfrontend->getdata('header_pesanan', 'row_array', $no_order);
+						if($data_invoice){ 
+							$data_customer = $this->db->get_where('tbl_registrasi', array('id'=>$data_invoice['tbl_registrasi_id']))->row_array();
+							$data_tracking = $this->mfrontend->getdata('tracking_pesanan', 'row_array', $no_order);
+							$data_invoice['grand_total'] = number_format($data_invoice['grand_total'],0,",",".");
+							
+							$this->nsmarty->assign( 'data_invoice', $data_invoice ); 
+							$this->nsmarty->assign( 'data_tracking', $data_tracking ); 
+							$this->nsmarty->assign( 'data_customer', $data_customer);
+							$this->nsmarty->assign( 'cek_order', "true" ); 
+						}else{ 
+							$this->nsmarty->assign( 'cek_order', "false" ); 
+						}	
+						
+						$this->nsmarty->assign('no_order', $no_order);
 					break;
 					case "datapesanan":
 						$temp = "frontend/modul/datapesanan.html";
@@ -167,6 +247,18 @@ class Frontend extends CI_Controller {
 							if($this->auth["jenis_pembeli"] == "UMUM"){
 								$cek_data_konfirmasi = $this->db->get_where("tbl_konfirmasi", array("tbl_h_pemesanan_id"=>$v["id"]) )->row_array();
 								if($cek_data_konfirmasi){
+									if($cek_data_konfirmasi["flag"] == "P"){
+										$data_pesanan[$k]['flag_konfirm'] = 2; //Menunggu verifikasi
+									}elseif($cek_data_konfirmasi["flag"] == "F"){										
+										$data_pesanan[$k]['flag_konfirm'] = 1; //Sudah Konfirmasi
+									}
+								}else{
+									$data_pesanan[$k]['flag_konfirm'] = 0; //Belum Konfirmasi
+								}
+							}elseif($this->auth["jenis_pembeli"] == "SEKOLAH"){
+								$cek_data_konfirmasi = $this->db->get_where("tbl_konfirmasi", array("tbl_h_pemesanan_id"=>$v["id"]) )->row_array();
+								if($cek_data_konfirmasi){
+									$data_pesanan[$k]['flag_konfirm'] = "";
 									if($cek_data_konfirmasi["flag"] == "P"){
 										$data_pesanan[$k]['flag_konfirm'] = 2; //Menunggu verifikasi
 									}elseif($cek_data_konfirmasi["flag"] == "F"){										
@@ -623,11 +715,11 @@ class Frontend extends CI_Controller {
 						
 						$this->nsmarty->assign('zona', $zona_pilihan['zona_pilihan']);
 						$this->nsmarty->assign('estimasi', $estimasi['estimasi']);
-												
-						if($this->auth["jenis_pembeli"] == "UMUM"){
-							$this->nsmarty->assign('combo_jasa_pengiriman', $this->lib->fillcombo('cl_jasa_pengiriman', 'return') );
-							$this->nsmarty->assign('combo_metode_pembayaran', $this->lib->fillcombo('cl_metode_pembayaran', 'return') );						
-							
+						
+						$this->nsmarty->assign('combo_jasa_pengiriman', $this->lib->fillcombo('cl_jasa_pengiriman', 'return') );
+						$this->nsmarty->assign('combo_metode_pembayaran', $this->lib->fillcombo('cl_metode_pembayaran', 'return') );						
+						
+						if($this->auth["jenis_pembeli"] == "UMUM"){							
 							$this->nsmarty->assign('combo_prov', $this->lib->fillcombo('cl_provinsi_old', 'return', (isset($this->auth) ? $this->auth['cl_provinsi_kode'] : "" ) ));
 							$this->nsmarty->assign('combo_kab', $this->lib->fillcombo('cl_kab_kota_old', 'return', (isset($this->auth) ? $this->auth['cl_kab_kota_kode'] : "" ), (isset($this->auth) ? $this->auth['cl_provinsi_kode'] : "" ) ));
 							$this->nsmarty->assign('combo_kec', $this->lib->fillcombo('cl_kecamatan_old', 'return', (isset($this->auth) ? $this->auth['cl_kecamatan_kode'] : "" ), (isset($this->auth) ? $this->auth['cl_kab_kota_kode'] : "" ) ));													
@@ -666,16 +758,16 @@ class Frontend extends CI_Controller {
 					break;
 					case "combo_kab_kota":
 						$v2 = $this->input->post('v2');
-						echo $this->lib->fillcombo('cl_kab_kota', 'return', '', $v2);
+						echo $this->lib->fillcombo('cl_kab_kota_old', 'return', '', $v2);
 						exit;
 					break;
 					case "combo_kecamatan":
 						$v2 = $this->input->post('v2');
-						echo $this->lib->fillcombo('cl_kecamatan', 'return', '', $v2);
+						echo $this->lib->fillcombo('cl_kecamatan_old', 'return', '', $v2);
 						exit;
 					break;
 					case "finish_semuanya":
-						$temp = "frontend/modul/finish-page.html";
+						$temp = "frontend/modul/finish.html";
 						$type = $this->input->post('type');
 						if($type == 'checkout'){
 							$no_order = $this->input->post('no_order');
@@ -926,7 +1018,7 @@ class Frontend extends CI_Controller {
 					$no_kwitansi = $data_invoice['no_order']."/ASP/K/".date('Y');
 					$datacust = $this->mfrontend->getdata('datacustomer', 'row_array', $data_invoice['tbl_registrasi_id'], '', 'cetak_bast');
 					$jumlah = number_to_words($data_invoice['grand_total']);
-					$datakonfirmasi = $this->db->get_where('tbl_konfirmasi', array('tbl_h_pemesanan_id'=>$data_invoice['id']) )->row_array();
+					$datakonfirmasi = $this->db->get_where('tbl_konfirmasi', array('tbl_h_pemesanan_id'=>$data_invoice['idpesan']) )->row_array();
 					
 					$cekdatakwitansi = $this->db->get_where('tbl_kwitansi', array('tbl_konfirmasi_id'=>$datakonfirmasi['id']) )->row_array();
 					if(!$cekdatakwitansi){
@@ -937,6 +1029,9 @@ class Frontend extends CI_Controller {
 						);
 						$this->db->insert('tbl_kwitansi', $array_insert_kwitansi);
 					}
+					
+					//echo "<pre>";
+					//print_r($data_invoice);exit;
 					
 					$this->nsmarty->assign('datakonfirmasi', $datakonfirmasi);
 					$this->nsmarty->assign('datainvoice', $data_invoice);
@@ -1211,8 +1306,16 @@ class Frontend extends CI_Controller {
 			if(count($cek_user) > 0){
 				if($pass == $this->encrypt->decode($cek_user['password'])){
 					$sess = array();
-					$sess['zona_pilihan'] = $cek_user["zona_pengiriman"];
-					$sess['provinsi'] = $cek_user['provinsi'];
+					if($cek_user["jenis_pembeli"] == "UMUM"){
+						$sess['zona_pilihan'] = $cek_user["zona_pengiriman"];
+						$sess['provinsi'] = $cek_user['provinsi'];
+					}elseif($cek_user["jenis_pembeli"] == "SEKOLAH"){
+						$zona = $this->db->get_where("cl_provinsi", array("kode_prov"=>$cek_user["cl_provinsi_kode"]))->row_array();
+						$cek_user['zona_pengiriman'] = $zona["zona"];
+						$sess['zona_pilihan'] = $zona["zona"];
+						$sess['provinsi'] = $zona['provinsi'];
+					}
+					
 					//$sess['kode_provinsi'] = $data_zona['kode_prov'];
 					$this->session->set_userdata("zonaxtreme", $sess);
 					$this->session->set_userdata('mkspembeli', base64_encode(serialize($cek_user)));
