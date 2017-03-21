@@ -134,7 +134,7 @@ a:focus { outline:none; }
 	margin-top:20px;
 	margin-bottom:20px;
 }
-#content { min-height:400px; }
+#content { min-height:10px; }
 /*===================================================================================*/
 /*  3. Header
 /*===================================================================================*/
@@ -146,6 +146,7 @@ a:focus { outline:none; }
 #header .header-row {
 	position:relative;
 	padding:35px 0;
+	background-color: #88C843;
 }
 #header .header-row .inner { padding:0; }
 #header #logo img { display:inline-block!important; }
@@ -1693,9 +1694,8 @@ visibility:hidden;
 /**===== 16.5. Powered by Text =====**/
 #footer #powered {
 	line-height:20px;
-	padding:0px 0 25px;
-	margin-bottom:25px;
-	border-bottom:1px solid #E8E8E8;
+	padding:25px 0 25px;
+	border-top:1px solid #EAEFE4;
 }
 #footer #powered a {
 	-webkit-transition: all 0.3s ease-in-out;

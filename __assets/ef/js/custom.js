@@ -144,23 +144,6 @@ $('.drop-icon').on("click", function() {
 	  return false;
 	});
 
-/*---------------------------------------------------
-    Increase and Decrease Button Quantity for Product Page
------------------------------------------------------ */
-$(".qtyBtn").on("click", function() {
-		if($(this).hasClass("plus")){
-			var qty = $(".qty #input-quantity").val();
-			qty++;
-			$(".qty #input-quantity").val(qty);
-		}else{
-			var qty = $(".qty #input-quantity").val();
-			qty--;
-			if(qty>0){
-				$(".qty #input-quantity").val(qty);
-			}
-		}
-		return false;
-	});	
 
 /*---------------------------------------------------
     Product List
@@ -242,66 +225,6 @@ $('#back-top').on("click", function() {
 	$('html, body').animate({scrollTop:0}, 'slow');
 	return false;
 });
-
-/*---------------------------------------------------
-   Facebook Side Block
------------------------------------------------------ */
-$(function(){        
-        $("#facebook.fb-left").hover(function(){            
-        $(this).stop(true, false).animate({left: "0" }, 800, 'easeOutQuint' );        
-        },
-  function(){            
-        $(this).stop(true, false).animate({left: "-241px" }, 800, 'easeInQuint' );        
-        },1000);    
-  });
-$(function(){        
-        $("#facebook.fb-right").hover(function(){            
-        $(this).stop(true, false).animate({right: "0" }, 800, 'easeOutQuint' );        
-        },
-  function(){            
-        $(this).stop(true, false).animate({right: "-241px" }, 800, 'easeInQuint' );        
-        },1000);    
-  });
-
-/*---------------------------------------------------
-   Twitter Side Block
------------------------------------------------------ */
-$(function(){        
-        $("#twitter_footer.twit-left").hover(function(){            
-        $(this).stop(true, false).animate({left: "0" }, 800, 'easeOutQuint' );        
-        },
-  function(){            
-        $(this).stop(true, false).animate({left: "-215px" }, 800, 'easeInQuint' );        
-        },1000);    
-  });
-$(function(){        
-        $("#twitter_footer.twit-right").hover(function(){            
-        $(this).stop(true, false).animate({right: "0" }, 800, 'easeOutQuint' );        
-        },
-  function(){            
-        $(this).stop(true, false).animate({right: "-215px" }, 800, 'easeInQuint' );        
-        },1000);    
-  });
-
-/*---------------------------------------------------
-   Video Side Block
------------------------------------------------------ */
-$(function(){        
-        $("#video_box.vb-left").hover(function(){            
-        $(this).stop(true, false).animate({left: "0" }, 800, 'easeOutQuint' );        
-        },
-  function(){            
-        $(this).stop(true, false).animate({left: "-566px" }, 800, 'easeInQuint' );        
-        },1000);    
-  });
-$(function(){        
-        $("#video_box.vb-right").hover(function(){            
-        $(this).stop(true, false).animate({right: "0" }, 800, 'easeOutQuint' );        
-        },
-  function(){            
-        $(this).stop(true, false).animate({right: "-566px" }, 800, 'easeInQuint' );        
-        },1000);    
-  });
 
 /*---------------------------------------------------
    Custom Side Block

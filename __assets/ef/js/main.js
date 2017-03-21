@@ -1,5 +1,18 @@
 $('#container').html('');
-$.post(host+'loading-'+konten, {}, function(respons){
+
+var postkonten = {};
+if(konten == "detailproduk"){
+	postkonten["idix"] = idix;
+	postkonten["jd"] = jd;
+}else if(konten == "detailpaket"){
+	postkonten["idix"] = idix;
+	postkonten["jd"] = jd;
+}else if(konten == "konfirmasi"){
+	postkonten["ord"] = ord;
+}else if(konten == "detailorder"){
+	postkonten["ord"] = ord;
+}
+$.post(host+'loading-'+konten, postkonten , function(respons){
 	var parsing = $.parseJSON(respons);
 	$('#container').html(parsing.page);
 });
@@ -7,12 +20,9 @@ $.post(host+'loading-'+konten, {}, function(respons){
 function kumpulAction(type, p1, p2, p3){
 	switch(type){
 		case "krj":
-			//$('.modal-dialog').css({'width':'00px'});
-			$('#modalencuk').html('');
 			$.post(host+'keranjang-belanja', { }, function(resp){
 				parsingan = $.parseJSON(resp)
-				$('#modalencuk').html(parsingan.page);
-				$('#productModal').modal('show'); 
+				$('#keranjangbelonjo').html(parsingan.page);
 			})
 		break;
 		case "lgnpmb":

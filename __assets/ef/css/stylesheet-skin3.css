@@ -59,7 +59,7 @@ a b:hover,
 /*===================================================================================*/
 
 #header .htop {
-    background-color: #88C843;
+    background-color: #6BAF23;
 	color:#fff !important;
 }
 
@@ -124,7 +124,7 @@ a b:hover,
 /*===================================================================================*/
 
 #menu {
-    background-color: #555;
+    background-color: #6BAF23;
     border: none;
 }
 
@@ -300,16 +300,16 @@ a b:hover,
 /*===================================================================================*/
 
 #footer .fpart-first {
-    background-color: #191919;
+    background-color: #6BAF23;
 }
 
 #footer .fpart-first,
 #footer .fpart-first a {
-    color: #999;
+    color: #EAEFE4;
 }
 
 #footer .fpart-first a:hover {
-    color: #01a161;
+    color: #EEEEEE;
 }
 
 #footer h5 {
@@ -317,12 +317,12 @@ a b:hover,
 }
 
 #footer #powered {
-    border-bottom-color: #222;
+    border-top-color: #EAEFE4;
 }
 
 #footer .fpart-second {
-    color: #666;
-    background-color: #111;
+    color: #EAEFE4;
+    background-color: #6BAF23;
 }
 
 #footer .fpart-second a {
@@ -341,7 +341,7 @@ a b:hover,
 }
 
 .left-top {
-    background-color: #88C843;
+    /*background-color: #6BAF23;*/
 }
 
 #menu .navbar-header > span > b:before {
