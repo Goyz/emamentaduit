@@ -437,16 +437,16 @@ class Mfrontend extends CI_Model{
 				}			
 				
 				$upload_path = "./__repository/bast_tandaterima/";
-				if(!empty($_FILES['bast']['name'])){					
+				if(!empty($_FILES['fl_bast']['name'])){					
 					$file_bast = "BAST-".$cek_invoice['no_order'];
-					$filename_bast =  $this->lib->uploadnong($upload_path, 'bast', $file_bast); //$file.'.'.$extension;
+					$filename_bast =  $this->lib->uploadnong($upload_path, 'fl_bast', $file_bast); //$file.'.'.$extension;
 				}else{
 					$filename_bast = null;
 				}
 				
-				if(!empty($_FILES['tanda_terima']['name'])){					
+				if(!empty($_FILES['fl_tndterima']['name'])){					
 					$file_tandaterima = "TANDATERIMA-".$cek_invoice['no_order'];
-					$filename_tandaterima =  $this->lib->uploadnong($upload_path, 'tanda_terima', $file_tandaterima); //$file.'.'.$extension;
+					$filename_tandaterima =  $this->lib->uploadnong($upload_path, 'fl_tndterima', $file_tandaterima); //$file.'.'.$extension;
 				}else{
 					$filename_tandaterima = null;
 				}

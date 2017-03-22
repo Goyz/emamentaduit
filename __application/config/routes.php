@@ -98,6 +98,10 @@ $route['konfirmasi/(:any)'] = 'frontend/getdisplay/main_page/konfirmasi/$1'; // 
 $route['loading-konfirmasi'] = 'frontend/getdisplay/loading_page/konfirmasi_pemb'; // kepake
 $route['submit-konfirmasi'] = 'frontend/cruddata/form/konf'; //kepake
 
+$route['uploadfile/(:any)'] = 'frontend/getdisplay/main_page/uploadfile/$1'; // kepake
+$route['loading-uploadfile'] = 'frontend/getdisplay/loading_page/uploadfile'; // kepake
+$route['submit-uploadfile'] = 'frontend/cruddata/form/uploadfile'; // kepake
+
 $route['detailorder/(:any)'] = 'frontend/getdisplay/main_page/detailorder/$1'; // kepake
 $route['loading-detailorder'] = 'frontend/getdisplay/loading_page/detail_order'; // kepake
 
@@ -116,9 +120,6 @@ $route['riwayatpesanan'] = 'frontend/getdisplay/main_page/riwayat';
 $route['loading-riwayat'] = 'frontend/getdisplay/loading_page/pesananriwayat';
 $route['loading-riwayatform'] = 'frontend/getdisplay/loading_page/formriwayat';
 
-$route['uploadfile'] = 'frontend/getdisplay/main_page/uploadfile';
-$route['loading-uploadfile'] = 'frontend/getdisplay/loading_page/uploadfile';
-$route['submit-uploadfile'] = 'frontend/cruddata/form/uploadfile';
 
 $route['komplain'] = 'frontend/getdisplay/main_page/komplain';
 $route['loading-komplain'] = 'frontend/getdisplay/loading_page/laykomplainbro';

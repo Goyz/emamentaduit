@@ -165,8 +165,7 @@ class Frontend extends CI_Controller {
 				}elseif($p1 == "selesaibelanja"){
 					
 				}elseif($p1 == "uploadfile"){
-					$this->nsmarty->assign( 'judulbesar', "Upload File" );
-					$this->nsmarty->assign( 'judulkecil', "Upload File BAST & Tanda Terima" );
+					$this->nsmarty->assign( 'no_order', $p2 );
 				}
 				
 				if($zona_pilihan){
@@ -182,7 +181,18 @@ class Frontend extends CI_Controller {
 			case "loading_page":
 				switch($p1){
 					case "uploadfile":
-						$temp = "frontend/modul/uploadfile-page.html";
+						$temp = "frontend/modul/uploadfile.html";
+						
+						$no_order = $this->input->post("ord");
+						$cek_no_order = $this->db->get_where("tbl_h_pemesanan", array("no_order"=>$no_order) )->row_array();
+						if($cek_no_order){ 
+							$cek_no_order["grand_total"] = "Rp. ".number_format($cek_no_order['grand_total'],0,",",".");
+							$this->nsmarty->assign( 'data_order', $cek_no_order ); 
+							$this->nsmarty->assign( 'cek_order', "true" ); 
+						}else{ 
+							$this->nsmarty->assign( 'cek_order', "false" ); 
+						}	
+						
 					break;
 					case "login":
 						$temp = "frontend/modul/login.html";
@@ -246,6 +256,7 @@ class Frontend extends CI_Controller {
 						foreach($data_pesanan as $k=>$v){
 							if($this->auth["jenis_pembeli"] == "UMUM"){
 								$cek_data_konfirmasi = $this->db->get_where("tbl_konfirmasi", array("tbl_h_pemesanan_id"=>$v["id"]) )->row_array();
+								
 								if($cek_data_konfirmasi){
 									if($cek_data_konfirmasi["flag"] == "P"){
 										$data_pesanan[$k]['flag_konfirm'] = 2; //Menunggu verifikasi
@@ -257,6 +268,8 @@ class Frontend extends CI_Controller {
 								}
 							}elseif($this->auth["jenis_pembeli"] == "SEKOLAH"){
 								$cek_data_konfirmasi = $this->db->get_where("tbl_konfirmasi", array("tbl_h_pemesanan_id"=>$v["id"]) )->row_array();
+								$cek_data_upload = $this->db->get_where("tbl_uploadfile", array("tbl_h_pemesanan_id"=>$v["id"]) )->row_array();
+								
 								if($cek_data_konfirmasi){
 									$data_pesanan[$k]['flag_konfirm'] = "";
 									if($cek_data_konfirmasi["flag"] == "P"){
@@ -266,6 +279,12 @@ class Frontend extends CI_Controller {
 									}
 								}else{
 									$data_pesanan[$k]['flag_konfirm'] = 0; //Belum Konfirmasi
+								}
+								
+								if($cek_data_upload){
+									$data_pesanan[$k]['flag_upload'] = 1; //Sudah Konfirmasi
+								}else{
+									$data_pesanan[$k]['flag_upload'] = 0; //Belum Konfirmasi
 								}
 							}
 							$data_pesanan[$k]['total_pesanan'] = "Rp. ".number_format($v['grand_total'],0,",",".");
@@ -730,32 +749,6 @@ class Frontend extends CI_Controller {
 						}
 						
 					break;
-					case "form_isian_checkout":
-						$temp = "frontend/modul/isian_checkout-page.html";
-						$type_form = trim($this->input->post('tpefrm'));
-						
-						if($type_form == 'skull'){
-							$npsn = $this->input->post('npp');
-							$cek_data = $this->db->get_where('tbl_registrasi', array('npsn'=>$npsn, 'jenis_pembeli'=>'SEKOLAH') )->row_array();
-						}elseif($type_form == 'umu'){
-							$email = $this->input->post('em');
-							$cek_email = $this->db->get_where('tbl_registrasi', array('email'=>$email) )->row_array();
-							if($cek_email){
-								echo 2; exit; //"Email Sudah Ada";
-							}
-							$cek_data = $this->db->get_where('tbl_registrasi', array('email'=>$email, 'jenis_pembeli'=>'UMUM') )->row_array();
-						}
-						
-						if($cek_data){
-							$this->nsmarty->assign('data', $cek_data);
-							$this->nsmarty->assign('status_data', "ADA");
-						}
-						//$this->nsmarty->assign('combo_prov', $this->lib->fillcombo('cl_provinsi', 'return', (isset($cek_data) ? $cek_data['cl_provinsi_kode'] : $zona_pilihan['kode_provinsi'] ) ));
-						$this->nsmarty->assign('combo_prov', $this->lib->fillcombo('cl_provinsi', 'return', (isset($cek_data) ? $cek_data['cl_provinsi_kode'] : "" ) ));
-						$this->nsmarty->assign('combo_kab', $this->lib->fillcombo('cl_kab_kota', 'return', (isset($cek_data) ? $cek_data['cl_kab_kota_kode'] : "" ) ));
-						$this->nsmarty->assign('combo_kec', $this->lib->fillcombo('cl_kecamatan', 'return', (isset($cek_data) ? $cek_data['cl_kecamatan_kode'] : "" ), (isset($cek_data) ? $cek_data['cl_kab_kota_kode'] : "" ) ));						
-						$this->nsmarty->assign('type_form', $type_form);
-					break;
 					case "combo_kab_kota":
 						$v2 = $this->input->post('v2');
 						echo $this->lib->fillcombo('cl_kab_kota_old', 'return', '', $v2);
@@ -814,72 +807,6 @@ class Frontend extends CI_Controller {
 							$this->nsmarty->assign( 'cek_order', "false" ); 
 						}	
 					break;
-					case "konfrom":
-						$temp = "frontend/modul/konfirmasiform-page.html";
-						$invno = $this->input->post('inv');
-						$data_invoice = $this->mfrontend->getdata('header_pesanan', 'row_array', $invno);
-						if($data_invoice){
-							$data_customer = $this->db->get_where('tbl_registrasi', array('id'=>$data_invoice['tbl_registrasi_id']))->row_array();
-							$this->nsmarty->assign('data_customer', $data_customer);
-							if($data_invoice['status'] == 'F'){
-								$data_konfirmasi = $this->db->get_where('tbl_konfirmasi', array('tbl_h_pemesanan_id'=>$data_invoice['idpesan']))->row_array();
-								$data_konfirmasi['total_pembayaran'] = number_format($data_konfirmasi['total_pembayaran'],0,",",".");
-								$this->nsmarty->assign('data_konfirmasi', $data_konfirmasi);
-							}
-							$data_invoice['sub_total'] = number_format($data_invoice['sub_total'],0,",",".");
-							$data_invoice['pajak'] = number_format($data_invoice['pajak'],0,",",".");
-							$data_invoice['grand_total'] = number_format($data_invoice['grand_total'],0,",",".");
-						}
-						$this->nsmarty->assign('data_inv', $data_invoice);
-					break;
-					
-					case "lacakpesan":
-						$temp = "frontend/modul/lacakpesan-page.html";
-					break;
-					case "lacakform":
-						$temp = "frontend/modul/lacakpesananform-page.html";
-						$invno = $this->input->post('inv');
-						$data_tracking = $this->mfrontend->getdata('tracking_pesanan', 'row_array', $invno);
-						$data_invoice = $this->mfrontend->getdata('header_pesanan', 'row_array', $invno);
-						if($data_invoice){
-							$data_customer = $this->db->get_where('tbl_registrasi', array('id'=>$data_invoice['tbl_registrasi_id']))->row_array();
-							$this->nsmarty->assign('data_customer', $data_customer);
-							
-							$data_invoice['sub_total'] = number_format($data_invoice['sub_total'],0,",",".");
-							$data_invoice['pajak'] = number_format($data_invoice['pajak'],0,",",".");
-							$data_invoice['grand_total'] = number_format($data_invoice['grand_total'],0,",",".");
-						}
-						
-						$this->nsmarty->assign('data_inv', $data_invoice);
-						$this->nsmarty->assign('data_tracking', $data_tracking);
-					break;
-					
-					case "pesananriwayat":
-						$temp = "frontend/modul/riwayat-page.html";
-					break;
-					case "formriwayat":
-						$temp = "frontend/modul/formriwayat-page.html";
-						$typ_cust = $this->input->post('typ');
-						if($typ_cust == 'skull'){
-							$npsn = $this->input->post('np');
-							$datacust = $this->mfrontend->getdata('datacustomer', 'row_array', $npsn, 'SEKOLAH', 'riwayat');
-						}elseif($typ_cust == 'umu'){
-							$email = $this->input->post('em');
-							$datacust = $this->mfrontend->getdata('datacustomer', 'row_array', $email, 'UMUM', 'riwayat');
-						}
-						
-						if($datacust){
-							$data_pesanan = $this->mfrontend->getdata('riwayat_pesanan', 'result_array', $datacust['id']);
-							foreach($data_pesanan as $k=>$v){
-								$data_pesanan[$k]['sub_total'] = number_format($v['sub_total'],0,",",".");
-								$data_pesanan[$k]['pajak'] = number_format($v['pajak'],0,",",".");
-								$data_pesanan[$k]['grand_total'] = number_format($v['grand_total'],0,",",".");
-							}
-							$this->nsmarty->assign('datapesanan', $data_pesanan);
-							$this->nsmarty->assign('datacust', $datacust);
-						}
-					break;
-					
 					case "laykomplainbro":
 						$temp = "frontend/modul/komplainnya-page.html";
 					break;
