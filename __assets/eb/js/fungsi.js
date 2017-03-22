@@ -1838,10 +1838,10 @@ function simpan_form(id_form,id_cancel,msg){
 		$.messager.alert('MKS - STORE Back-Office',"Isi Data Yang Kosong ",'info');
 	}
 }
-function get_detil(mod,id_data){
+function get_detil(mod,id_data,par1){
 	switch(mod){
 		case "invoice_edit":
-			$.post(host+'backoffice-form/invoice_edit',{mod:mod,id:id_data,editstatus:'edit'},function(r){
+			$.post(host+'backoffice-form/invoice_edit',{mod:mod,id:id_data,editstatus:'edit',par_mod:par1},function(r){
 				windowForm(r,'Detil Invoice',700,400);
 			});
 		break;
