@@ -284,17 +284,18 @@ class Mbackend extends CI_Model{
 				}
 			break;
 			case "tbl_monitor":
+				$where .=" AND (J.alamat_pengiriman <> '')";
 				$sql="SELECT A.id,A.no_order,A.`status` as status_order,B.flag as status_konfirmasi,
 						C.flag as status_gudang,D.`status` as status_kirim,D.no_resi,
-						DATE_FORMAT(E.tgl_konfirmasi,'%d %b %y') as tanggal_konfirmasi,
-						DATE_FORMAT(E.tanggal_transfer,'%d %b %y') as tanggal_transfer,
+						DATE_FORMAT(B.tgl_konfirmasi,'%d %b %y') as tanggal_konfirmasi,
+						DATE_FORMAT(B.tanggal_transfer,'%d %b %y') as tanggal_transfer,
 						DATE_FORMAT(F.tgl_masuk,'%d %b %y') as tanggal_masuk_gudang,
 						DATE_FORMAT(G.create_date,'%d %b %y') as tanggal_kirim,
 						DATE_FORMAT(H.create_date,'%d %b %y') as tanggal_upload, H.file_bast, H.file_tanda_terima,
 						DATE_FORMAT(I.tanggal_terima,'%d %b %y') as tanggal_terimanya, I.jam_terima, I.petugas
 						FROM tbl_h_pemesanan A
 						LEFT JOIN (
-							SELECT A.tbl_h_pemesanan_id,A.flag,A.id FROM tbl_konfirmasi A
+							SELECT A.tbl_h_pemesanan_id,A.flag,A.id,A.tgl_konfirmasi,A.tanggal_transfer FROM tbl_konfirmasi A
 						)AS B ON B.tbl_h_pemesanan_id=A.id
 						LEFT JOIN (
 							SELECT A.tbl_h_pemesanan_id,A.tbl_konfirmasi_id,A.flag 
@@ -304,14 +305,13 @@ class Mbackend extends CI_Model{
 							SELECT A.tbl_h_pemesanan_id,A.`status`,A.no_resi 
 							FROM tbl_tracking_pengiriman A
 						)AS D ON D.tbl_h_pemesanan_id=A.id 
-						
-						LEFT JOIN tbl_konfirmasi E ON E.tbl_h_pemesanan_id = A.id
 						LEFT JOIN tbl_gudang F ON F.tbl_h_pemesanan_id = A.id
 						LEFT JOIN tbl_tracking_pengiriman G ON G.tbl_h_pemesanan_id = A.id
 						LEFT JOIN tbl_uploadfile H ON H.tbl_h_pemesanan_id = A.id
 						LEFT JOIN tbl_terima_barang I ON I.tbl_h_pemesanan_id = A.id
+						LEFT JOIN tbl_registrasi J ON A.tbl_registrasi_id=J.id
 				".$where." ORDER BY A.id DESC";
-				
+				return $this->lib->json_grid($sql,"tbl_monitor");
 			break;
 			case "tbl_registrasi":
 			case "tbl_registrasi_umum":
@@ -341,6 +341,7 @@ class Mbackend extends CI_Model{
 				return $id_baru;
 			break;
 			case "tbl_gudang":
+				$where .=" AND (D.alamat_pengiriman <> '')";
 				$sql="SELECT A.*,B.no_konfirmasi,B.tgl_konfirmasi,B.total_pembayaran,
 						C.no_order,C.tgl_order,C.zona,D.nama_sekolah,D.nama_lengkap,D.jenis_pembeli,
 						C.id as id_pemesanan,D.nama_kepala_sekolah,D.alamat_pengiriman,E.jasa_pengiriman  
@@ -351,6 +352,7 @@ class Mbackend extends CI_Model{
 						LEFT JOIN cl_jasa_pengiriman E ON C.cl_jasa_pengiriman_id=E.id
 						".$where." 
 						 ORDER BY A.tgl_masuk DESC"; 
+					//echo $sql;
 			break;
 			case "tbl_konfirmasi":
 				

@@ -312,7 +312,12 @@ class Lib {
 		
 		$page = (integer) (($ci->input->post('page')) ? $ci->input->post('page') : "1");
 		$limit = (integer) (($ci->input->post('rows')) ? $ci->input->post('rows') : "10");
-		$count = $ci->db->query($sql)->num_rows();
+		if($type=="tbl_monitor"){
+			$sql_t="SELECT A.id FROM tbl_h_pemesanan A LEFT JOIN tbl_registrasi J ON A.tbl_registrasi_id=J.id WHERE J.alamat_pengiriman <> ''";
+			$count=$ci->db->query($sql_t)->num_rows();
+		}else{
+			$count = $ci->db->query($sql)->num_rows();
+		}
 		
 		if( $count >0 ) { $total_pages = ceil($count/$limit); } else { $total_pages = 0; } 
 		if ($page > $total_pages) $page=$total_pages; 
@@ -320,7 +325,7 @@ class Lib {
 		if($start<0) $start=0;
 		 		
 		$sql = $sql . " LIMIT $start,$limit";
-					
+		//echo $sql;exit;			
 		$data = $ci->db->query($sql)->result_array();  
 				
 		if($data){

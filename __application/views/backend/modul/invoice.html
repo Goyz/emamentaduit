@@ -5,13 +5,13 @@
 			<table width="100%" cellpadding="1" cellspacing="1">
 				<tr>
 					<td style="width:10%">&nbsp;</td>
-					<td style="width:40%">NO. Order/Invoice</td>
+					<td style="width:40%">NO. Pesanan</td>
 					<td width="2%">:</td>
 					<td>{$data.header.no_order|default:'-'}</td>
 				</tr>
 				<tr>
 					<td style="width:10%">&nbsp;</td>
-					<td style="width:40%">Tgl. Order/Invoice</td>
+					<td style="width:40%">Tanggal Pesan</td>
 					<td width="2%">:</td>
 					<td>{$data.header.tgl_order|default:'-'}</td>
 				</tr>
@@ -34,13 +34,13 @@
 				</tr>
 				<tr>
 					<td style="width:10%">&nbsp;</td>
-					<td style="width:40%">SubTotal</td>
+					<td style="width:40%">Sub Total</td>
 					<td width="2%">:</td>
 					<td>{$data.header.sub_total|number_format:2:',':'.'|default:'-'}</td>
 				</tr>
 				<tr>
 					<td style="width:10%">&nbsp;</td>
-					<td style="width:40%">GrandTotal</td>
+					<td style="width:40%">Grand Total</td>
 					<td width="2%">:</td>
 					<td>{$data.header.grand_total|number_format:2:',':'.'|default:'-'}</td>
 				</tr>
