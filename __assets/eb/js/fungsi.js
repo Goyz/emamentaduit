@@ -1880,6 +1880,14 @@ function get_detil(mod,id_data){
 			});
 			
 		break;
+		case "lap_distribusi_kabkota":
+		case "lap_buku_kabkota":
+			$('#isi_laporan_'+id_data).html('').addClass('loading');
+			$.post(host+'backoffice-GetDetil',{mod:mod,kabkota:$('#kabkota_'+id_data).val()},function(r){
+				$('#isi_laporan_'+id_data).removeClass('loading').html(r);
+			});
+			
+		break;
 		case "terima_barang":
 			$.post(host+'backoffice-form/terima_barang',{mod:mod,id:id_data},function(r){
 				windowForm(r,'Form Terima Barang',580,250);

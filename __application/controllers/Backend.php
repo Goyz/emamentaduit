@@ -147,11 +147,23 @@ class Backend extends JINGGA_Controller {
 				case "detil_penjualan":
 				case "lap_bast":
 				case "lap_kwitansi":
+				case "lap_distribusi_kabkota":
+				case "lap_buku_kabkota":
 					//switch()
 					if($mod=='rekap_penjualan'){$judul="Laporan Rekapitulasi Penjualan";}
 					else if($mod=='detil_penjualan'){$judul="Laporan Detil Penjualan Per Item";}
 					else if($mod=='lap_bast'){$judul="Laporan Penjualan Per BAST";}
 					else if($mod=='lap_kwitansi'){$judul="Laporan Penjualan Per Kwitansi";}
+					else if($mod=='lap_distribusi_kabkota'){
+						$judul="Pesanan Aktif - Kota Distribusi ";
+						$kabkota=$this->mbackend->getdata('kabkota','result_array');
+						$this->nsmarty->assign('kabkota',$kabkota);
+					}
+					else if($mod=='lap_buku_kabkota'){
+						$judul="REKAPITULASI KEBUTUHAN BUKU";
+						$kabkota=$this->mbackend->getdata('kabkota','result_array');
+						$this->nsmarty->assign('kabkota',$kabkota);
+					}
 					$this->nsmarty->assign('judul',$judul);
 					$temp=$this->temp.'modul/laporan.html';
 				break;
@@ -266,6 +278,16 @@ class Backend extends JINGGA_Controller {
 					$data=array('zona_1'=>$z_1['total'],'zona_2'=>$z_2['total'],'zona_3'=>$z_3['total'],'zona_4'=>$z_4['total'],'zona_5'=>$z_5['total']);
 				}
 				else $data=$this->mbackend->getdata('get_lap_rekap','result_array');
+				$this->nsmarty->assign('data',$data);
+			break;
+			case "lap_distribusi_kabkota":
+				$kabkota=$this->input->post('kabkota');
+				$data=$this->mbackend->getdata('get_distribusi_kabkota','result_array',$kabkota);
+				$this->nsmarty->assign('data',$data);
+			break;
+			case "lap_buku_kabkota":
+				$kabkota=$this->input->post('kabkota');
+				$data=$this->mbackend->getdata('get_buku_kabkota','result_array',$kabkota);
 				$this->nsmarty->assign('data',$data);
 			break;
 		}
@@ -393,6 +415,20 @@ class Backend extends JINGGA_Controller {
 					$nomor=$data['header']['no_konfirmasi'];
 					//$file_name=$nomor;
 				break;
+				case "lap_buku_kabkota":
+					$kabkota=$this->input->post('kabkota');
+					$data=$this->mbackend->getdata('get_buku_kabkota','result_array',$kabkota);
+					$this->nsmarty->assign('data',$data);
+					$file_name='REKAP '.$kabkota;
+					$judul="REKAPITULASI KEBUTUHAN BUKU";
+				break;
+				case "lap_distribusi_kabkota":
+					$kabkota=$this->input->post('kabkota');
+					$data=$this->mbackend->getdata('get_distribusi_kabkota','result_array',$kabkota);
+					$file_name=$kabkota;
+					$judul="Pesanan Aktif - Kota Distribusi";
+				break;
+				
 			}
 			$this->hasil_output('pdf',$mod,$data,$file_name,$judul,$nomor,$param);
 	}

@@ -13,6 +13,32 @@ class Mbackend extends CI_Model{
 				$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
 		}
 		switch($type){
+			case "kabkota":
+				$sql="SELECT A.* 
+					  FROM cl_kab_kota A 
+					  ".$where." ORDER BY A.kab_kota ASC ";
+			break;
+			case "get_distribusi_kabkota":
+				$sql="SELECT B.npsn,A.no_order,B.nama_sekolah,C.kab_kota,
+						A.flag_ver,SUM(A.grand_total)AS grand_total
+						FROM tbl_h_pemesanan A
+						LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id
+						LEFT JOIN cl_kab_kota C ON B.cl_kab_kota_kode=C.kode_kab_kota
+						WHERE (B.cl_kab_kota_kode <> '' AND B.cl_kab_kota_kode = '".$p1."')
+						GROUP BY B.npsn,A.no_order,B.nama_sekolah,C.kab_kota,A.flag_ver ";
+			break;
+			case "get_buku_kabkota":
+				$sql="SELECT G.tingkatan,E.judul_buku,SUM(A.qty)as qty 
+						FROM tbl_d_pemesanan A
+						LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
+						LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id
+						LEFT JOIN cl_kab_kota D ON C.cl_kab_kota_kode=D.kode_kab_kota
+						LEFT JOIN tbl_buku E ON A.tbl_buku_id=E.id
+						LEFT JOIN cl_kelas F ON E.cl_kelas_id=F.id
+						LEFT JOIN cl_tingkatan G ON F.cl_tingkatan_id=G.id
+						WHERE (C.cl_kab_kota_kode <> '' AND C.cl_kab_kota_kode = '".$p1."') 
+						GROUP BY G.tingkatan,E.judul_buku ";
+			break;
 			case "mapping_paket_belum":
 				$id_paket = $this->input->post('id_paket');
 				$sqlmapping = "

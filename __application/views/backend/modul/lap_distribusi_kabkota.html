@@ -1,0 +1,47 @@
+
+<hr>
+<div style="padding:10px;">
+	<table class="table table-hover">
+	<thead>
+	<tr>
+		<th style="text-align:left;">No.</th>
+		<th>NPSN</th>
+		<th>No. Order</th>
+		<th>Nama Sekolah</th>
+		<th>KabKota</th>
+		<th style="text-align:right;">Total</th>
+	</tr>
+	</thead>
+	<tbody>
+	
+	{assign var=grand_tot value=0}
+	{if !empty($data)}
+	{foreach from=$data item=i name=x}
+	{assign var=grand_tot value=$grand_tot+$i.grand_total}
+	
+	<tr>
+		<td >{$smarty.foreach.x.iteration}</td>
+		<td>{$i.npsn|default:'-'}</td>
+		<td>{$i.no_order|default:'-'}</td>
+		<td>{$i.nama_sekolah|default:'-'}</td>
+		<td>{$i.kab_kota|default:'-'}</td>
+		<td style="text-align:right;">{$i.grand_total|number_format:2:',':'.'|default:'-'}</td>
+	</tr>
+	{/foreach}
+	{else}
+	<tr>
+		<td colspan="7" align="center" style="font-weight:bold;text-align:center;">-- Tidak Ada Transaksi Pada Periode Tersebut --</td>
+	</tr>
+	{/if}
+	</tbody>
+	<tfoot>
+	<tr style="font-weight:bold;">
+		<td colspan="5" align="center" style="font-weight:bold;">GRAND TOTAL</td>
+		<td style="text-align:right;font-weight:bold;">Rp.{$grand_tot|number_format:2:',':'.'|default:'-'}</td>
+	</tr>
+	</tfoot>
+	</table>
+</div>
+<script>
+
+</script>
