@@ -11,6 +11,8 @@ if(konten == "detailproduk"){
 	postkonten["ord"] = ord;
 }else if(konten == "detailorder"){
 	postkonten["ord"] = ord;
+}else if(konten == "uploadfile"){
+	postkonten["ord"] = ord;
 }
 $.post(host+'loading-'+konten, postkonten , function(respons){
 	var parsing = $.parseJSON(respons);
