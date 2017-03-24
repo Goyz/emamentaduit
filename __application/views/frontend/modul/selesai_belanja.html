@@ -18,6 +18,7 @@
                             <td class="text-center">Quantity</td>
                             <td class="text-center">Harga</td>
                             <td class="text-center">SubTotal</td>
+                            <td class="text-center">::</td>
                         </tr>
                     </thead>
 					<tbody>
@@ -32,15 +33,16 @@
 								</td>
 								<td class="text-left">
 									<div class="input-group btn-block quantity">
-										<input id='qrt_{$rows.rowid}' name="quantity" value='{$rows.qty}' size="1" class="form-control" type="text">
-										<span class="input-group-btn">
-										<button type="submit" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="Update"><i class="fa fa-refresh"></i></button>
-										<button type="button" data-toggle="tooltip" title="" class="btn btn-danger" onclick="" data-original-title="Remove"><i class="fa fa-times-circle"></i></button>
-										</span>
+										<input id='qrt_{$rows.rowid}' onkeyup="kumpulAction('krj_update','{$rows.rowid}', '{$rows.price_asli}');" name="quantity" value='{$rows.qty}' size="1" class="form-control numerics" type="text">
 									</div>
 								</td>
 								<td class="text-right">Rp. {$rows.price}</td>
-								<td class="text-right">Rp. {$rows.subtotal}</td>
+								<td class="text-right">Rp. <span id="sb_{$rows.rowid}">{$rows.subtotal}</span></td>
+								<td class="text-center">
+									<span class="input-group-btn">
+										<button type="button" data-toggle="tooltip" title="" class="btn btn-danger" onclick="" data-original-title="Remove"><i class="fa fa-times-circle"></i></button>
+									</span>
+								</td>
 
 							</tr>
 						{/foreach}
@@ -63,11 +65,11 @@
                 <tbody>
                     <tr>
                         <td class="text-right"><strong>Total Quantity</strong></td>
-                        <td class="text-right">{$tot_qty}</td>
+                        <td class="text-right"><span id="qtynya">{$tot_qty}</span></td>
                     </tr>
                     <tr>
                         <td class="text-right"><strong>Total Belanja</strong></td>
-                        <td class="text-right">Rp. {$tot_price}</td>
+                        <td class="text-right">Rp. <span id="pricenya">{$tot_price}</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -205,6 +207,7 @@
 </div>
 
 <script>	
+	$(".numerics").numeric();
 	$(".validasi").validatebox({ required:true }); 
 	$('#sbmblj').on('click', function(){
 		if(confirm('Anda Yakin Untuk Submit Transaksi ?')){

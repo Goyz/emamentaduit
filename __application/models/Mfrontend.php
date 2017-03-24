@@ -27,6 +27,15 @@ class Mfrontend extends CI_Model{
 					WHERE A.nama_user = '".$p1."'
 				";
 			break;
+			case "data_testimonial":
+				$sql = "
+					SELECT A.*, DATE_FORMAT(A.create_date,'%d %b %y') as tgl_komen,
+						B.nama_lengkap, B.nama_sekolah
+					FROM tbl_komentar A
+					LEFT JOIN tbl_registrasi B ON B.id = A.tbl_registrasi_id
+					ORDER BY id DESC
+				";
+			break;
 			case "data_pesanan_user":
 				$sql = "
 					SELECT A.*, DATE_FORMAT(A.tgl_order,'%d %b %y') as tgl_orderr
@@ -524,7 +533,8 @@ class Mfrontend extends CI_Model{
 					$this->lib->kirimemail('email_registrasi', $data['email'], $data_registrasi, $password_asli, $data["domtype"]);
 				}
 			break;
-			case "komentar":
+			case "testimonial":
+				/*
 				$array_cek_registrasi = array( 'email' => $data['emsek'], 'npsn' => $data['npsn']);
 				$cek_registrasi = $this->db->get_where('tbl_registrasi', $array_cek_registrasi)->row_array();
 				if($cek_registrasi){
@@ -542,10 +552,11 @@ class Mfrontend extends CI_Model{
 					$tbl_h_pemesanan_id = null;
 					echo 3; exit; //cek data invoice exist;
 				}
+				*/
 				
 				$data_komentar = array(
-					'tbl_registrasi_id' => $tbl_registrasi_id,
-					'tbl_h_pemesanan_id' => $tbl_h_pemesanan_id,
+					'tbl_registrasi_id' => $this->auth["id"],
+				//	'tbl_h_pemesanan_id' => $tbl_h_pemesanan_id,
 					'rating' => $data['rating'],
 					'komentar' => $data['kmntr'],
 					'create_date' => date('Y-m-d H:i:s'),

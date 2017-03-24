@@ -10,13 +10,13 @@
 					<td class="text-center">::</td>
 				</tr>
 				{foreach from=$data_cart item=rows}
-				<tr>
+				<tr id="{$rows.rowid}">
 					<td class="text-left">{$rows.name}</td>
 					<td class="text-right">{$rows.qty}</td>
 					<td class="text-right">{$rows.price}</td>
 					<td class="text-right">{$rows.subtotal}</td>
 					<td class="text-center">
-						<button class="btn btn-danger btn-xs remove" title="Remove" onClick="" type="button">
+						<button class="btn btn-danger btn-xs remove" title="Remove" onclick="kumpulAction('krj_hapus','{$rows.rowid}');" type="button">
 							<i class="fa fa-times"></i>
 						</button>
 					</td>
@@ -34,7 +34,7 @@
             <tbody>
                 <tr>
                     <td class="text-right"><strong>Total Belanja</strong></td>
-                    <td class="text-right">Rp. {$tot_price|default:''}</td>
+                    <td class="text-right">Rp. {$tot_price|default:'-'}</td>
                 </tr>
             </tbody>
         </table>

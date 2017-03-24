@@ -116,11 +116,11 @@ class Lib {
 				$ci->nsmarty->assign('data_cart', $p1);
 				$ci->nsmarty->assign('penunjang', $p2);
 				$html = $ci->nsmarty->fetch('frontend/modul/email_invoice.html');
-				$subject = "EMAIL INVOICE - ".$p2['no_order'];
+				$subject = "SURAT PEMESANAN BUKU BARU - ".$p2['no_order'];
 			break;
 			case "email_konfirmasi":	
 				$ci->nsmarty->assign('no_order', $p1);
-				$subject = "EMAIL KONFIRMASI PEMBAYARAN";
+				$subject = "EMAIL KONFIRMASI PEMBAYARAN ".$p1;
 				$html = $ci->nsmarty->fetch('frontend/modul/email_konfirmasi.html');
 			break;
 			case "email_pembatalan":
@@ -132,40 +132,46 @@ class Lib {
 			case "email_registrasi":
 				$ci->nsmarty->assign('data_registrasi', $p1);
 				$ci->nsmarty->assign('password', $p2);
+				$ci->nsmarty->assign('type_registrasi', $p3);				
 				$html = $ci->nsmarty->fetch('frontend/modul/email_registrasi.html');
-				$subject = "EMAIL REGISTRASI WEBSTORE ALDEAZ.ID";
+				$subject = "EMAIL REGISTRASI WEBSTORE MKS-Store.ID";
+			break;	
+			case "email_test":
+				$html = $ci->nsmarty->fetch('frontend/modul/email_invoice.html');
+				$subject = "Test Mail Aja";
 			break;			
 		}
 		
+		$config = array(
+			"protocol"	=>"smtp"
+			,"mailtype" => "html"
+			,"smtp_host" => "ssl://mail.mks-store.id"
+			,"smtp_user" => "notification@mks-store.id"
+			,"smtp_pass" => "zi8quv2x8vfo"
+			,"smtp_port" => "465",
+			'charset' => 'utf-8',
+            'wordwrap' => TRUE,
+		);
+		
+		//*/
 		/*
 		$config = array(
 			"protocol"	=>"smtp"
 			,"mailtype" => "html"
-			,"smtp_host" => "ssl://server.jingga.co.id"
-			,"smtp_user" => "webstore@aldeaz.id"
-			,"smtp_pass" => "wonogiri100km"
+			,"smtp_host" => "ssl://smtp.gmail.com"
+			,"smtp_user" => "aldeaz.id@gmail.com"
+			,"smtp_pass" => ""
 			,"smtp_port" => "465",
 			'charset' => 'utf-8',
             'wordwrap' => TRUE,
 		);
 		*/
 		
-		$config = array(
-			"protocol"	=>"smtp"
-			,"mailtype" => "html"
-			,"smtp_host" => "ssl://smtp.gmail.com"
-			,"smtp_user" => "aldeaz.id@gmail.com"
-			,"smtp_pass" => "100kmwonogiri"
-			,"smtp_port" => "465",
-			'charset' => 'utf-8',
-            'wordwrap' => TRUE,
-		);
-		
 		//,"smtp_user" => "aldeaz.id@gmail.com","smtp_pass" => "wonogiri100km" */
 		
 		$ci->email->initialize($config);
 		//$ci->email->from("aldeaz.id@gmail.com", "Aldeaz Notifikasi");
-		$ci->email->from("webstore@aldeaz.id", "Aldeaz Notifikasi");
+		$ci->email->from("notification@mks-store.id", "MKS-Store Notifikasi");
 		$ci->email->to($email);
 		$ci->email->subject($subject);
 		$ci->email->message($html);

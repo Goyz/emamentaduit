@@ -128,9 +128,8 @@ class Frontend extends CI_Controller {
 					}
 				}elseif($p1 == "login"){
 					
-				}elseif($p1 == "carabelanja"){
-					$this->nsmarty->assign( 'judulbesar', "Cara Berbelanja" );
-					$this->nsmarty->assign( 'judulkecil', "Petunjuk Singkat Berbelanja di www.aldeaz.id" );
+				}elseif($p1 == "bantuan"){
+					
 				}elseif($p1 == "datapesanan"){				
 				}elseif($p1 == "katalog"){				
 				}elseif($p1 == "detailproduk"){				
@@ -160,8 +159,7 @@ class Frontend extends CI_Controller {
 				}elseif($p1 == "registrasipembeli"){
 				
 				}elseif($p1 == "komentarpelanggan"){
-					$this->nsmarty->assign( 'judulbesar', "Komentar Anda" );
-					$this->nsmarty->assign( 'judulkecil', "Kirimkan Komentar Anda Melalui Form Dibawah Ini." );
+				
 				}elseif($p1 == "selesaibelanja"){
 					
 				}elseif($p1 == "uploadfile"){
@@ -208,8 +206,10 @@ class Frontend extends CI_Controller {
 					case "finish_registrasi":
 						$temp = "frontend/modul/finish-registrasi-page.html";
 					break;
-					case "komentarpelanggan":
-						$temp = "frontend/modul/komentar-page.html";
+					case "testimonial":
+						$temp = "frontend/modul/testimonial.html";
+						$datatestimonial = $this->mfrontend->getdata("data_testimonial", "result_array");
+						$this->nsmarty->assign('datatestimonial', $datatestimonial);
 					break;
 					case "beranda":
 						$temp = "frontend/modul/beranda-page.html";
@@ -228,7 +228,7 @@ class Frontend extends CI_Controller {
 						$temp = "frontend/modul/tentangkami-page.html";
 					break;
 					case "kontak":
-						$temp = "frontend/modul/kontak-page.html";
+						$temp = "frontend/modul/kontak.html";
 					break;
 					case "detail_order":
 						$temp = "frontend/modul/detail_order.html";
@@ -710,7 +710,7 @@ class Frontend extends CI_Controller {
 						echo $jumlah_item;
 						exit;
 					break;
-					case "selesaibelanja":
+					case "selesaibelanja": //nangkene
 						$temp = "frontend/modul/selesai_belanja.html";
 						$data_cart = $this->cart->contents();
 						$estimasi = $this->db->get_where('cl_zona', array('zona_code'=>$zona_pilihan['zona_pilihan']))->row_array();
@@ -722,7 +722,9 @@ class Frontend extends CI_Controller {
 								$data_cart[$key]['foto_buku'] = $this->host."__repository/produk/".$datafoto['foto_buku'];
 							}else{
 								$data_cart[$key]['foto_buku'] = $this->host."__repository/no-image.jpeg";
-							}						
+							}
+							
+							$data_cart[$key]['price_asli'] = $v['price'];
 							$data_cart[$key]['price'] = number_format($v['price'],0,",",".");
 							$data_cart[$key]['subtotal'] = number_format($v['subtotal'],0,",",".");
 							$tot_price += $v['subtotal'];
@@ -810,8 +812,8 @@ class Frontend extends CI_Controller {
 					case "laykomplainbro":
 						$temp = "frontend/modul/komplainnya-page.html";
 					break;
-					case "belanjanyacara":
-						$temp = "frontend/modul/carabelonjo-page.html";
+					case "bantuan":
+						$temp = "frontend/modul/bantuan.html";
 					break;
 					
 					case "pembatalanpesan":
@@ -1143,14 +1145,34 @@ class Frontend extends CI_Controller {
 				echo 1;
 			break;
 			case "update":
-				$data = array(
-					'rowid' => $p2,
-					'qty'   => $p1
+				$qty = $this->input->post("xqt");
+				$rowid = $this->input->post("rwid");
+				
+				if($qty != null || $qty != 0 ){
+					$data = array(
+						'rowid' => $rowid,
+						'qty'   => $qty
+					);
+					$this->cart->update($data);
+				}
+				
+				$kontent = $this->cart->contents();
+				$tot_price = 0;
+				$tot_qty = 0;
+				foreach($kontent as $key => $v){
+					$tot_price += $v["subtotal"];
+					$tot_qty += $v["qty"];
+				}
+				
+				$array_return = array(
+					"total_harga" => number_format($tot_price,0,",","."),
+					"total_qty" => number_format($tot_qty,0,",","."),
 				);
-				$this->cart->update($data);
+				echo json_encode($array_return);
 			break;
 			case "delete":
-				$this->cart->remove($p1);
+				$rowid = $this->input->post("rwid");
+				echo $this->cart->remove($rowid);
 			break;
 			case "view":
 				$kontent = $this->cart->contents();
@@ -1275,14 +1297,15 @@ class Frontend extends CI_Controller {
 	
 	function tester(){			
 		echo "<pre>";
-		print_r($this->auth);
-		//print_r($this->cart->contents());
+		//print_r($this->auth);
+		print_r($this->cart->contents());
 		
 		//$this->cart->destroy();	
 		
 	}
 	
 	function test(){			
+		/*
 		$curl = curl_init();
 		$url = 'http://www.mks-store.id/api/detail_paket?secretkey=7c222fb2927d828af22f592134e8932480637c0d--spesifik';
 		curl_setopt($curl, CURLOPT_URL, $url);
@@ -1343,14 +1366,26 @@ class Frontend extends CI_Controller {
 		
 		*/
 		
-		//echo $this->lib->kirimemail('email_konfirmasi', "triwahyunugroho11@gmail.com");
+		$data_registrasi = array(
+						'jenis_pembeli' => 'UMUM',
+						'nama_user' => "asu",
+						'password' => "asu",
+						'email' => "asu",
+						'status' => 1,
+						'nama_lengkap' => "asu",
+						'no_telp_customer' => "asu",
+						'no_hp_customer' => "asu",
+						'cl_provinsi_kode' => "asu",
+						'cl_kab_kota_kode' => "asu",
+						'cl_kecamatan_kode' => "asu",
+						'kode_pos' => "asu",						
+						'alamat_pengiriman' => "asu",
+						'reg_date' => date('Y-m-d H:i:s'),
+					);	
 		
-		//$string = "T1 Diriku";
-		//$isi = substr($string, 0, 20);
-		//echo $isi;
+		echo $this->lib->kirimemail('email_konfirmasi', "triwahyunugroho11@gmail.com", "12345");
 		
-		echo "<pre>";
-		print_r($this->auth);
+		//echo $this->lib->kirimemail('email_test', "triwahyunugroho11@gmail.com");
 	}
 	
 }

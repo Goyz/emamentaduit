@@ -1,0 +1,111 @@
+<link rel="stylesheet" href="{$host}__assets/ef/css/starrating/cssrating.css" type="text/css" media="screen" />
+
+<div class="container">
+    <!-- Breadcrumb Start-->
+    <ul class="breadcrumb">
+        <li><a href="{$host}"><i class="fa fa-home"></i></a></li>
+        <li><a href="{$host}testimonial">Testimoni</a></li>
+    </ul>
+
+	<div class="row">
+		<!--Middle Part Start-->
+		<div id="content" class="col-sm-12">
+			<h3 class="title">Testimoni Pelanggan</h3>
+			<ul class="nav nav-tabs">
+				<li class="active"><a data-toggle="tab" href="#testimonial">Testimoni</a></li>
+				{if $auth}
+				<li><a data-toggle="tab" href="#tulis">Tulis</a></li>
+				{/if}
+			</ul>
+
+			<div class="tab-content">
+				<div class="tab-pane active" id="testimonial">
+					<div>
+						{foreach from=$datatestimonial item=rows}
+							<table class="table table-striped table-bordered">
+								<tbody>
+									<tr>
+										{if $auth.jenis_pembeli eq 'UMUM'}
+											<td style="width: 50%;"><strong><span>{$rows.nama_lengkap}</span></strong></td>
+										{elseif $auth.jenis_pembeli eq 'SEKOLAH'}
+											<td style="width: 50%;"><strong><span>{$rows.nama_sekolah}</span></strong></td>
+										{/if}
+										<td class="text-right"><span>{$rows.tgl_komen}</span></td>
+									</tr>
+									<tr>
+										<td colspan="2">
+											<p>{$rows.komentar}</p>
+											<div class="rating"> 
+												{for $foo=1 to $rows.rating}
+													<span class="fa fa-stack">
+														<i class="fa fa-star fa-stack-2x"></i>
+														<i class="fa fa-star-o fa-stack-2x"></i>
+													</span> 
+												{/for}
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						{/foreach}
+					</div>
+				</div>
+				{if $auth}
+				<div class="tab-pane" id="tulis">
+					<form id='frmtesti' url="{$host}submit-testimonial" method='post' enctype="multipart/form-data" class="form-horizontal">
+						<fieldset>
+							<legend>Tuliskan Testimoni Anda Untuk Layanan Kami</legend>
+							<div class="form-group required">
+								<label for="input-fax" class="col-sm-3 control-label">Testimoni Anda</label>
+								<div class="col-sm-8">
+									<textarea class="form-control" required id="kmntr" name="kmntr"></textarea>
+								</div>
+							</div>												
+							<div class="form-group required">
+								<label for="input-fax" class="col-sm-3 control-label">Rating</label>
+								<div class="col-sm-8">
+									<span class="starRating">
+										<input id="rating5" type="radio" class='validasi' name="rating" value="5">
+										<label for="rating5">5</label>
+										<input id="rating4" type="radio" class='validasi' name="rating" value="4">
+										<label for="rating4">4</label>
+										<input id="rating3" type="radio" class='validasi' name="rating" value="3">
+										<label for="rating3">3</label>
+										<input id="rating2" type="radio" class='validasi' name="rating" value="2">
+										<label for="rating2">2</label>
+										<input id="rating1" type="radio" class='validasi' name="rating" value="1">
+										<label for="rating1">1</label>
+									</span>
+								</div>
+							</div>		
+						</fieldset>
+						<div class="buttons">
+							<div class="pull-center">
+								<center>
+									<a id="daftartestimoni" class="btn btn-primary">Submit</a>
+								</center>
+							</div>
+						</div>
+					</form>
+				</div>
+				{/if}
+			</div>
+		</div>
+	</div>
+</div>
+
+{if $auth}
+<script>
+	$(".validasi").validatebox({ required:true }); 
+	$('#daftartestimoni').on('click', function(){
+		submit_form('frmtesti', function(resp){
+			if(resp == 1){
+				alert("Berhasil Submit Testimoni.");
+				window.location.href = host+'testimonial';
+			}else if(resp == 2){
+				alert("Data Email Anda Sudah Ada Dalam System Kami!");
+			}
+		});
+	});
+</script>
+{/if}

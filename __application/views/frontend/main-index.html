@@ -103,17 +103,6 @@
                             {if $auth}
                             <li><a class="contact-link" title="Home" href="{$host}"><span>Profile</span></a></li>
 							<li><a class="contact-link" title="Data Pesanan" href="{$host}datapesanan"><span>Data Pesanan</span></a></li>
-							{*
-							<li class="dropdown information-link"><a>Pesanan</a>
-                                <div class="dropdown-menu">
-                                    <ul>
-                                        <li><a href="{$host}katalog">Konfirmasi</a></li>
-                                        <li><a href="{$host}katalogpaket">Lacak Pesanan</a></li>
-                                        <li><a href="{$host}katalogpaket">Riwayat Pesanan</a></li>
-                                    </ul>
-                                </div>
-                            </li>
-							*}
                             {else}
                             <li><a class="contact-link" title="Home" href="{$host}"><span>Beranda</span></a></li>
                             {/if}
@@ -126,9 +115,9 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="contact-link"><a href="contact-us.html">Bantuan</a></li>							
-                            <li class="contact-link"><a href="contact-us.html">Testimoni</a></li>
-                            <li class="contact-link"><a href="contact-us.html">Kontak</a></li>
+                            <li class="contact-link"><a href="{$host}bantuan">Bantuan</a></li>							
+                            <li class="contact-link"><a href="{$host}testimonial">Testimoni</a></li>
+                            <li class="contact-link"><a href="{$host}kontak">Kontak</a></li>
                         </ul>
                     </div>
                 </div>
@@ -150,39 +139,15 @@
                                 <li class="email"><i class="fa fa-envelope"></i>Email : contact@mks-store.id</a>
                             </ul>
                         </div>
-                        <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                            <h5>Information</h5>
+                        <div class="contact col-lg-4 col-md-4 col-sm-12 col-xs-12">
+						</div>
+                        <div style="text-align:right !important;" class="contact col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <h5>Hot Line Service</h5>
                             <ul>
-                                <li><a href="about-us.html">About Us</a></li>
-                                <li><a href="about-us.html">Delivery Information</a></li>
-                                <li><a href="about-us.html">Privacy Policy</a></li>
-                                <li><a href="about-us.html">Terms &amp; Conditions</a></li>
-                            </ul>
-                        </div>
-                        <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                            <h5>Customer Service</h5>
-                            <ul>
-                                <li><a href="contact-us.html">Contact Us</a></li>
-                                <li><a href="#">Returns</a></li>
-                                <li><a href="sitemap.html">Site Map</a></li>
-                            </ul>
-                        </div>
-                        <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                            <h5>Extras</h5>
-                            <ul>
-                                <li><a href="#">Brands</a></li>
-                                <li><a href="#">Gift Vouchers</a></li>
-                                <li><a href="#">Affiliates</a></li>
-                                <li><a href="#">Specials</a></li>
-                            </ul>
-                        </div>
-                        <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                            <h5>My Account</h5>
-                            <ul>
-                                <li><a href="#">My Account</a></li>
-                                <li><a href="#">Order History</a></li>
-                                <li><a href="#">Wish List</a></li>
-                                <li><a href="#">Newsletter</a></li>
+                                <li><b>Banten</b> : 021 7701525</li>
+                                <li><b>Jawa Barat</b> : 081 1225 9611</li>
+                                <li><b>Jawa Tengah</b> : 081 2261 39998 </li>
+                                <li><b>Jawa Timur</b> : 081 2261 39998</li>
                             </ul>
                         </div>
                     </div>
@@ -192,7 +157,7 @@
                 <div class="container">
                     <div id="powered" class="clearfix">
                         <div class="powered_text pull-left flip">
-                            <p>PT. Mulia Kencana Semesta © 2017 | Design By MKS-Store</p>
+                            <p>PT. Mulia Kencana Semesta © 2017 | Design By <a href="http://jingga.co.id" target="_blank">CV. Jingga Sinergi Idea</a></p>
                         </div>
                         <div class="social pull-right flip">
                             <a href="#" target="_blank">
@@ -224,6 +189,7 @@
         <script type="text/javascript" src="{$host}__assets/ef/responsiveslide/responsiveslides.js"></script>
         <script type="text/javascript" src="{$host}__assets/ef/js/blockui.js"></script>
         <script type="text/javascript" src="{$host}__assets/ef/js/jquery.maskMoney.min.js"></script>
+        <script type="text/javascript" src="{$host}__assets/ef/js/jquery.numeric.js"></script>
         <script type="text/javascript" src="{$host}__assets/ef/js/bootstrap-datepicker.min.js"></script>
         <script type="text/javascript" src="{$host}__assets/ef/js/custom.js"></script>
         <script type="text/javascript" src="{$host}__assets/ef/js/main.js"></script>
