@@ -20,6 +20,8 @@ $.post(host+'loading-'+konten, postkonten , function(respons){
 });
 
 function kumpulAction(type, p1, p2, p3){
+	var postkumpul = {};
+
 	switch(type){
 		case "krj":
 			$.post(host+'keranjang-belanja', { }, function(resp){
@@ -27,18 +29,27 @@ function kumpulAction(type, p1, p2, p3){
 				$('#keranjangbelonjo').html(parsingan.page);
 			})
 		break;
-		case "lgnpmb":
-			$('#modalencuk').html('');
-			$.post(host+'form-login', { }, function(resp){
-				parsingan = $.parseJSON(resp)
-				$('#modalencuk').html(parsingan.page);
-				/*
-				$('#productModal').modal({
-					backdrop: 'static',
-					keyboard: false
-				});
-				*/
-				$('#productModal').modal('show'); 
+		case "krj_update":
+			var qty = $('#qrt_'+p1).val();
+			var subtot = ( parseInt(qty) * parseInt(p2) );
+			
+			postkumpul["xqt"] = $('#qrt_'+p1).val();
+			postkumpul["rwid"] = p1;
+			$.post(host+'perbaharui-keranjang', postkumpul, function(resp){
+				if(resp){
+					var parsing = $.parseJSON(resp);
+					$("#qtynya").html(parsing.total_qty);
+					$("#pricenya").html(parsing.total_harga);
+					$("#sb_"+p1).html( subtot.format(0, 3, '.', ',') );
+				}
+			})
+		break;
+		case "krj_hapus":
+			postkumpul["rwid"] = p1;
+			$.post(host+'hapus-keranjang', postkumpul, function(resp){
+				if(resp){
+					$("#krjblj").trigger("click");
+				}
 			})
 		break;
 	}

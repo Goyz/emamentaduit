@@ -1568,7 +1568,7 @@ visibility:hidden;
 	background-color:#f3f3f3;
 	color:#444;
 	padding-top:50px;
-	padding-bottom:50px;
+	padding-bottom:0px;
 }
 #footer .fpart-first a { color:#888; }
 #footer .fpart-first a:hover {
