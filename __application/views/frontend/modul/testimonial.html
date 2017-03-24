@@ -21,33 +21,41 @@
 			<div class="tab-content">
 				<div class="tab-pane active" id="testimonial">
 					<div>
-						{foreach from=$datatestimonial item=rows}
-							<table class="table table-striped table-bordered">
-								<tbody>
-									<tr>
-										{if $auth.jenis_pembeli eq 'UMUM'}
-											<td style="width: 50%;"><strong><span>{$rows.nama_lengkap}</span></strong></td>
-										{elseif $auth.jenis_pembeli eq 'SEKOLAH'}
-											<td style="width: 50%;"><strong><span>{$rows.nama_sekolah}</span></strong></td>
-										{/if}
-										<td class="text-right"><span>{$rows.tgl_komen}</span></td>
-									</tr>
-									<tr>
-										<td colspan="2">
-											<p>{$rows.komentar}</p>
-											<div class="rating"> 
-												{for $foo=1 to $rows.rating}
-													<span class="fa fa-stack">
-														<i class="fa fa-star fa-stack-2x"></i>
-														<i class="fa fa-star-o fa-stack-2x"></i>
-													</span> 
-												{/for}
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						{/foreach}
+						{if $datatestimonial}
+							{foreach from=$datatestimonial item=rows}
+								<table class="table table-striped table-bordered">
+									<tbody>
+										<tr>
+											{if $rows.jenis_pembeli eq 'UMUM'}
+												<td style="width: 50%;"><strong><span>{$rows.nama_lengkap}</span></strong></td>
+											{elseif $rows.jenis_pembeli eq 'SEKOLAH'}
+												<td style="width: 50%;"><strong><span>{$rows.nama_sekolah}</span></strong></td>
+											{/if}
+											<td class="text-right"><span>{$rows.tgl_komen}</span></td>
+										</tr>
+										<tr>
+											<td colspan="2">
+												<p>{$rows.komentar}</p>
+												<div class="rating"> 
+													{for $foo=1 to $rows.rating}
+														<span class="fa fa-stack">
+															<i class="fa fa-star fa-stack-2x"></i>
+															<i class="fa fa-star-o fa-stack-2x"></i>
+														</span> 
+													{/for}
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							{/foreach}
+						{else}
+							<br/>
+							<br/>
+							<center><h4>Tidak Ada Testimoni Pelanggan</h4></center>
+							<br/>
+							<br/>
+						{/if}
 					</div>
 				</div>
 				{if $auth}

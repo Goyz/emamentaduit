@@ -30,7 +30,7 @@ class Mfrontend extends CI_Model{
 			case "data_testimonial":
 				$sql = "
 					SELECT A.*, DATE_FORMAT(A.create_date,'%d %b %y') as tgl_komen,
-						B.nama_lengkap, B.nama_sekolah
+						B.nama_lengkap, B.nama_sekolah, B.jenis_pembeli
 					FROM tbl_komentar A
 					LEFT JOIN tbl_registrasi B ON B.id = A.tbl_registrasi_id
 					ORDER BY id DESC
