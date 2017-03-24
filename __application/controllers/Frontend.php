@@ -877,16 +877,17 @@ class Frontend extends CI_Controller {
 		$this->load->library('mlpdf');	
 		switch($type){
 			case "bastnya":
+				$this->load->helper('terbilang');
 				$inv = $this->input->post('invo');
 				if(!$inv){
-					echo "tutup tab browser ini, dan generate kembali melalui tombol di web www.aldeaz.id";
+					echo "tutup tab browser ini, dan generate kembali melalui tombol di web bukusekolah.mks-store.id";
 					exit;
 				}
 				$data_invoice = $this->mfrontend->getdata('header_pesanan', 'row_array', $inv);
 				if($data_invoice){
-					$no_bast = $data_invoice['no_order']."/ASP/BAST/".date('Y');
+					$no_bast = $data_invoice['no_order']."/OLS-MKS/BAST/XII/".date('Y');
 					$datacust = $this->mfrontend->getdata('datacustomer', 'row_array', $data_invoice['tbl_registrasi_id'], '', 'cetak_bast');
-					$datakonfirmasi = $this->db->get_where('tbl_konfirmasi', array('tbl_h_pemesanan_id'=>$data_invoice['id']) )->row_array();
+					//$datakonfirmasi = $this->db->get_where('tbl_konfirmasi', array('tbl_h_pemesanan_id'=>$data_invoice['id']) )->row_array();
 					$datadetailpesanan = $this->mfrontend->getdata('detail_pesanan', 'result_array', $data_invoice['idpesan']);
 					$totqty = 0;
 					$tottotal = 0;
@@ -899,24 +900,31 @@ class Frontend extends CI_Controller {
 						$datadetailpesanan[$k]['nama_group'] = strtoupper(substr($v['nama_group'], 0,1));
 					}
 					
-					$cekdatabast = $this->db->get_where('tbl_bast', array('tbl_konfirmasi_id'=>$datakonfirmasi['id']) )->row_array();
+					$cekdatabast = $this->db->get_where('tbl_bast', array('tbl_h_pemesanan_id'=>$data_invoice['idpesan']) )->row_array();
 					if(!$cekdatabast){
 						$array_insert_bast = array(
-							'tbl_konfirmasi_id' => $datakonfirmasi['id'],
+							'tbl_h_pemesanan_id' => $data_invoice['idpesan'],
 							'no_bast' => $no_bast,
 							'create_date' => date('Y-m-d H:i:s')
 						);
 						$this->db->insert('tbl_bast', $array_insert_bast);
+						
+						$tgl = $this->lib->konversi_tgl(date('Y-m-d'));
+						$time = $this->lib->konversi_jam(date('H:i:s'));
+					}else{
+						$tgl_create_1 = explode(" ",$cekdatabast["create_date"]);
+						
+						$tgl = $this->lib->konversi_tgl($tgl_create_1[0]);
+						$time = $this->lib->konversi_jam($tgl_create_1[1]);
 					}
-					
-					$tgl = $this->lib->konversi_tgl(date('Y-m-d'));
-					
+										
 					$this->nsmarty->assign('datainvoice', $data_invoice);
 					$this->nsmarty->assign('datakonfirmasi', $datakonfirmasi);
 					$this->nsmarty->assign('datacust', $datacust);
 					$this->nsmarty->assign('datadetailpesanan', $datadetailpesanan);
 					$this->nsmarty->assign('totqty', $totqty);
 					$this->nsmarty->assign('tgl', $tgl);
+					$this->nsmarty->assign('time', $time);
 					$this->nsmarty->assign('no_bast', $no_bast);
 					$this->nsmarty->assign('tottotal', number_format($tottotal,0,",","."));
 				}
@@ -925,7 +933,7 @@ class Frontend extends CI_Controller {
 				$htmlcontent = $this->nsmarty->fetch('frontend/modul/bast_pdf.html');
 				
 				$pdf = $this->mlpdf->load();
-				$spdf = new mPDF('', 'A4', 0, '', 12.7, 12.7, 15, 20, 5, 2, 'P');
+				$spdf = new mPDF('', 'A4', 0, '', 12.7, 12.7, 10, 10, 5, 2, 'P');
 				$spdf->ignore_invalid_utf8 = true;
 				$spdf->allow_charset_conversion = true;     // which is already true by default
 				$spdf->charset_in = 'iso-8859-2';  // set content encoding to iso
@@ -939,30 +947,37 @@ class Frontend extends CI_Controller {
 				$this->load->helper('terbilang');
 				$inv = $this->input->post('invo');
 				if(!$inv){
-					echo "tutup tab browser ini, dan generate kembali melalui tombol di web www.aldeaz.id";
+					echo "tutup tab browser ini, dan generate kembali melalui tombol di web bukusekolah.mks-store.id";
 					exit;
 				}				
 				$data_invoice = $this->mfrontend->getdata('header_pesanan', 'row_array', $inv);
 				if($data_invoice){
-					$no_kwitansi = $data_invoice['no_order']."/ASP/K/".date('Y');
+					$no_kwitansi = $data_invoice['no_order']."/OLS-MKS/K/".date('Y');
 					$datacust = $this->mfrontend->getdata('datacustomer', 'row_array', $data_invoice['tbl_registrasi_id'], '', 'cetak_bast');
 					$jumlah = number_to_words($data_invoice['grand_total']);
-					$datakonfirmasi = $this->db->get_where('tbl_konfirmasi', array('tbl_h_pemesanan_id'=>$data_invoice['idpesan']) )->row_array();
+					//$datakonfirmasi = $this->db->get_where('tbl_konfirmasi', array('tbl_h_pemesanan_id'=>$data_invoice['idpesan']) )->row_array();
 					
-					$cekdatakwitansi = $this->db->get_where('tbl_kwitansi', array('tbl_konfirmasi_id'=>$datakonfirmasi['id']) )->row_array();
+					$cekdatakwitansi = $this->db->get_where('tbl_kwitansi', array('tbl_h_pemesanan_id'=>$data_invoice['idpesan']) )->row_array();
 					if(!$cekdatakwitansi){
 						$array_insert_kwitansi = array(
-							'tbl_konfirmasi_id' => $datakonfirmasi['id'],
+							'tbl_h_pemesanan_id' => $data_invoice['idpesan'],
 							'no_kwitansi' => $no_kwitansi,
 							'create_date' => date('Y-m-d H:i:s')
 						);
 						$this->db->insert('tbl_kwitansi', $array_insert_kwitansi);
+						
+						//$dt = strtotime('06/19/2009');
+						//$day = date("l", $dt);
+						
+					}else{
+						
 					}
 					
 					//echo "<pre>";
 					//print_r($data_invoice);exit;
 					
-					$this->nsmarty->assign('datakonfirmasi', $datakonfirmasi);
+					
+					//$this->nsmarty->assign('datakonfirmasi', $datakonfirmasi);
 					$this->nsmarty->assign('datainvoice', $data_invoice);
 					$this->nsmarty->assign('datacust', $datacust);
 					$this->nsmarty->assign('jumlah', $jumlah);
@@ -973,9 +988,11 @@ class Frontend extends CI_Controller {
 				$filename = str_replace('/', '_', $no_kwitansi);
 				$htmlcontent = $this->nsmarty->fetch('frontend/modul/kwitansi_pdf.html');
 				
+				//echo $htmlcontent;exit;
+				
 				$pdf = $this->mlpdf->load();
-				//$spdf = new mPDF('', 'A5', 0, '', 12.7, 12.7, 15, 20, 5, 2, 'L');
-				$spdf = new mPDF('', 'A5-L', 0, '', 5, 5, 5, 5, 0, 0);
+				$spdf = new mPDF('', 'A4', 0, '', 12.7, 12.7, 15, 15, 5, 2, 'L');
+				//$spdf = new mPDF('', 'A5-L', 0, '', 5, 5, 5, 5, 0, 0);
 				$spdf->ignore_invalid_utf8 = true;
 				$spdf->allow_charset_conversion = true;     // which is already true by default
 				$spdf->charset_in = 'iso-8859-2';  // set content encoding to iso
@@ -989,7 +1006,7 @@ class Frontend extends CI_Controller {
 				//$no_tanda_terima = $data_invoice['no_order']."/ASP/TT/".date('Y');
 				$inv = $this->input->post('invo');
 				if(!$inv){
-					echo "tutup tab browser ini, dan generate kembali melalui tombol di web www.aldeaz.id";
+					echo "tutup tab browser ini, dan generate kembali melalui tombol di web bukusekolah.mks-store.id";
 					exit;
 				}				
 				$data_invoice = $this->mfrontend->getdata('header_pesanan', 'row_array', $inv);
@@ -1022,7 +1039,7 @@ class Frontend extends CI_Controller {
 			case "suratpesanan":
 				$inv = $this->input->post('invo');
 				if(!$inv){
-					echo "tutup tab browser ini, dan generate kembali melalui tombol di web www.aldeaz.id";
+					echo "tutup tab browser ini, dan generate kembali melalui tombol di web bukusekolah.mks-store.id";
 					exit;
 				}				
 				$data_invoice = $this->mfrontend->getdata('header_pesanan', 'row_array', $inv);
@@ -1296,12 +1313,18 @@ class Frontend extends CI_Controller {
 	}	
 	
 	function tester(){			
-		echo "<pre>";
+		//echo "<pre>";
 		//print_r($this->auth);
-		print_r($this->cart->contents());
+		//print_r($this->cart->contents());
 		
 		//$this->cart->destroy();	
 		
+		//echo date('l');
+		
+		//$dt = strtotime('06/19/2009');
+		//$day = date("l", $dt);
+		//echo $day;
+		echo (int)date('Y');
 	}
 	
 	function test(){			

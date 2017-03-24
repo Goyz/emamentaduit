@@ -244,6 +244,45 @@ class Lib {
 	}
 	//End Class Konversi Tanggal
 	
+	//Start Class Konversi Jam
+	function konversi_jam($time){
+		$data = array();
+		$times = explode(":", $time);
+		$data["jam"] = ucwords(number_to_words((int)$times[0]));
+		$data["menit"] = ucwords(number_to_words((int)$times[1]));
+		$data["detik"] = ucwords(number_to_words((int)$times[2]));
+		return $data;
+	}
+	//End Class Konversi Jam
+	
+	//konversi hari
+	function convert_day_name($day){
+		switch($day){
+			case "Monday":
+				return "Senin";
+			break;
+			case "Tuesday":
+				return "Selasa";
+			break;
+			case "Wednesday":
+				return "Rabu";
+			break;
+			case "Thursday":
+				return "Kamis";
+			break;
+			case "Friday":
+				return "Jumat";
+			break;
+			case "Saturday":
+				return "Sabtu";
+			break;
+			case "Sunday":
+				return "Minggu";
+			break;
+		}
+	}	
+	//end konversi hari
+	
 	//Class Fillcombo
 	function fillcombo($type="", $balikan="", $p1="", $p2="", $p3=""){
 		$ci =& get_instance();
