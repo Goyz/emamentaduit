@@ -371,11 +371,11 @@ class Mbackend extends CI_Model{
 				if($id)$where .=" AND A.id=".$id;
 				$sql="SELECT A.*,B.no_order,B.tgl_order,B.zona,C.nama_sekolah,
 						C.nama_kepala_sekolah,C.nip,C.npsn,C.alamat_pengiriman,
-						C.no_telp_sekolah,C.email,C.no_hp_kepsek,D.no_bast
+						C.no_telp_sekolah,C.email,C.no_hp_kepsek,D.no_bast, B.id as idpesan
 						FROM tbl_konfirmasi A 
 						LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
 						LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id
-						LEFT JOIN tbl_bast D ON D.tbl_konfirmasi_id=A.id
+						LEFT JOIN tbl_bast D ON D.tbl_h_pemesanan_id=B.id
 					  ".$where;
 				$data['header']=$this->db->query($sql)->row_array();
 				$sql="SELECT A.*,B.judul_buku,(A.qty*A.harga)as total,E.kelas,F.nama_group

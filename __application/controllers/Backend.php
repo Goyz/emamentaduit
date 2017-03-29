@@ -545,13 +545,13 @@ class Backend extends JINGGA_Controller {
 							'create_date'=>date('Y-m-d H:i:s'),
 							'create_by'=>$this->auth['username']
 				);
-				$data_bast=array('tbl_konfirmasi_id'=>$data_konfirmasi['header']['id'],
+				$data_bast=array('tbl_h_pemesanan_id'=>$data_konfirmasi['header']['idpesan'],
 								 'no_bast'=>$data_konfirmasi['header']['no_order'].'/ASP/BAST/'.date('Y'),
 								 'status'=>'F',
 								 'create_date'=>date('Y-m-d H:i:s'),
 								 'create_by'=>$this->auth['username']
 				);
-				$data_kwitansi=array('tbl_konfirmasi_id'=>$data_konfirmasi['header']['id'],
+				$data_kwitansi=array('tbl_h_pemesanan_id'=>$data_konfirmasi['header']['idpesan'],
 								 'no_kwitansi'=>$data_konfirmasi['header']['no_order'].'/ASP/K/'.date('Y'),
 								 'status'=>'F',
 								 'create_date'=>date('Y-m-d H:i:s'),
