@@ -1,9 +1,9 @@
 {if $data_buku}
 	{foreach from=$data_buku item=row}
-		<div style="min-height:350px !important;" class="product-layout product-grid col-lg-3 col-md-3 col-sm-4 col-xs-12">
+		<div style="min-height:400px !important;" class="product-layout product-grid col-lg-3 col-md-3 col-sm-4 col-xs-12">
 			<div class="product-thumb">
 				<div class="image">
-					<img src="{$row.foto_buku}" alt=" {$row.judul_buku} " title=" {$row.judul_buku} " class="img-responsive">
+					<img style="max-height:300px !important;" src="{$row.foto_buku}" alt=" {$row.judul_buku} " title=" {$row.judul_buku} " class="img-responsive">
 				</div>
 				<div>
 					<div class="caption">

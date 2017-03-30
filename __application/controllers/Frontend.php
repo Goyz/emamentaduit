@@ -61,6 +61,8 @@ class Frontend extends CI_Controller {
 				
 				if($p1 == "beranda"){
 				
+				}elseif($p1 == "ubahpassword"){
+					
 				}elseif($p1 == "profile"){
 					$code = $this->input->get('code');
 					//echo $code;exit;
@@ -103,7 +105,8 @@ class Frontend extends CI_Controller {
 										'kd_kab'=>$infosp['kd_kab'],
 										'cl_kab_kota_kode'=>$infosp['kd_kab'],
 										'kab'=>$infosp['kab'],
-										'kd_kec'=>$infosp['kd_kec'],
+										'cl_kecamatan_kode'=>$infosp['kd_kec'],
+										//'kd_kec'=>$infosp['kd_kec'],
 										'kec'=>$infosp['kec'],
 										'desa'=>$infosp['desa'],
 										'kode_pos'=>$infosp['kode_pos'],
@@ -126,6 +129,7 @@ class Frontend extends CI_Controller {
 							}
 						}
 					}
+					
 				}elseif($p1 == "login"){
 					
 				}elseif($p1 == "bantuan"){
@@ -178,6 +182,9 @@ class Frontend extends CI_Controller {
 			break;
 			case "loading_page":
 				switch($p1){
+					case "ubahpassword":
+						$temp = "frontend/modul/ubahpassword.html";
+					break;
 					case "uploadfile":
 						$temp = "frontend/modul/uploadfile.html";
 						
@@ -201,6 +208,16 @@ class Frontend extends CI_Controller {
 					break;
 					case "profile":
 						$temp = "frontend/modul/profile.html";
+						
+						if($this->auth["jenis_pembeli"] == "SEKOLAH"){
+							$this->nsmarty->assign('combo_prov', $this->lib->fillcombo('cl_provinsi', 'return', $this->auth["cl_provinsi_kode"]));
+							$this->nsmarty->assign('combo_kab', $this->lib->fillcombo('cl_kab_kota', 'return', $this->auth["cl_kab_kota_kode"], $this->auth["cl_provinsi_kode"]  ));
+							$this->nsmarty->assign('combo_kec', $this->lib->fillcombo('cl_kecamatan', 'return', $this->auth["cl_kecamatan_kode"], $this->auth["cl_kab_kota_kode"]  ));
+						}elseif($this->auth["jenis_pembeli"] == "UMUM"){
+							$this->nsmarty->assign('combo_prov', $this->lib->fillcombo('cl_provinsi_old', 'return', $this->auth["cl_provinsi_kode"]));
+							$this->nsmarty->assign('combo_kab', $this->lib->fillcombo('cl_kab_kota_old', 'return', $this->auth["cl_kab_kota_kode"], $this->auth["cl_provinsi_kode"]  ));
+							$this->nsmarty->assign('combo_kec', $this->lib->fillcombo('cl_kecamatan_old', 'return', $this->auth["cl_kecamatan_kode"], $this->auth["cl_kab_kota_kode"]  ));
+						}
 					break;
 					
 					case "finish_registrasi":
@@ -322,6 +339,7 @@ class Frontend extends CI_Controller {
 						}
 						$array_paging = array();
 						for($i=0; $i <= ($total_paging-1); $i++){
+						//for($i=0; $i <= 90; $i++){
 							$j = ($i + 1);
 							if(isset($mulai)){
 								$mulai = $mulai + $limit;
@@ -486,6 +504,7 @@ class Frontend extends CI_Controller {
 						}
 						$array_paging = array();
 						for($i=0; $i <= ($total_paging-1); $i++){
+						//for($i=0; $i <= 90; $i++){
 							$j = ($i + 1);
 							if(isset($mulai)){
 								$mulai = $mulai + $limit;
@@ -750,6 +769,16 @@ class Frontend extends CI_Controller {
 							$this->nsmarty->assign('combo_kec', $this->lib->fillcombo('cl_kecamatan', 'return', (isset($this->auth) ? $this->auth['cl_kecamatan_kode'] : "" ), (isset($cek_data) ? $cek_data['cl_kab_kota_kode'] : "" ) ));						
 						}
 						
+					break;
+					case "combo_kab_kota_sekolah":
+						$v2 = $this->input->post('v2');
+						echo $this->lib->fillcombo('cl_kab_kota', 'return', '', $v2);
+						exit;
+					break;
+					case "combo_kecamatan_sekolah":
+						$v2 = $this->input->post('v2');
+						echo $this->lib->fillcombo('cl_kecamatan', 'return', '', $v2);
+						exit;
 					break;
 					case "combo_kab_kota":
 						$v2 = $this->input->post('v2');
@@ -1313,8 +1342,8 @@ class Frontend extends CI_Controller {
 	}	
 	
 	function tester(){			
-		//echo "<pre>";
-		//print_r($this->auth);
+		echo "<pre>";
+		print_r($this->auth);
 		//print_r($this->cart->contents());
 		
 		//$this->cart->destroy();	
@@ -1324,7 +1353,7 @@ class Frontend extends CI_Controller {
 		//$dt = strtotime('06/19/2009');
 		//$day = date("l", $dt);
 		//echo $day;
-		echo (int)date('Y');
+		//echo (int)date('Y');
 	}
 	
 	function test(){			

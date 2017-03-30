@@ -27,6 +27,16 @@ class Mfrontend extends CI_Model{
 					WHERE A.nama_user = '".$p1."'
 				";
 			break;
+			case "data_login_dapotik":
+				$sql = "
+					SELECT A.*, B.provinsi, C.kab_kota, CASE WHEN D.kecamatan IS NULL THEN '-' ELSE D.kecamatan END AS kecamatan
+					FROM tbl_registrasi A
+					LEFT JOIN cl_provinsi B ON B.kode_prov = A.cl_provinsi_kode
+					LEFT JOIN cl_kab_kota C ON C.kode_kab_kota = A.cl_kab_kota_kode
+					LEFT JOIN cl_kecamatan D ON D.kode_kecamatan = A.cl_kecamatan_kode
+					WHERE A.email = '".$p1."'
+				";
+			break;			
 			case "data_testimonial":
 				$sql = "
 					SELECT A.*, DATE_FORMAT(A.create_date,'%d %b %y') as tgl_komen,
@@ -427,6 +437,60 @@ class Mfrontend extends CI_Model{
 		}
 		
 		switch($table){
+			case "ubahpassword":
+				$sts_crud = 'updatingbro';
+				if($this->auth["jenis_pembeli"] == "UMUM"){
+					$this->load->library("encrypt");
+					$password_sistem = $this->encrypt->decode($this->auth["password"]);
+					
+					if($data["pswd_lm"] != $password_sistem){
+						echo 2;
+						exit;
+					}else{
+						$password_baru = $this->encrypt->encode($data["pswd_br"]);
+						$update = $this->db->update("tbl_registrasi", array("password"=>$password_baru), array("id"=>$this->auth["id"]) );
+						if($update){
+							$cek_user = $this->getdata('data_login_pembeli', 'row_array', $this->auth["email"]);
+							$this->session->set_userdata('mkspembeli', base64_encode(serialize($cek_user)));
+						}
+					}
+				}
+			break;
+			case "updateprofile":
+				$sts_crud = 'updatingbro';
+				if($data["email"] != $this->auth["email"]){
+					$cek_email = $this->db->get_where("tbl_registrasi", array("email"=>$data["email"]) )->row_array();
+					if($cek_email){
+						echo 2;
+						exit;
+					}
+				}
+				
+				if($this->auth["jenis_pembeli"] == "UMUM"){
+					$data_bener = array(
+						"nama_user" => $data["email"],
+						"nama_lengkap" => $data["nm_lengkap"],
+						"email" => $data["email"],
+						"no_hp_customer" => $data["no_handphone"],
+						"no_telp_customer" => $data["no_telp"],
+						"cl_provinsi_kode" => $data["provinsi"],
+						"cl_kab_kota_kode" => $data["kabupaten"],
+						"cl_kecamatan_kode" => $data["kecamatan"],
+						"kode_pos" => $data["kd_pos"],
+						"alamat_pengiriman" => $data["alamat_pengiriman"],
+					);
+					
+					$update = $this->db->update("tbl_registrasi", $data_bener, array("id"=>$this->auth["id"]) );
+					if($update){
+						$sess = array();
+						$cek_user = $this->getdata('data_login_pembeli', 'row_array', $data["email"]);
+						$sess['zona_pilihan'] = $cek_user["zona_pengiriman"];
+						$sess['provinsi'] = $cek_user['provinsi'];
+						$this->session->set_userdata("zonaxtreme", $sess);
+						$this->session->set_userdata('mkspembeli', base64_encode(serialize($cek_user)));
+					}
+				}
+			break;
 			case "tbl_reg_dapotik":
 				$table="tbl_registrasi";
 			break;

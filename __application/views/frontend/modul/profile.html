@@ -19,8 +19,7 @@
 			<div class="tab-content">
 				{if $auth.jenis_pembeli eq "SEKOLAH"}			
 				<div itemprop="sekolah" id="tab-sekolah" class="tab-pane active">
-					<form id='frmregsbrosekolah' url="{$host}submit-registrasi" method='post' enctype="multipart/form-data" class="form-horizontal">
-						<input type="hidden" name="domtype" value="S">
+					<form data-toggle="validator" role="form" id='frmupdprofsekolah' url="{$host}submit-update-profil" method='post' enctype="multipart/form-data" class="form-horizontal">
 						<fieldset>
 							<legend>Data Sekolah</legend>
 							<div class="form-group readonly">
@@ -123,80 +122,91 @@
 								</div>
 							</div>												
 						</fieldset>
-						
 					</form>
 				</div>
 				{elseif $auth.jenis_pembeli eq "UMUM"}
 				<div itemprop="umum" id="tab-umum" class="tab-pane active">
-					<form data-toggle="validator" role="form" id='frmregsbroumum' url="{$host}submit-registrasi" method='post' enctype="multipart/form-data" class="form-horizontal">
-						<input type="hidden" name="domtype" value="U">						
+					<form data-toggle="validator" role="form" id='frmupdprof' url="{$host}submit-update-profil" method='post' enctype="multipart/form-data" class="form-horizontal">
 						<fieldset id="account">
 							<legend>Data Personal</legend>
-							<div class="form-group">
+							<div class="form-group required">
 								<label for="input-firstname" class="col-sm-3 control-label">Nama Lengkap</label>
 								<div class="col-sm-8">
-									<input class="form-control validasi" readonly value="{$auth.nama_lengkap}" id="nm_lengkap" name="nm_lengkap" type="text">
+									<input class="form-control validasi" required value="{$auth.nama_lengkap}" id="nm_lengkap" name="nm_lengkap" type="text">
 								</div>
 							</div>
-							<div class="form-group">
+							<div class="form-group required">
 								<label for="input-lastname" class="col-sm-3 control-label">Email</label>
 								<div class="col-sm-8">
-									<input class="form-control validasi" readonly value="{$auth.email}" id="email" name="email" type="email">
+									<input class="form-control emailss" required value="{$auth.email}" id="email" name="email" type="text">
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="input-telephone" class="col-sm-3 control-label">No. Telp</label>
 								<div class="col-sm-8">
-									<input class="form-control" id="no_telp" readonly value="{$auth.no_telp_customer}" name="no_telp" type="tel">
+									<input class="form-control validasi" required value="{$auth.no_telp_customer}" id="no_telp" name="no_telp" type="tel">
 								</div>
 							</div>
-							<div class="form-group">
+							<div class="form-group required">
 								<label for="input-fax" class="col-sm-3 control-label">No. Handphone</label>
 								<div class="col-sm-8">
-									<input class="form-control validasi" readonly value="{$auth.no_hp_customer}" id="no_handphone" name="no_handphone" type="text">
+									<input class="form-control validasi" required value="{$auth.no_hp_customer}" id="no_handphone" name="no_handphone" type="text">
 								</div>
 							</div>
 						</fieldset>
 						<fieldset>
 							<legend>Data Alamat</legend>
 							<div class="form-group required">
-								<label for="input-firstname" class="col-sm-3 control-label">Zona Pengiriman</label>
-								<div class="col-sm-8">
-									<input class="form-control validasi" readonly value="{$auth.provinsi}" type="text">
-								</div>
-							</div>							
-							<div class="form-group required">
 								<label for="input-firstname" class="col-sm-3 control-label">Provinsi</label>
 								<div class="col-sm-8">
-									<input class="form-control validasi" readonly value="{$auth.provinsi}" type="text">
+									<select class="form-control validasi" required id="provinsi_umum" name="provinsi">	
+										{$combo_prov}
+									</select>
 								</div>
 							</div>							
 							<div class="form-group required">
 								<label for="input-firstname" class="col-sm-3 control-label">Kabupaten</label>
 								<div class="col-sm-8">
-									<input class="form-control validasi" readonly value="{$auth.kab_kota}" type="text">
+									<select class="form-control validasi" required id="kabupaten_umum" name="kabupaten">	
+										{$combo_kab}
+									</select>
 								</div>
 							</div>							
 							<div class="form-group">
 								<label for="input-firstname" class="col-sm-3 control-label">Kecamatan</label>
 								<div class="col-sm-8">
-									<input class="form-control validasi" readonly value="{$auth.kecamatan}" type="text">
+									<select class="form-control validasi" id="kecamatan_umum" name="kecamatan">		
+										{$combo_kec}
+									</select>
 								</div>
 							</div>		
 							<div class="form-group required">
 								<label for="input-firstname" class="col-sm-3 control-label">Kode Pos</label>
 								<div class="col-sm-2">
-									<input class="form-control" readonly value="{$auth.kode_pos}" id="kd_pos" name="kd_pos" type="text">
+									<input class="form-control" required value="{$auth.kode_pos}" id="kd_pos" name="kd_pos" type="text">
 								</div>
 							</div>														
-							<div class="form-group">
+							<div class="form-group required">
 								<label for="input-fax" class="col-sm-3 control-label">Alamat Pengiriman</label>
 								<div class="col-sm-8">
-									<textarea class="form-control validasi" readonly id="alamat_pengiriman" name="alamat_pengiriman">{$auth.alamat_pengiriman}</textarea>
+									<textarea class="form-control validasi" required id="alamat_pengiriman" name="alamat_pengiriman">{$auth.alamat_pengiriman}</textarea>
 								</div>
 							</div>
+							<div class="form-group">
+								<label for="input-firstname" class="col-sm-3 control-label">Zona Pengiriman</label>
+								<div class="col-sm-1">
+									<div class="form-control">{$auth.zona_pengiriman|default:'-'}</div>
+								</div>
+							</div>								
 						</fieldset>
 						
+						<div class="buttons">
+							<div class="pull-center">
+								<center>
+									<a id="ubhprof" class="btn btn-primary">Ubah Profile</a>
+								</center>
+							</div>
+						</div>
 					</form>				
 			
 				</div>
@@ -211,6 +221,9 @@
             <div class="list-group">
                 <ul class="list-item">
                     <li><a href="{$host}">Data Profile</a></li>
+                    {if $auth.jenis_pembeli eq "UMUM"}
+					<li><a href="{$host}ubahpassword">Ubah Password</a></li>
+					{/if}
                     <li><a href="{$host}datapesanan">Data Pesanan</a></li>
                     <li><a href="{$host}katalog">Katalog</a></li>
                     <li><a href="{$host}logoutpembeli">Logout</a></li>
@@ -221,5 +234,81 @@
     </div>
 </div>
 
+{if $auth.jenis_pembeli eq 'UMUM'}
 <script>
+	$(".validasi").validatebox({ required:true }); 
+	$('.emailss').validatebox({
+		required: true,
+		validType: 'email'
+	});
+	$('#provinsi_umum').bind('change', function(){
+		fillCombo(host+'combo-kab-kota', 'kabupaten_umum', '', $(this).val() );
+	});
+	$('#kabupaten_umum').on('change', function(){
+		fillCombo(host+'combo-kecamatan', 'kecamatan_umum', '', $(this).val() );
+	});
+	
+	$('#ubhprof').on('click', function(){
+		validasi = $('#frmupdprof').form('validate');		
+		if(validasi){
+			$.blockUI({ message: '<h3>Data Sedang Diproses...</h3>' });			
+		}		
+		submit_form('frmupdprof', function(resp){
+			if(resp == 1){
+				alert("Profile anda sudah diperbaharui.");
+				window.location.href = host;
+			}else if(resp == 2){
+				alert("Gunakan alamat email yang lain!");
+				
+				/*
+				$.unblockUI();
+				$('#modalencuk').html("Data Email Anda Sudah Ada Dalam System Kami!");			
+				$('#productModal').modal('show'); 
+				*/
+			}
+			$.unblockUI();
+		});
+	});
+
 </script>
+{/if}
+
+{if $auth.jenis_pembeli eq 'gg'}
+<script>
+	$(".validasi").validatebox({ required:true }); 
+	$('.emailss').validatebox({
+		required: true,
+		validType: 'email'
+	});
+	$('#provinsi_sekolah').bind('change', function(){
+		fillCombo(host+'combo-kab-kota-sekolah', 'kabupaten_sekolah', '', $(this).val() );
+	});
+	
+	//$('#kabupaten_umum').on('change', function(){
+	//	fillCombo(host+'combo-kecamatan-sekolah', 'kecamatan_umum', '', $(this).val() );
+	//});
+	
+	$('#ubhprofsekolah').on('click', function(){
+		validasi = $('#frmupdprofsekolah').form('validate');		
+		if(validasi){
+			$.blockUI({ message: '<h3>Data Sedang Diproses...</h3>' });			
+		}		
+		submit_form('frmupdprofsekolah', function(resp){
+			if(resp == 1){
+				alert("Profile anda sudah diperbaharui.");
+				window.location.href = host;
+			}else if(resp == 2){
+				alert("Gunakan alamat email yang lain!");
+				
+				/*
+				$.unblockUI();
+				$('#modalencuk').html("Data Email Anda Sudah Ada Dalam System Kami!");			
+				$('#productModal').modal('show'); 
+				*/
+			}
+			$.unblockUI();
+		});
+	});
+
+</script>
+{/if}

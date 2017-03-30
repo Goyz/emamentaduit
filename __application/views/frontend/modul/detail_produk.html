@@ -15,7 +15,7 @@
 						<ul class="rslides" id='slider3'>
 							{foreach from=$data_fotobuku item=rw}
 								<li>
-									<img src="{$rw.foto_buku}" />
+									<img style="" src="{$rw.foto_buku}" class="img-responsive" />
 								</li>
 							{/foreach}
 						</ul>
@@ -107,7 +107,7 @@
                 </div>
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#tab-description" data-toggle="tab" aria-expanded="true">Deskripsi Buku</a></li>
-                    <li class=""><a href="#tab-review" data-toggle="tab" aria-expanded="false">Komentar</a></li>
+                    {* <li class=""><a href="#tab-review" data-toggle="tab" aria-expanded="false">Komentar</a></li> *}
                 </ul>
                 <div class="tab-content">
                     <div itemprop="description" id="tab-description" class="tab-pane active">
@@ -158,6 +158,7 @@
 							</table>
 						</div>		
 					</div>
+					{*
 					<div id="tab-review" class="tab-pane">
                         <form class="form-horizontal">
                             <div id="review">
@@ -225,6 +226,7 @@
                             </div>
                         </form>
                     </div>
+					*}
                 </div>
 			</div>
         </div>

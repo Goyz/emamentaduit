@@ -82,6 +82,8 @@ $route['loading-datapesanan'] = 'frontend/getdisplay/loading_page/datapesanan'; 
 $route['loading-formcheckout'] = 'frontend/getdisplay/loading_page/form_isian_checkout';
 $route['combo-kab-kota'] = 'frontend/getdisplay/loading_page/combo_kab_kota'; // kepake
 $route['combo-kecamatan'] = 'frontend/getdisplay/loading_page/combo_kecamatan'; // kepake
+$route['combo-kab-kota-sekolah'] = 'frontend/getdisplay/loading_page/combo_kab_kota_sekolah'; // kepake
+$route['combo-kecamatan-sekolah'] = 'frontend/getdisplay/loading_page/combo_kecamatan_sekolah'; // kepake
 
 $route['konfirmasi/(:any)'] = 'frontend/getdisplay/main_page/konfirmasi/$1'; // kepake
 $route['loading-konfirmasi'] = 'frontend/getdisplay/loading_page/konfirmasi_pemb'; // kepake
@@ -107,6 +109,18 @@ $route['login'] = 'frontend/getdisplay/main_page/login'; // kepake
 $route['loading-login'] = 'frontend/getdisplay/loading_page/login'; // kepake
 $route['submit-login'] = 'frontend/loginpembeli'; // kepake
 $route['logoutpembeli'] = 'frontend/logoutpembeli'; // kepake
+
+$route['submit-update-profil'] = 'frontend/cruddata/form/updateprofile';
+
+$route['registrasi'] = 'frontend/getdisplay/main_page/registrasi';
+$route['loading-registrasi'] = 'frontend/getdisplay/loading_page/registrasi';
+$route['submit-registrasi'] = 'frontend/cruddata/form/registrasi';
+$route['finish-registrasi'] = 'frontend/getdisplay/loading_page/finish_registrasi';
+
+$route['ubahpassword'] = 'frontend/getdisplay/main_page/ubahpassword';
+$route['loading-ubahpassword'] = 'frontend/getdisplay/loading_page/ubahpassword';
+$route['submit-update-password'] = 'frontend/cruddata/form/ubahpassword';
+
 
 // ROuting gak kepake
 
@@ -144,10 +158,6 @@ $route['loading-pembatalan'] = 'frontend/getdisplay/loading_page/pembatalanpesan
 $route['loading-formpemb'] = 'frontend/getdisplay/loading_page/formpembatalancuy';
 $route['submit-pembatalan'] = 'frontend/cruddata/form/pembss';
 
-$route['registrasi'] = 'frontend/getdisplay/main_page/registrasi';
-$route['loading-registrasi'] = 'frontend/getdisplay/loading_page/registrasi';
-$route['submit-registrasi'] = 'frontend/cruddata/form/registrasi';
-$route['finish-registrasi'] = 'frontend/getdisplay/loading_page/finish_registrasi';
 
 
 
