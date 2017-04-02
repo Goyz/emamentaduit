@@ -60,23 +60,30 @@ class Backend extends JINGGA_Controller {
 				$opt .="<option value='A.deskripsi'>Deskripsi</option>";
 			break;
 			case "invoice":
+			case "konfirmasi_sekolah":
+			case "ver_sekolah":
+			case "ver_gudang_sekolah":
+			case "ver_gudang_sekolah":
 				$opt .="<option value='A.no_order'>No Order</option>";
 				$opt .="<option value='B.nama_sekolah'>Nama Sekolah</option>";
 			break;
 			case "invoice_umum":
+			case "ver_umum":
+			case "ver_gudang_umum":
 				$opt .="<option value='A.no_order'>No Order</option>";
 				$opt .="<option value='B.nama_lengkap'>Nama Lengkap</option>";
 			break;
 			case "konfirmasi":
+			case "konfirmasi_umum":
 				$opt .="<option value='A.konfirmasi_no'>No Konfirmasi</option>";
 				$opt .="<option value='B.no_order'>No Order</option>";
 				$opt .="<option value='C.nama_lengkap'>PIC</option>";
 				$opt .="<option value='C.nama_sekolah'>Nama Sekolah</option>";
 			break;
 			case "gudang_konfirmasi":
+			case "manajemen_gudang_sekolah":
 			case "gudang_kirim":
 				$opt .="<option value='A.no_gudang'>No Gudang</option>";
-				$opt .="<option value='B.konfirmasi_no'>No Konfirmasi</option>";
 				$opt .="<option value='C.no_order'>No Order</option>";
 				$opt .="<option value='D.nama_lengkap'>PIC</option>";
 				$opt .="<option value='D.nama_sekolah'>Nama Sekolah</option>";
@@ -118,6 +125,10 @@ class Backend extends JINGGA_Controller {
 			$sts=$this->input->post('editstatus');
 			$this->nsmarty->assign('sts',$sts);
 			switch($mod){
+				case "konfirmasi_sekolah":
+					$id_pesanan = $this->input->post('id');
+					$this->nsmarty->assign('id_pesanan',$id_pesanan);
+				break;
 				case "mapping_paket":
 					$nama_paket = $this->input->post('nama_paket');
 					$id = $this->input->post('id');
@@ -248,10 +259,24 @@ class Backend extends JINGGA_Controller {
 		$this->nsmarty->assign('mod',$mod);
 		$temp="backend/modul/".$mod.".html";
 		switch($mod){
-			case "gudang_konfirmasi":
 			case "konfirmasi":
+			case "konfirmasi_umum":
+				$cetak=$this->input->post('flag_cetak');
+				$temp="backend/modul/invoice.html";
+				$data=$this->mbackend->getdata('get_pemesanan_konfirmasi','result_array');
+				$this->nsmarty->assign('data',$data);
+			
+			break;
+			case "gudang_konfirmasi":
 			case "invoice":
 			case "invoice_umum":
+			case "ver_sekolah":
+			case "ver_umum":
+			case "ver_gudang_umum":
+			case "ver_gudang_sekolah":
+			case "manajemen_gudang_sekolah":
+			case "manajemen_gudang_umum":
+			case "konfirmasi_sekolah":
 				//if($mod=='gudang_konfirmasi'){}
 				$cetak=$this->input->post('flag_cetak');
 				$temp="backend/modul/invoice.html";
@@ -400,10 +425,23 @@ class Backend extends JINGGA_Controller {
 				break;
 				
 				case "invoice":
+				case "konfirmasi_sekolah":
+				case "konfirmasi_umum":
 				case "invoice_umum":
 				case "konfirmasi":
 				case "gudang_konfirmasi":
+				case "ver_sekolah":
+				case "ver_umum":
+				case "ver_gudang_umum":
+				case "ver_gudang_sekolah":
+				case "manajemen_gudang_sekolah":
+				case "manajemen_gudang_umum":
 					$judul="INVOICE";
+					$data=$this->mbackend->getdata('get_pemesanan','result_array');
+					$file_name=$data['header']['no_order'];
+				break;
+				case "surat_jalan":
+					$judul="Surat Jalan";
 					$data=$this->mbackend->getdata('get_pemesanan','result_array');
 					$file_name=$data['header']['no_order'];
 				break;
@@ -524,6 +562,14 @@ class Backend extends JINGGA_Controller {
 	function set_flag(){
 		$mod=$this->input->post('mod');
 		switch($mod){
+			case "tbl_h_pemesanan":
+				$sts='edit';
+				$data=array('id'=>$this->input->post('id'),
+							'status'=>$this->input->post('status')
+				);
+				echo $this->mbackend->simpandata('tbl_h_pemesanan',$data,$sts);
+				exit;
+			break;
 			case "tbl_d_pemesanan":
 				$sts='edit';
 				$data=array('id'=>$this->input->post('id'),
@@ -531,6 +577,21 @@ class Backend extends JINGGA_Controller {
 				);
 				echo $this->mbackend->simpandata('tbl_d_pemesanan',$data,$sts);
 				exit;
+			break;
+			case "kirim_gudang_umum":
+				$sts='add';
+				$data_konfirmasi=$this->mbackend->getdata('get_bast');
+				$no_gudang=$this->mbackend->getdata('get_no_gudang');
+				$data=array('tbl_konfirmasi_id'=>$this->input->post('id'),
+							'tbl_h_pemesanan_id'=>$data_konfirmasi['header']['tbl_h_pemesanan_id'],
+							'no_gudang'=>$no_gudang,
+							'tgl_masuk'=>date('Y-m-d H:i:s'),
+							'remark'=>$this->input->post('remark'),
+							'flag'=>'P',
+							'create_date'=>date('Y-m-d H:i:s'),
+							'create_by'=>$this->auth['username']
+				);
+				
 			break;
 			case "kirim_gudang":
 				$sts='add';
@@ -570,9 +631,11 @@ class Backend extends JINGGA_Controller {
 				);
 			break;
 			case "set_kirim":
+			case "set_kirim_umum":
+			case "set_kirim_sekolah":
 				$sts='edit';
 				$data=array('id'=>$this->input->post('id'),
-							'flag'=>'F',
+							'flag'=>'PP',
 							'kirim_date'=>date('Y-m-d H:i:s'),
 							'kirim_by'=>$this->auth['username'],
 							'kirim_remark'=>$this->input->post('remark')

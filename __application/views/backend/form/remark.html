@@ -1,4 +1,4 @@
-{if $modul eq "kirim_gudang"}
+{if $modul eq "kirim_gudang" || $modul eq "kirim_gudang_umum"}
 {assign var=label_na value="Pesan Ke Gudang"}
 {assign var=label_but value="Kirim Ke Gudang"}
 {assign var=tinggi_text value="100px"}
@@ -6,7 +6,7 @@
 {assign var=label_na value="Remark Packing"}
 {assign var=label_but value="Packing"}
 {assign var=tinggi_text value="100px"}
-{else if $modul eq "set_kirim"}
+{else if $modul eq "set_kirim" || $modul eq "set_kirim_sekolah" || $modul eq "set_kirim_umum"}
 {assign var=label_na value="Remark Pengiriman"}
 {assign var=label_but value="Kirim"}
 {assign var=tinggi_text value="50px"}
@@ -21,7 +21,7 @@
 	<input type="hidden" name="mod" id="mod_{$acak}" value="{$modul|default:''}">
 	<table class="table table-hover">
 	{include file="backend/template/input_goyz.html" label="{$label_na}" type="textarea" name="remark" id_na="remark"  style_type="width:80%" class="validasi" value=$data.remark|default:''}
-	{if $modul eq "set_kirim"}
+	{if $modul eq "set_kirim" || $modul eq "set_kirim_sekolah" || $modul eq "set_kirim_umum"}
 	
 	{include file="backend/template/input_goyz.html" label="No Resi" type="text" name="no_resi" id_na="no_resi"  style_type="width:80%" class="validasi" value=$data.resi|default:''}
 	{/if}
@@ -46,11 +46,18 @@
 		msg="Pemesanan Telah Dibatalkan";
 		{if $modul eq "kirim_gudang"}
 		msg='Transfer Ke Gudang Berhasil';
+		{else if $modul eq "kirim_gudang_umum"}
+		msg='Pemesanan Akan Diproses Oleh Gudang';
 		{else if $modul eq "set_packing"}
 		msg='Pemesanan Sudah Masuk Proses Packing';
-		{else if $modul eq "set_kirim"}
+		{else if $modul eq "set_kirim" || $modul eq "set_kirim_sekolah" || $modul eq "set_kirim_umum"}
 		msg='Pemesanan Dalam Proses Pengiriman';
 		{/if}
-		simpan_form('form_input_{$acak}','batal_{$acak}',msg);
+		{if $modul eq "kirim_gudang_umum"}
+			simpan_form('form_input_{$acak}','batal_{$acak}',msg);
+			loadUrl(this, '{$host}backoffice-grid/konfirmasi_umum','tbl_konfirmasi');$('#judul_kecil').html('Konfirmasi Pembayaran')
+		{else}
+			simpan_form('form_input_{$acak}','batal_{$acak}',msg);
+		{/if}
 	});
 </script>

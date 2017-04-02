@@ -1,0 +1,50 @@
+
+<div style="margin-left:40px;">
+<form  parsley-validate id="form_input_{$acak}" method="post" class="form-horizontal" url="{$host}backoffice-simpan/tbl_konfirmasi_sekolah/add" enctype="multipart/form-data">
+	<input type="hidden" name="id" id="id_{$acak}" value="{$id|default:''}">
+	<input type="hidden" name="tbl_h_pemesanan_id" id="tbl_h_pemesanan_id_{$acak}" value="{$id_pesanan|default:''}">
+	<table class="table table-hover">
+	{include file="backend/template/input_goyz.html" label="Bank Pengirim" type="text" name="nama_bank_pengirim" id_na="nama_bank_pengirim"  style_type="width:80%" class="validasi" value=$data.nama_bank_pengirim|default:''}
+	{include file="backend/template/input_goyz.html" label="Nama Pengirim" type="text" name="atas_nama_pengirim" id_na="atas_nama_pengirim"  style_type="width:80%" class="validasi" value=$data.atas_nama_pengirim|default:''}
+	{include file="backend/template/input_goyz.html" label="Bank Penerima" type="text" name="nama_bank_penerima" id_na="nama_bank_penerima"  style_type="width:80%" class="validasi" value=$data.nama_bank_penerima|default:''}
+	{include file="backend/template/input_goyz.html" label="Tgl. Transfer" type="text" name="tanggal_transfer" id_na="tanggal_transfer"  style_type="width:80%" class="tgl" value=$data.tanggal_transfer|default:''}
+	{include file="backend/template/input_goyz.html" label="Total Pembayaran" type="text" name="total_pembayaran" id_na="total_pembayaran"  style_type="width:80%" class="angka" value=$data.total_pembayaran|default:''}
+	{include file="backend/template/input_goyz.html" label="Upload Bukti Pembayaran" type="file" name="file_bukti_bayar" id_na="file_bukti_bayar"  style_type="width:80%" class="" }
+	</table>
+	<br>
+	<div class="col-sm-7 col-sm-offset-3">
+		{include file="backend/template/button_save.html" text="Konfirm" id_na="simpan" style_btn="btn-success"  btn_goyz="true"}
+		{include file="backend/template/button_save.html" text="Tutup" id_na="batal" style_btn="btn-info"  btn_goyz="true"}
+	</div>
+</form>
+</div>
+<script>
+	var upl_vid=0;
+	//gen_editor('#deskripsi{$acak}');
+	$(".validasi").validatebox({ required:true }); 
+	$(".tgl").datebox({ required:true,formatter: formatDate,parser:myparser }); 
+	$('.angka').numberbox({
+		min:0,
+		precision:2,
+		groupSeparator:','
+	});
+	$('#batal_{$acak}').bind('click',function(){
+		closeWindow();
+	});
+	$('#simpan_{$acak}').bind('click',function(){
+		if ($('#form_input_{$acak}').form('validate')){
+			submit_form('form_input_{$acak}',function(r){
+				if(r==1){
+					$.messager.alert('MKS - STORE Back-Office','Konfirmasi Pembayaran Selesai','info');
+					$('#batal_{$acak}').trigger('click');
+					loadUrl(this, '{$host}backoffice-grid/konfirmasi_sekolah','tbl_konfirmasi');$('#judul_kecil').html('Konfirmasi Pembayaran')	
+				}else{
+					$.messager.alert('MKS - STORE Back-Office','Gagal Menyimpan'+r,'error');
+				}
+			});
+		}
+		else{
+			$.messager.alert('MKS - STORE Back-Office',"Isi Data Yang Kosong ",'info');
+		}
+	});
+</script>

@@ -57,9 +57,19 @@
 				<th>Judul Buku</th>
 				<th style="text-align:right;">Harga (Sesuai Zona {$data.header.zona})</th>
 				<th style="text-align:right;">Jumlah/Qty</th>
+				{if $mod eq 'manajemen_gudang_sekolah' || $mod eq 'manajemen_gudang_umum'}
+				<th style="text-align:right;">Berat (Kg)</th>
+				{else}
 				<th style="text-align:right;">Total</th>
-				{if $mod eq 'invoice' || $mod eq 'invoice_umum'}
-				{if $data.header.flag_ver|default:'P' eq 'P'}
+				{/if}
+				
+				{if $mod eq 'ver_sekolah' || $mod eq 'ver_umum'}
+				{if $data.header.flag_ver|default:'P' eq 'P' || $data.header.flag_ver|default:'P' eq 'RG'}
+					<th style="text-align:center;">Editing</th>
+				{/if}
+				{/if}
+				{if $mod eq 'ver_gudang_sekolah' || $mod eq 'ver_gudang_umum'}
+				{if $data.header.flag_ver_gudang|default:'P' eq 'P'}
 					<th style="text-align:center;">Editing</th>
 				{/if}
 				{/if}
@@ -67,12 +77,14 @@
 			</thead>
 			<tbody>
 			{assign var=tot_qty value=0}
+			{assign var=tot_berat value=0}
 			{assign var=tot_harga value=0}
 			{assign var=tot_pajak value=0}
 			{assign var=grand_tot value=0}
 			{foreach from=$data.detil item=i name=x}
 			{if $i.flag neq 'C'}
 			{assign var=tot_qty value=$tot_qty+$i.qty}
+			{assign var=tot_berat value=$tot_berat+$i.berat}
 			{assign var=tot_harga value=$tot_harga+$i.total}
 			{/if}
 			<tr style="{if $i.flag eq 'C'}background:red;color:#FFFFFF{/if}">
@@ -80,11 +92,18 @@
 				<td >{$smarty.foreach.x.iteration}</td>
 				<td>{$i.judul_buku|default:'-'}</td>
 				<td style="text-align:right;">Rp. {$i.harga|number_format:2:',':'.'|default:'-'}</th>
-				<td style="text-align:right;">{$i.qty|number_format:2:',':'.'|default:'-'}</td>
+				<td style="text-align:right;">
+					{$i.qty|number_format:2:',':'.'|default:'-'}
+					
+				</td>
+				{if $mod eq 'manajemen_gudang_sekolah' || $mod eq 'manajemen_gudang_umum'}
+				<td style="text-align:right;">{($i.berat/100)|number_format:2:',':'.'|default:'-'} Kg</td>
+				{else}
 				<td style="text-align:right;">Rp.{$i.total|number_format:2:',':'.'|default:'-'}</td>
-				{if $mod eq 'invoice' || $mod eq 'invoice_umum'}
+				{/if}
 				
-				{if $data.header.flag_ver|default:'P' eq 'P'}
+				{if $mod eq 'ver_sekolah' || $mod eq 'ver_umum'}
+				{if $data.header.flag_ver|default:'P' eq 'P' || $data.header.flag_ver|default:'P' eq 'RG'}
 				{if $i.flag neq 'C'}
 					<td style="text-align:center;">
 						<div class="skin skin-minimal">
@@ -104,7 +123,29 @@
 				{else}
 					<td style="text-align:center;">Data Ini Dibatalkan</td>
 				{/if}
-				
+				{/if}
+				{/if}
+				{if $mod eq 'ver_gudang_sekolah' || $mod eq 'ver_gudang_umum'}
+				{if $data.header.flag_ver_gudang|default:'P' eq 'P'}
+				{if $i.flag neq 'C'}
+					<td style="text-align:center;">
+						<div class="skin skin-minimal">
+							<div class="btn-group">
+						<a href="javascript:void(0);" class="btn btn-sm btn-success" title="Edit" onclick="get_detil('invoice_edit',{$i.id},'{$mod}')">
+							<img src="{$host}__assets/eb/easyui/themes/icons/pencil.png">
+						</a>
+						<a href="javascript:void(0);" class="btn btn-sm btn-success batalkan_{$acak}" title="Batal" data="{$i.id}" >
+							<img src="{$host}__assets/eb/easyui/themes/icons/yellow-cross-icon.png">
+						</a>
+						<a href="javascript:void(0);" class="btn btn-sm btn-success hapuskan_{$acak}" title="Hapus" data="{$i.id}"> 
+							<img src="{$host}__assets/eb/easyui/themes/icons/no.png">
+						</a>
+							</div>
+						</div>
+					</td>
+				{else}
+					<td style="text-align:center;">Data Ini Dibatalkan</td>
+				{/if}
 				{/if}
 				{/if}
 			</tr>
@@ -114,31 +155,56 @@
 			<tr style="font-weight:bold;">
 				<td colspan="3" align="center">SUB TOTAL</td>
 				<td style="text-align:right;">{$tot_qty|number_format:2:',':'.'|default:'-'}</td>
+				{if $mod eq 'manajemen_gudang_sekolah' || $mod eq 'manajemen_gudang_umum'}
+				<td style="text-align:right;">{($tot_berat/100)|number_format:2:',':'.'|default:'-'} Kg</td>
+				{else}
 				<td style="text-align:right;">Rp.{$tot_harga|number_format:2:',':'.'|default:'-'}</td>
-				{if $mod eq 'invoice' || $mod eq 'invoice_umum'}
-				{if $data.header.flag_ver|default:'P' eq 'P'}
+				{/if}
+				{if $mod eq 'ver_sekolah' || $mod eq 'ver_umum'}
+				{if $data.header.flag_ver|default:'P' eq 'P' || $data.header.flag_ver|default:'P' eq 'RG'}
+				<td align="center">&nbsp;</td>
+				{/if}
+				{/if}
+				{if $mod eq 'ver_gudang_sekolah' || $mod eq 'ver_gudang_umum'}
+				{if $data.header.flag_ver_gudang|default:'P' eq 'P'}
 				<td align="center">&nbsp;</td>
 				{/if}
 				{/if}
 			</tr>
+			{if $mod neq 'manajemen_gudang_sekolah' && $mod neq 'manajemen_gudang_umum'}
 			<tr style="font-weight:bold;">
 				<td colspan="3" align="center">PAJAK</td>
 				<td align="center">&nbsp;</td>
 				<!--td align="right">Rp.{($tot_harga * 0.1)|number_format:2:',':'.'|default:'-'}</td-->
 				<td style="text-align:right;">Rp. 0,00</td>
-				{if $mod eq 'invoice' || $mod eq 'invoice_umum'}
-				{if $data.header.flag_ver|default:'P' eq 'P'}
+				{if $mod eq 'ver_sekolah' || $mod eq 'ver_umum'}
+				{if $data.header.flag_ver|default:'P' eq 'P' || $data.header.flag_ver|default:'P' eq 'RG'}
+				<td align="center">&nbsp;</td>
+				{/if}
+				{/if}
+				{if $mod eq 'ver_gudang_sekolah' || $mod eq 'ver_gudang_umum'}
+				{if $data.header.flag_ver_gudang|default:'P' eq 'P'}
 				<td align="center">&nbsp;</td>
 				{/if}
 				{/if}
 			</tr>
+			{/if}
 			<tr style="font-weight:bold;">
 				<td colspan="3" align="center">GRAND TOTAL</td>
 				<td align="center">&nbsp;</td>
 				<!--td align="right">Rp.{(($tot_harga * 0.1) + $tot_harga)|number_format:2:',':'.'|default:'-'}</td-->
+				{if $mod eq 'manajemen_gudang_sekolah' || $mod eq 'manajemen_gudang_umum'}
+				<td style="text-align:right;">{($tot_berat/100)|number_format:2:',':'.'|default:'-'} Kg</td>
+				{else}
 				<td style="text-align:right;">Rp.{$tot_harga|number_format:2:',':'.'|default:'-'}</td>
-				{if $mod eq 'invoice' || $mod eq 'invoice_umum'}
-				{if $data.header.flag_ver|default:'P' eq 'P'}
+				{/if}
+				{if $mod eq 'ver_sekolah' || $mod eq 'ver_umum'}
+				{if $data.header.flag_ver|default:'P' eq 'P' || $data.header.flag_ver|default:'P' eq 'RG'}
+				<td align="center">&nbsp;</td>
+				{/if}
+				{/if}
+				{if $mod eq 'ver_gudang_sekolah' || $mod eq 'ver_gudang_umum'}
+				{if $data.header.flag_ver_gudang|default:'P' eq 'P'}
 				<td align="center">&nbsp;</td>
 				{/if}
 				{/if}
@@ -152,10 +218,30 @@
 		{include file="backend/template/button_save.html" text="Cetak Data" id_na="cetak" style_btn="btn-success"  btn_goyz="true"}
 		{include file="backend/template/button_save.html" text="Kembali" id_na="batal" style_btn="btn-info"  btn_goyz="true"}
 
-		{if $mod eq 'invoice' || $mod eq 'invoice_umum'}
-		{if $data.header.flag_ver|default:'P' eq 'P'}
-		{include file="backend/template/button_save.html" text="Verifikasi Data" id_na="ver" style_btn="btn-primary"  btn_goyz="true"}
+		{if $mod eq 'ver_sekolah' || $mod eq 'ver_umum'}
+			{if $data.header.flag_ver|default:'P' eq 'P'}
+				{include file="backend/template/button_save.html" text="Verifikasi Data & Notif Gudang" id_na="ver" style_btn="btn-primary"  btn_goyz="true"}
+			{else if $data.header.flag_ver|default:'P' eq 'RG'}
+			{include file="backend/template/button_save.html" text="Verifikasi Data Return Dari Gudang" id_na="ver_ok" style_btn="btn-primary"  btn_goyz="true"}
+			{/if}
+			{include file="backend/template/button_save.html" text="Batalkan Pemesanan" id_na="batal_pesanan" style_btn="btn-warning"  btn_goyz="true"}
 		{/if}
+		
+		{if $mod eq 'ver_gudang_sekolah' || $mod eq 'ver_gudang_umum'}
+			{if $data.header.flag_ver_gudang|default:'P' eq 'P'}
+				{include file="backend/template/button_save.html" text="Verifikasi Ok" id_na="ver_gd" style_btn="btn-primary"  btn_goyz="true"}
+				{include file="backend/template/button_save.html" text="Perubahan Data Verifikasi" id_na="ver_updt" style_btn="btn-primary"  btn_goyz="true"}
+			{/if}
+		{/if}
+		{if $mod eq 'konfirmasi_umum'}
+			{if $data.header.flag_konf|default:'P' eq 'P'}
+				{include file="backend/template/button_save.html" text="Konfirmasi Pembayaran" id_na="konf" style_btn="btn-primary"  btn_goyz="true"}
+			{/if}
+		{/if}
+		{if $mod eq 'konfirmasi_sekolah'}
+			{if $data.header.status|default:'P' eq 'P' || $data.header.status|default:'P' eq 'B' || $data.header.status|default:'P' eq 'T'}
+				{include file="backend/template/button_save.html" text="Konfirmasi Pembayaran" id_na="konf_sekolah" style_btn="btn-primary"  btn_goyz="true"}
+			{/if}
 		{/if}
 	</div>
 
@@ -171,14 +257,84 @@ $('#batal_{$acak}').bind('click',function(){
 	$('#grid_nya_{$mod}').show();
 	$('#detil_nya_{$mod}').hide();
 });
+
+$('#konf_{$acak}').bind('click',function(){
+	var id_konf={$data.header.id_konf|default:0};
+	$.messager.confirm('MKS - STORE','Apakah Yakin Data Pembayaran Sudah Valid?',function(re){
+		if(re){
+			get_detil('kirim_gudang_umum',id_konf);
+		}
+	});
+});
+$('#batal_pesanan_{$acak}').bind('click',function(){
+	$.messager.confirm('MKS - STORE','Apakah Yakin Data Pesanan Ini Akan Dibatalkan dan tidak diproses ?',function(re){
+		if(re){
+			$.post(host+'backoffice-SetFlag',{ mod:'tbl_h_pemesanan',id:{$data.header.id|default:0},'status':'C' },function(r){
+				if(r==1){
+					$.messager.alert('MKS - STORE',"Invoice/Pemesanan Ini Sudah Dibatalkan Dan Tidak Dapat Diproses ",'info');
+					$('#batal_{$acak}').trigger('click');
+					grid_nya.datagrid('reload');
+				}else{
+					$.messager.alert('MKS - STORE',"Gagal "+r,'error');
+				}
+			});
+		}
+	});
+});
+$('#konf_sekolah_{$acak}').bind('click',function(){
+	get_detil('konfirmasi_sekolah_form',{$data.header.id});
+});
 $('#ver_{$acak}').bind('click',function(){
 	var id_na={$data.header.id|default:'-'};
 	$.messager.confirm('MKS - STORE','Apakah Yakin Data Sudah Valid?',function(re){
 		if(re){
-			$.post('{$host}backend/simpandata/tbl_h_pemesanan',{ editstatus:'edit',id:id_na,flag_ver:'F' },function(r){
+			$.post('{$host}backend/simpandata/tbl_h_pemesanan',{ editstatus:'edit',id:id_na,flag_ver:'TG',flag_ver_gudang:'P' },function(r){
+				if(r==1){
+					$.messager.alert('MKS - STORE',"Data Sudah Terverifikasi Dan Menunggu Verifikasi Gudang",'info');
+					$('#batal_{$acak}').trigger('click');
+					grid_nya.datagrid('reload');
+				}
+			});
+		}
+	});
+});
+$('#ver_ok_{$acak}').bind('click',function(){
+	var id_na={$data.header.id|default:'-'};
+	$.messager.confirm('MKS - STORE','Apakah Yakin Data Sudah Valid?',function(re){
+		if(re){
+			$.post('{$host}backend/simpandata/tbl_h_pemesanan',{ editstatus:'edit',id:id_na,flag_ver:'F',flag_ver_gudang:'F',gd:1,mod_na:'{$mod}' },function(r){
 				if(r==1){
 					$.messager.alert('MKS - STORE',"Data Sudah Terverifikasi",'info');
 					$('#batal_{$acak}').trigger('click');
+					grid_nya.datagrid('reload');
+				}
+			});
+		}
+	});
+});
+$('#ver_gd_{$acak}').bind('click',function(){
+	var id_na={$data.header.id|default:'-'};
+	$.messager.confirm('MKS - STORE','Apakah Yakin Data Sudah Valid?',function(re){
+		if(re){
+			$.post('{$host}backend/simpandata/tbl_h_pemesanan',{ editstatus:'edit',id:id_na,flag_ver:'F',flag_ver_gudang:'F',gd:1,mod_na:'{$mod}' },function(r){
+				if(r==1){
+					$.messager.alert('MKS - STORE',"Data Sudah Terverifikasi",'info');
+					$('#batal_{$acak}').trigger('click');
+					grid_nya.datagrid('reload');
+				}
+			});
+		}
+	});
+});
+$('#ver_updt_{$acak}').bind('click',function(){
+	var id_na={$data.header.id|default:'-'};
+	$.messager.confirm('MKS - STORE','Apakah Yakin Dengan Perubahan Data Dan Akan DiVerifikasi kembali Oleh Admin?',function(re){
+		if(re){
+			$.post('{$host}backend/simpandata/tbl_h_pemesanan',{ editstatus:'edit',id:id_na,flag_ver:'RG',flag_ver_gudang:'PA' },function(r){
+				if(r==1){
+					$.messager.alert('MKS - STORE',"Perubahan Data Sudah Dikirim Ke Admin dan Menunggu Konfirmasi Admin",'info');
+					$('#batal_{$acak}').trigger('click');
+					grid_nya.datagrid('reload');
 				}
 			});
 		}

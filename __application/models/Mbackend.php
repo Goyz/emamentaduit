@@ -283,7 +283,7 @@ class Mbackend extends CI_Model{
 					';
 				}
 			break;
-			case "tbl_monitor":
+			/*case "tbl_monitor":
 				$where .=" AND (J.alamat_pengiriman <> '')";
 				$sql="SELECT A.id,A.no_order,A.`status` as status_order,B.flag as status_konfirmasi,
 						C.flag as status_gudang,D.`status` as status_kirim,D.no_resi,
@@ -313,6 +313,16 @@ class Mbackend extends CI_Model{
 				".$where." ORDER BY A.id DESC";
 				return $this->lib->json_grid($sql,"tbl_monitor");
 			break;
+			*/
+			case "tbl_monitor":
+				$sql=" SELECT A.*,C.jenis_pembeli,B.no_order 
+							FROM tbl_monitoring_order A  
+							LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
+							LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id
+							WHERE B.status <> 'C'
+				
+				";
+			break;
 			case "tbl_registrasi":
 			case "tbl_registrasi_umum":
 				if($type=="tbl_registrasi")$where .=" AND A.jenis_pembeli='SEKOLAH'";
@@ -341,7 +351,34 @@ class Mbackend extends CI_Model{
 				return $id_baru;
 			break;
 			case "tbl_gudang":
-				$where .=" AND (D.alamat_pengiriman <> '')";
+				//$where .=" AND (D.alamat_pengiriman <> '')";
+				$sql="SELECT A.*,B.no_konfirmasi,B.tgl_konfirmasi,B.total_pembayaran,
+						C.no_order,C.tgl_order,C.zona,D.nama_sekolah,D.nama_lengkap,D.jenis_pembeli,
+						C.id as id_pemesanan,D.nama_kepala_sekolah,D.alamat_pengiriman,E.jasa_pengiriman  
+						FROM tbl_gudang A 
+						LEFT JOIN tbl_konfirmasi B ON A.tbl_konfirmasi_id=B.id
+						LEFT JOIN tbl_h_pemesanan C ON (A.tbl_h_pemesanan_id=C.id AND B.tbl_h_pemesanan_id=C.id)
+						LEFT JOIN tbl_registrasi D ON C.tbl_registrasi_id=D.id
+						LEFT JOIN cl_jasa_pengiriman E ON C.cl_jasa_pengiriman_id=E.id
+						".$where." 
+						 ORDER BY A.tgl_masuk DESC"; 
+					//echo $sql;
+			break;
+			case "manajemen_gudang_sekolah":
+				$where .=" AND D.jenis_pembeli = 'SEKOLAH' ";
+				$sql="SELECT A.*,C.grand_total,
+						C.no_order,C.tgl_order,C.zona,D.nama_sekolah,D.nama_lengkap,D.jenis_pembeli,
+						C.id as id_pemesanan,D.nama_kepala_sekolah,D.alamat_pengiriman,E.jasa_pengiriman  
+						FROM tbl_gudang A 
+						LEFT JOIN tbl_h_pemesanan C ON A.tbl_h_pemesanan_id=C.id
+						LEFT JOIN tbl_registrasi D ON C.tbl_registrasi_id=D.id
+						LEFT JOIN cl_jasa_pengiriman E ON C.cl_jasa_pengiriman_id=E.id
+						".$where." 
+						 ORDER BY A.tgl_masuk DESC"; 
+					//echo $sql;
+			break;
+			case "manajemen_gudang_umum":
+				$where .=" AND D.jenis_pembeli = 'UMUM'";
 				$sql="SELECT A.*,B.no_konfirmasi,B.tgl_konfirmasi,B.total_pembayaran,
 						C.no_order,C.tgl_order,C.zona,D.nama_sekolah,D.nama_lengkap,D.jenis_pembeli,
 						C.id as id_pemesanan,D.nama_kepala_sekolah,D.alamat_pengiriman,E.jasa_pengiriman  
@@ -355,13 +392,15 @@ class Mbackend extends CI_Model{
 					//echo $sql;
 			break;
 			case "tbl_konfirmasi":
+			case "konfirmasi_umum":
 				
 				$sql="SELECT A.*,B.no_order,B.tgl_order,B.zona,C.nama_sekolah,C.nama_lengkap,
 						B.id as id_pemesanan,C.jenis_pembeli,C.nama_kepala_sekolah 
 						FROM tbl_konfirmasi A 
 						LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
 						LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id
-					  ".$where."
+					  ".$where." 
+						AND C.jenis_pembeli='UMUM'
 					  ORDER BY A.id DESC";
 			
 			break;
@@ -397,7 +436,23 @@ class Mbackend extends CI_Model{
 					  FROM tbl_h_pemesanan A 
 					  LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id ".$where;
 				$data['header']=$this->db->query($sql)->row_array();
-				$sql="SELECT A.*,B.judul_buku,(A.qty*A.harga)as total
+				$sql="SELECT A.*,B.judul_buku,(A.qty*A.harga)as total,B.berat
+					  FROM tbl_d_pemesanan A 
+					  LEFT JOin tbl_buku B ON A.tbl_buku_id=B.id
+					  WHERE A.tbl_h_pemesanan_id=".$id;
+				$data['detil']=$this->db->query($sql)->result_array();
+				return $data;
+			break;
+			case "get_pemesanan_konfirmasi":
+				$data=array();
+				$id=$this->input->post('id');
+				if($id)$where .=" AND A.id=".$id;
+				$sql="SELECT A.*,B.nama_sekolah,B.nama_lengkap,B.jenis_pembeli,C.id as id_konf,C.flag as flag_konf 
+					  FROM tbl_h_pemesanan A 
+					  LEFT JOIN tbl_konfirmasi C ON C.tbl_h_pemesanan_id=A.id
+					  LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id ".$where;
+				$data['header']=$this->db->query($sql)->row_array();
+				$sql="SELECT A.*,B.judul_buku,(A.qty*A.harga)as total,B.berat
 					  FROM tbl_d_pemesanan A 
 					  LEFT JOin tbl_buku B ON A.tbl_buku_id=B.id
 					  WHERE A.tbl_h_pemesanan_id=".$id;
@@ -430,8 +485,46 @@ class Mbackend extends CI_Model{
 			break;
 			case "tbl_h_pemesanan":
 			case "tbl_h_pemesanan_umum":
-				if($type=='tbl_h_pemesanan')$where .=" AND B.jenis_pembeli='SEKOLAH'";
-				if($type=='tbl_h_pemesanan_umum')$where .=" AND B.jenis_pembeli='UMUM'";
+				if($type=='tbl_h_pemesanan')$where .=" AND B.jenis_pembeli='SEKOLAH' AND (A.status='T' OR A.status='F')";
+				if($type=='tbl_h_pemesanan_umum')$where .=" AND B.jenis_pembeli='UMUM' AND (A.flag_ver='F' AND A.flag_ver_gudang='F') ";
+				
+				$sql="SELECT A.*,B.nama_sekolah,B.nama_lengkap 
+					  FROM tbl_h_pemesanan A 
+					  LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id 
+					  ".$where."
+					  ORDER BY A.tgl_order DESC";
+			
+			break;
+			case "ver_sekolah":
+			case "ver_umum":
+				if($type=='ver_sekolah'){
+					$where .=" AND B.jenis_pembeli='SEKOLAH'";
+					$where .=" AND A.flag_ver <> 'F'";
+					$where .=" AND A.status <> 'C'";
+				}
+				if($type=='ver_umum'){ 
+					$where .=" AND B.jenis_pembeli='UMUM'";
+					$where .=" AND A.flag_ver <> 'F'";
+					$where .=" AND A.status <> 'C'";
+				}
+				
+				$sql="SELECT A.*,B.nama_sekolah,B.nama_lengkap 
+					  FROM tbl_h_pemesanan A 
+					  LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id 
+					  ".$where."
+					  ORDER BY A.tgl_order DESC";
+			
+			break;
+			case "ver_gudang_sekolah":
+			case "ver_gudang_umum":
+				if($type=='ver_gudang_sekolah'){
+					$where .=" AND B.jenis_pembeli='SEKOLAH'";
+					$where .=" AND A.flag_ver_gudang <> 'F' AND A.flag_ver <> 'P' ";
+				}
+				if($type=='ver_gudang_umum'){
+					$where .=" AND B.jenis_pembeli='UMUM'";
+					$where .=" AND A.flag_ver_gudang <> 'F' AND A.flag_ver <> 'P'";
+				}
 				
 				$sql="SELECT A.*,B.nama_sekolah,B.nama_lengkap 
 					  FROM tbl_h_pemesanan A 
@@ -552,6 +645,7 @@ class Mbackend extends CI_Model{
 		}
 		
 		switch($table){
+			
 			case "admin":
 				//print_r($data);exit;
 				if($sts_crud=='add')$data['password']=$this->encrypt->encode($data['password']);
@@ -591,10 +685,17 @@ class Mbackend extends CI_Model{
 				}
 			break;
 			case "tbl_gudang":
-				if($this->input->post('mod')=='kirim_gudang'){
+				
+				if($this->input->post('mod')=='kirim_gudang' || $this->input->post('mod')=='kirim_gudang_umum'){
 					$sql="UPDATE tbl_konfirmasi set flag='F' WHERE id=".$data['tbl_konfirmasi_id'];
 					$this->db->query($sql);
-				}else if($this->input->post('mod')=='set_kirim'){
+					if($this->input->post('mod')=='kirim_gudang_umum'){
+						$sql="UPDATE tbl_h_pemesanan set status='F' WHERE id=".$data['tbl_h_pemesanan_id'];
+						$this->db->query($sql);
+						$sql="UPDATE tbl_monitoring_order SET konfirmasi='F',produksi='P' WHERE tbl_h_pemesanan_id=".$data['tbl_h_pemesanan_id'];
+						$this->db->query($sql);
+					}
+				}else if($this->input->post('mod')=='set_kirim' || $this->input->post('mod')=='set_kirim_sekolah' || $this->input->post('mod')=='set_kirim_umum'){
 					$sql="SELECT * FROM tbl_gudang where id=".$id;
 					$id_pemesanan=$this->db->query($sql)->row('tbl_h_pemesanan_id');
 					$data_kirim=array('tbl_h_pemesanan_id'=>$id_pemesanan,
@@ -604,6 +705,10 @@ class Mbackend extends CI_Model{
 									  'create_by'=>$this->auth['username']
 					);
 					$this->db->insert('tbl_tracking_pengiriman',$data_kirim);
+					if($this->input->post('mod')=='set_kirim_sekolah'){
+						$sql="UPDATE tbl_h_pemesanan SET status='T' WHERE id=".$id_pemesanan;
+						$this->db->query($sql);
+					}
 				}
 			break;
 			case "tbl_konfirmasi":
@@ -611,6 +716,39 @@ class Mbackend extends CI_Model{
 				$id_pemesanan=$this->db->query($sql)->row('tbl_h_pemesanan_id');
 				$sql="UPDATE tbl_h_pemesanan SET status='C' WHERE id=".$id_pemesanan;
 				$this->db->query($sql);
+			break;
+			case "tbl_konfirmasi_sekolah":
+				$table='tbl_konfirmasi';
+				//print_r($_FILES);exit;
+				$sql=" SELECT *  FROM tbl_konfirmasi ";
+				$res=$this->db->query($sql)->result_array();
+				if(count($res)>0){
+					$sql=" SELECT max(id)+1 as no_baru  FROM tbl_konfirmasi ";
+					$qry=$this->db->query($sql)->row();
+					$id=$qry->no_baru;
+				}else{
+					$id=1;
+				}
+				if($id<10){$id_baru='0000'.$id;}
+				if($id<100 && $id >=10){$id_baru='000'.$id;}
+				if($id<1000 && $id >=100){$id_baru='00'.$id;}
+				if($id<10000 && $id >=1000){$id_baru='0'.$id;}
+				
+				$data['no_konfirmasi']='KONF-'.$id_baru;
+				$data['create_date']=date('Y-m-d H:i:s');
+				$data['create_by']=$this->auth['username'];
+				$data['tgl_konfirmasi']=date('Y-m-d');
+				
+				if($_FILES['file_bukti_bayar']['name']!=''){
+					$path='__repository/konfirmasi/';
+					$data['file_bukti_bayar']=$this->lib->uploadnong($path, 'file_bukti_bayar', date('Ymdhis'));
+				}
+				$sql="UPDATE tbl_h_pemesanan SET status='F' WHERE id=".$data['tbl_h_pemesanan_id'];
+				$this->db->query($sql);
+				
+				$sql="UPDATE tbl_monitoring_order SET konfirmasi='F' WHERE tbl_h_pemesanan_id=".$data['tbl_h_pemesanan_id'];
+				$this->db->query($sql);
+				
 			break;
 		}
 		
@@ -622,7 +760,37 @@ class Mbackend extends CI_Model{
 				}
 			break;
 			case "edit":
-				$this->db->update($table, $data, array('id' => $id) );
+				if($table=='tbl_h_pemesanan'){
+					$gd=$this->input->post('gd');
+					if($gd){
+						$mod_na=$this->input->post('mod_na');
+						if($mod_na=='ver_sekolah' || $mod_na=='ver_gudang_sekolah'){
+							$no_gudang=$this->getdata('get_no_gudang');
+							$data_gd=array('tbl_h_pemesanan_id'=>$id,
+										'no_gudang'=>$no_gudang,
+										'tgl_masuk'=>date('Y-m-d H:i:s'),
+										//'remark'=>$this->input->post('remark'),
+										'flag'=>'P',
+										'create_date'=>date('Y-m-d H:i:s'),
+										'create_by'=>$this->auth['username']
+							);
+							$this->db->insert('tbl_gudang',$data_gd);
+							$sql="UPDATE tbl_monitoring_order SET verifikasi='F',produksi='P' WHERE tbl_h_pemesanan_id=".$id;
+							$this->db->query($sql);
+						}else{
+							$data['status']='T';
+							$sql="UPDATE tbl_monitoring_order SET verifikasi='F' WHERE tbl_h_pemesanan_id=".$id;
+							$this->db->query($sql);
+						}
+						
+						
+					}
+					unset($data['gd']);
+					unset($data['mod_na']);
+					$this->db->update($table, $data, array('id' => $id) );
+				}else{
+					$this->db->update($table, $data, array('id' => $id) );
+				}
 			break;
 			case "delete":
 				$this->db->delete($table, array('id' => $id));

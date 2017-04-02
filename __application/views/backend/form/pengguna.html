@@ -18,7 +18,11 @@
 				<br>
 				<input name="flag_group" type="radio" value="L" {if $sts eq 'edit'}{if $data.flag_group eq 'L'}checked{/if}{/if} />
 				<span class="lbl">LKPP</span>
-					
+				<br>
+				<input name="flag_group" type="radio" value="F" {if $sts eq 'edit'}{if $data.flag_group eq 'F'}checked{/if}{/if} />
+				<span class="lbl">Finance</span><br>
+				<input name="flag_group" type="radio" value="S" {if $sts eq 'edit'}{if $data.flag_group eq 'S'}checked{/if}{/if} />
+				<span class="lbl">Super Admin</span>				
 				</div>
 				</div>
 			</td>

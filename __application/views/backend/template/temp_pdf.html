@@ -210,7 +210,7 @@ table.gridtable td {
 		<td width="50%" align="center"><i>(Reza Viryawan)</i></td>
 	</tr>
 </table>
-{else if $mod eq 'invoice' || $mod eq 'invoice_umum' || $mod eq 'konfirmasi' || $mod eq 'gudang_konfirmasi'}
+{else if $mod eq 'invoice' || $mod eq 'konfirmasi_sekolah' || $mod eq 'konfirmasi_umum' || $mod eq 'invoice_umum' || $mod eq 'konfirmasi' || $mod eq 'gudang_konfirmasi' || $mod eq 'ver_sekolah' || $mod eq 'ver_umum' || $mod eq 'ver_gudang_umum' || $mod eq 'ver_gudang_sekolah'} 
 	<div style="padding:10px;">
 		<table width="100%">
 			<tr>
@@ -278,6 +278,130 @@ table.gridtable td {
 			<td align="center">&nbsp;</td>
 			<!--td align="right">Rp.{(($tot_harga * 0.1) + $tot_harga)|number_format:2:',':'.'|default:'-'}</td-->
 			<td align="right">Rp.{$tot_harga|number_format:2:',':'.'|default:'-'}</td>
+		</tr>
+		</tfoot>
+		</table>
+	</div>
+{else if $mod eq 'manajemen_gudang_sekolah' || $mod eq 'manajemen_gudang_umum'} 
+	<div style="padding:10px;">
+		<table width="100%">
+			<tr>
+				<td>NO. Order/Invoice</td>
+				<td>:</td>
+				<td width="20%">{$data.header.no_order|default:'-'}</td>
+				<td>Tgl. Order/Invoice</td>
+				<td>:</td>
+				<td>{$data.header.tgl_order|default:'-'}</td>
+			</tr>
+			<tr>
+				<td>{if $data.header.jenis_pembeli eq 'SEKOLAH'} Nama Sekolah {else} Nama Lengkap{/if}</td>
+				<td>:</td>
+				<td>{if $data.header.jenis_pembeli eq 'SEKOLAH'}{$data.header.nama_sekolah|default:'-'}{else}{$data.header.nama_lengkap|default:'-'}{/if}</td>
+				<td>Zona</td>
+				<td>:</td>
+				<td>{$data.header.zona|default:'-'}</td>
+			</tr>
+		</table>
+	</div>
+	<div style="padding:10px;">
+		<table width="100%" class="gridtable" style="font-family:helvetica,arial,verdana,sans; font-size:12px;">
+		<thead>
+		<tr>
+			<th style="text-align:left;">No.</th>
+			<th>Judul Buku</th>
+			<th style="text-align:right;">Harga (Sesuai Zona {$data.header.zona})</th>
+			<th style="text-align:right;">Jumlah/Qty</th>
+			<th style="text-align:right;">Berat (Kg)</th>
+		</tr>
+		</thead>
+		<tbody>
+		{assign var=tot_qty value=0}
+		{assign var=tot_berat value=0}
+		{assign var=tot_harga value=0}
+		{assign var=tot_pajak value=0}
+		{assign var=grand_tot value=0}
+		{foreach from=$data.detil item=i name=x}
+		{if $i.flag neq 'C'}
+		{assign var=tot_qty value=$tot_qty+$i.qty}
+		{assign var=tot_berat value=$tot_berat+$i.berat}
+		{assign var=tot_harga value=$tot_harga+$i.total}
+		{/if}
+		<tr class="{if $i.flag eq 'C'}cancel{/if}">
+			<td >{$smarty.foreach.x.iteration}</td>
+			<td>{$i.judul_buku|default:'-'}</td>
+			<td align="right">Rp. {$i.harga|number_format:2:',':'.'|default:'-'}</th>
+			<td align="right">{$i.qty|number_format:2:',':'.'|default:'-'}</td>
+			<td align="right">{($i.berat/1000)|number_format:2:',':'.'|default:'-'} Kg</td>
+		</tr>
+		{/foreach}
+		</tbody>
+		<tfoot>
+		<tr style="font-weight:bold;">
+			<td colspan="3" align="center">GRAND TOTAL</td>
+			<td align="right">{$tot_qty|number_format:2:',':'.'|default:'-'}</td>
+			<td align="right">{($tot_berat/1000)|number_format:2:',':'.'|default:'-'} Kg</td>
+		</tr>
+		</tfoot>
+		</table>
+	</div>
+{else if $mod eq 'surat_jalan'} 
+	<div style="padding:10px;">
+		<table width="100%">
+			<tr>
+				<td>NO. Order/Invoice</td>
+				<td>:</td>
+				<td width="20%">{$data.header.no_order|default:'-'}</td>
+				<td>Tgl. Order/Invoice</td>
+				<td>:</td>
+				<td>{$data.header.tgl_order|default:'-'}</td>
+			</tr>
+			<tr>
+				<td>{if $data.header.jenis_pembeli eq 'SEKOLAH'} Nama Sekolah {else} Nama Lengkap{/if}</td>
+				<td>:</td>
+				<td>{if $data.header.jenis_pembeli eq 'SEKOLAH'}{$data.header.nama_sekolah|default:'-'}{else}{$data.header.nama_lengkap|default:'-'}{/if}</td>
+				<td>Zona</td>
+				<td>:</td>
+				<td>{$data.header.zona|default:'-'}</td>
+			</tr>
+		</table>
+	</div>
+	<div style="padding:10px;">
+		<table width="100%" class="gridtable" style="font-family:helvetica,arial,verdana,sans; font-size:12px;">
+		<thead>
+		<tr>
+			<th style="text-align:left;">No.</th>
+			<th>Judul Buku</th>
+			<th style="text-align:right;">Harga (Sesuai Zona {$data.header.zona})</th>
+			<th style="text-align:right;">Jumlah/Qty</th>
+			<th style="text-align:right;">Berat (Kg)</th>
+		</tr>
+		</thead>
+		<tbody>
+		{assign var=tot_qty value=0}
+		{assign var=tot_berat value=0}
+		{assign var=tot_harga value=0}
+		{assign var=tot_pajak value=0}
+		{assign var=grand_tot value=0}
+		{foreach from=$data.detil item=i name=x}
+		{if $i.flag neq 'C'}
+		{assign var=tot_qty value=$tot_qty+$i.qty}
+		{assign var=tot_berat value=$tot_berat+$i.berat}
+		{assign var=tot_harga value=$tot_harga+$i.total}
+		{/if}
+		<tr class="{if $i.flag eq 'C'}cancel{/if}">
+			<td >{$smarty.foreach.x.iteration}</td>
+			<td>{$i.judul_buku|default:'-'}</td>
+			<td align="right">Rp. {$i.harga|number_format:2:',':'.'|default:'-'}</th>
+			<td align="right">{$i.qty|number_format:2:',':'.'|default:'-'}</td>
+			<td align="right">{($i.berat/1000)|number_format:2:',':'.'|default:'-'} Kg</td>
+		</tr>
+		{/foreach}
+		</tbody>
+		<tfoot>
+		<tr style="font-weight:bold;">
+			<td colspan="3" align="center">GRAND TOTAL</td>
+			<td align="right">{$tot_qty|number_format:2:',':'.'|default:'-'}</td>
+			<td align="right">{($tot_berat/1000)|number_format:2:',':'.'|default:'-'} Kg</td>
 		</tr>
 		</tfoot>
 		</table>

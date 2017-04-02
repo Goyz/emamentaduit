@@ -9,7 +9,7 @@
 				<span class="menu-text">Dashboard</span>
 			</a>
 		</li>
-		{if $auth.flag_group neq 'L'}
+		{if $auth.flag_group eq 'A' || $auth.flag_group eq 'S'}
 		<li>
 			<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/produk','tbl_buku')">
 				<i class="icon-book"></i>
@@ -22,10 +22,65 @@
 				<span class="menu-text">Paket Produk</span>
 			</a>
 		</li>
+		{/if}
+		{if $auth.flag_group neq 'L'}
 		<li>
 			<a href="javascript:void(0);"  class="dropdown-toggle" >
 				<i class="icon-file-text"></i>
-				<span class="menu-text">Transaksi</span>
+				<span class="menu-text">Transaksi / Verifikasi</span>
+				<b class="arrow icon-angle-down"></b>
+			</a>
+			<ul class="submenu">
+				{if $auth.flag_group eq 'A' || $auth.flag_group eq 'S'}
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/ver_sekolah','tbl_h_pemesanan');$('#judul_kecil').html('Invoice Sekolah')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Verifikasi Pesanan Sekolah</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/ver_umum','tbl_h_pemesanan');$('#judul_kecil').html('Invoice Umum')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Verifikasi Pesanan Umum</span>
+					</a>
+				</li>
+				{/if}
+				{if $auth.flag_group eq 'G' || $auth.flag_group eq 'S'}
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/ver_gudang_sekolah','tbl_h_pemesanan');$('#judul_kecil').html('Invoice Sekolah')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Verifikasi Gudang Pesanan Sekolah</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/ver_gudang_umum','tbl_h_pemesanan');$('#judul_kecil').html('Invoice Umum')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Verifikasi Gudang Pesanan Umum</span>
+					</a>
+				</li>
+				{/if}
+				
+				<!--li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/gudang_konfirmasi','tbl_gudang');$('#judul_kecil').html('Manajemen Order')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Manajemen Order</span>
+					</a>
+				</li-->
+				
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/monitor_order','tbl');$('#judul_kecil').html('Manajemen Order')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Monitoring Transaksi</span>
+					</a>
+				</li>
+			</ul>
+		</li>
+		{/if}
+		{if $auth.flag_group eq 'F' || $auth.flag_group eq 'S'}
+		<li>
+			<a href="javascript:void(0);"  class="dropdown-toggle" >
+				<i class="icon-print"></i>
+				<span class="menu-text">Invoice & Konfirmasi</span>
 				<b class="arrow icon-angle-down"></b>
 			</a>
 			<ul class="submenu">
@@ -42,122 +97,91 @@
 					</a>
 				</li>
 				<li>
-					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/konfirmasi','tbl_konfirmasi');$('#judul_kecil').html('Konfirmasi Pembayaran')">
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/konfirmasi_sekolah','tbl_konfirmasi');$('#judul_kecil').html('Konfirmasi Pembayaran')">
 						<i class="icon-double-angle-right"></i>
-						<span class="menu-text">Konfirmasi</span>
+						<span class="menu-text">Konfirmasi Sekolah</span>
 					</a>
 				</li>
 				<li>
-					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/gudang_konfirmasi','tbl_gudang');$('#judul_kecil').html('Manajemen Order')">
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/konfirmasi_umum','tbl_konfirmasi');$('#judul_kecil').html('Konfirmasi Pembayaran')">
 						<i class="icon-double-angle-right"></i>
-						<span class="menu-text">Manajemen Order</span>
+						<span class="menu-text">Konfirmasi Umum</span>
 					</a>
 				</li>
-				<li>
-					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/monitor_order','tbl');$('#judul_kecil').html('Manajemen Order')">
-						<i class="icon-double-angle-right"></i>
-						<span class="menu-text">Monitoring Transaksi</span>
-					</a>
-				</li>
-			</ul>
-		</li>
-		<li>
-			<a href="javascript:void(0);"  class="dropdown-toggle" >
-				<i class="icon-print"></i>
-				<span class="menu-text">Laporan</span>
-				<b class="arrow icon-angle-down"></b>
-			</a>
-			<ul class="submenu">
-				<li>
-					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/rekap_penjualan','');$('#judul_kecil').html('Rekap Penjualan')">
-						<i class="icon-double-angle-right"></i>
-						<span class="menu-text">Rekapitulasi Penjualan</span>
-					</a>
-				</li>
-				<li>
-					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/detil_penjualan','');$('#judul_kecil').html('Detail Penjualan')">
-						<i class="icon-double-angle-right"></i>
-						<span class="menu-text">Detil Penjualan</span>
-					</a>
-				</li>
-				<li>
-					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/lap_bast','');$('#judul_kecil').html('Penjualan Per-BAST')">
-						<i class="icon-double-angle-right"></i>
-						<span class="menu-text">Penjualan Per-BAST</span>
-					</a>
-				</li>
-				<li>
-					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/lap_kwitansi','');$('#judul_kecil').html('Penjualan Per-Kwitansi')">
-						<i class="icon-double-angle-right"></i>
-						<span class="menu-text">Penjualan Per-KWITANSI</span>
-					</a>
-				</li>
-				{*
-				<li>
-					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/lap_distribusi_kabkota','');$('#judul_kecil').html('Penjualan Per-Kwitansi')">
-						<i class="icon-double-angle-right"></i>
-						<span class="menu-text">BAST Kab/Kota Distribusi</span>
-					</a>
-				</li>
-				<li>
-					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/lap_buku_kabkota','');$('#judul_kecil').html('Penjualan Per-Kwitansi')">
-						<i class="icon-double-angle-right"></i>
-						<span class="menu-text">Rekap. Kebutuhan Buku Kab/Kota</span>
-					</a>
-				</li>
-				*}
-			</ul>
-		</li>
-		{else}
-		<li>
-			<a href="javascript:void(0);"  class="dropdown-toggle" >
-				<i class="icon-print"></i>
-				<span class="menu-text">Laporan</span>
-				<b class="arrow icon-angle-down"></b>
-			</a>
-			<ul class="submenu">
-				<li>
-					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/rekap_penjualan','');$('#judul_kecil').html('Rekap Penjualan')">
-						<i class="icon-double-angle-right"></i>
-						<span class="menu-text">Rekapitulasi Penjualan</span>
-					</a>
-				</li>
-				<li>
-					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/detil_penjualan','');$('#judul_kecil').html('Detail Penjualan')">
-						<i class="icon-double-angle-right"></i>
-						<span class="menu-text">Detil Penjualan</span>
-					</a>
-				</li>
-				<li>
-					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/lap_bast','');$('#judul_kecil').html('Penjualan Per-BAST')">
-						<i class="icon-double-angle-right"></i>
-						<span class="menu-text">Penjualan Per-BAST</span>
-					</a>
-				</li>
-				<li>
-					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/lap_kwitansi','');$('#judul_kecil').html('Penjualan Per-Kwitansi')">
-						<i class="icon-double-angle-right"></i>
-						<span class="menu-text">Penjualan Per-KWITANSI</span>
-					</a>
-				</li>
-				{*
-				<li>
-					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/lap_distribusi_kabkota','');$('#judul_kecil').html('Penjualan Per-Kwitansi')">
-						<i class="icon-double-angle-right"></i>
-						<span class="menu-text">BAST Kab/Kota Distribusi</span>
-					</a>
-				</li>
-				<li>
-					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/lap_buku_kabkota','');$('#judul_kecil').html('Penjualan Per-Kwitansi')">
-						<i class="icon-double-angle-right"></i>
-						<span class="menu-text">Rekap. Kebutuhan Buku Kab/Kota</span>
-					</a>
-				</li>
-				*}
 			</ul>
 		</li>
 		{/if}
-		{if $auth.flag_group neq 'L'}
+		{if $auth.flag_group eq 'G' || $auth.flag_group eq 'S'}
+		<li>
+			<a href="javascript:void(0);"  class="dropdown-toggle" >
+				<i class="icon-print"></i>
+				<span class="menu-text">Manajemen Gudang</span>
+				<b class="arrow icon-angle-down"></b>
+			</a>
+			<ul class="submenu">
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/manajemen_gudang_sekolah','tbl_gudang');$('#judul_kecil').html('Manajemen Gudang Pesanan Sekolah')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Manajemen Gudang Sekolah</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/manajemen_gudang_umum','tbl_gudang');$('#judul_kecil').html('Manajemen Gudang Pesanan Umum')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Manajemen Gudang Umum</span>
+					</a>
+				</li>
+			</ul>
+		</li>
+		{/if}
+		<li>
+			<a href="javascript:void(0);"  class="dropdown-toggle" >
+				<i class="icon-print"></i>
+				<span class="menu-text">Laporan</span>
+				<b class="arrow icon-angle-down"></b>
+			</a>
+			<ul class="submenu">
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/rekap_penjualan','');$('#judul_kecil').html('Rekap Penjualan')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Rekapitulasi Penjualan</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/detil_penjualan','');$('#judul_kecil').html('Detail Penjualan')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Detil Penjualan</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/lap_bast','');$('#judul_kecil').html('Penjualan Per-BAST')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Penjualan Per-BAST</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/lap_kwitansi','');$('#judul_kecil').html('Penjualan Per-Kwitansi')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Penjualan Per-KWITANSI</span>
+					</a>
+				</li>
+				
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/lap_distribusi_kabkota','');$('#judul_kecil').html('Penjualan Per-Kwitansi')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">BAST Kab/Kota Distribusi</span>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-laporan/lap_buku_kabkota','');$('#judul_kecil').html('Penjualan Per-Kwitansi')">
+						<i class="icon-double-angle-right"></i>
+						<span class="menu-text">Rekap. Kebutuhan Buku Kab/Kota</span>
+					</a>
+				</li>
+				
+			</ul>
+		</li>
+		{if $auth.flag_group eq 'A' || $auth.flag_group eq 'S'}
 		<li>
 			<a href="javascript:void(0);"  class="dropdown-toggle" >
 				<i class="icon-list-alt"></i>
@@ -209,14 +233,14 @@
 				</li>
 			</ul>
 		</li>
+		
 		<li>
 			<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/komplain','tbl_komplain');$('#judul_kecil').html('Daftar Komplain Pelanggan')">
 				<i class="icon-comments"></i>
 				<span class="menu-text">Komplain Pelanggan</span>
 			</a>
 		</li>
-		{/if}
-		{if $auth.flag_group eq 'A'}
+		
 		<li>
 			<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/pengguna','admin');$('#judul_kecil').html('Manajemen User')">
 				<i class="icon-user"></i>
@@ -230,7 +254,6 @@
 			</a>
 		</li>
 		{/if}
-		
 	</ul>
 	
 	

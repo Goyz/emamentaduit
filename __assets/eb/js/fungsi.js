@@ -152,6 +152,439 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 	var row_number=true;
 	var nowrap=true;
 	switch(modnya){
+		case "manajemen_gudang_sekolah":
+			judulnya = "Manajemen Order Pelanggan Sekolah";
+			urlnya = "manajemen_gudang_sekolah";
+			fitnya = true;
+			nowrap=false;
+			//footer=true;
+			//param['flag']=(modnya=='gudang_konfirmasi' ? 'P' : 'PK');
+			row_number=true;
+			frozen[modnya] = [	
+				{field:'id_pemesanan',title:'Lihat Detil',width:80, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						var modul="invoice";
+						return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modnya+"\",\""+value+"\")'><img src='"+host+"__assets/eb/easyui/themes/icons/activity.png'></a>";
+					}
+				},
+				{field:'id',title:'Status',width:120, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						var modul="cetak_bast";
+						//return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modul+"\",\""+value+"\")'><img src='"+host+"__assets/easyui/themes/icons/print.png'></a>";
+						if(rowData.flag=='P'){
+							return "Proses Cetak/Produksi";
+						}else if(rowData.flag=='PK'){
+							return "Proses Packing";
+						}else if(rowData.flag=='PP'){
+							return "Proses Pengiriman";
+						}
+						else{
+							return "Selesai";
+						}
+					},
+					styler:function(value,rowData,rowIndex){
+						if(rowData.flag=='P'){return 'background:green;color:#ffffff;'}
+						else if(rowData.flag=='PK'){return 'background:yellow;color:navy;'}
+						else if(rowData.flag=='PP'){return 'background:blue;color:#ffffff;'}
+					}
+					
+				},
+				
+				{field:'flag',title:'Packing',width:80, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						var modul="set_packing";
+						if(value=='P'){
+							return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modul+"\",\""+rowData.id+"\")'><img src='"+host+"__assets/eb/easyui/themes/icons/bank.png'></a>";
+						}else{
+							return "<img src='"+host+"__assets/eb/easyui/themes/icons/ok.png'>";
+						}
+					}
+				},
+				{field:'create_by',title:'Kirim',width:80, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						var modul="set_kirim_sekolah";
+						if(rowData.flag=='PK'){
+							return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modul+"\",\""+rowData.id+"\")'><img src='"+host+"__assets/eb/easyui/themes/icons/send-icon.png'></a>";
+						}else if(rowData.flag=='P'){
+							return "<img src='"+host+"__assets/eb/easyui/themes/icons/edit_remove.png'>";
+						}else{
+							return "<img src='"+host+"__assets/eb/easyui/themes/icons/ok.png'>";
+						}
+					}
+				},
+				{field:'create_date',title:'Cetak Surat Jalan',width:120, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						var mod='surat_jalan';
+						if(rowData.flag=='PP'){
+							return "<a href='javascript:void(0);' class='btn btn-small' onclick='openWindowWithPost(\""+host+"backoffice-Cetak\", {mod : \""+mod+"\",id:\""+rowData.id_pemesanan+"\"} );'><img src='"+host+"__assets/eb/easyui/themes/icons/Printer-Ink-icon.png'></a>";
+						}else{
+							return "<img src='"+host+"__assets/eb/easyui/themes/icons/cancel.png'>";
+						}
+					}
+				},
+				{field:'no_gudang',title:'No Gudang - TGL',width:150, halign:'center',align:'left',
+					formatter:function(value,rowData,rowIndex){
+						return "NO : "+value+" <br>Tgl : "+rowData.tgl_masuk
+					}
+				}
+				
+			];
+			kolom[modnya] = [	
+				
+				{field:'no_order',title:'No Order - TGL ',width:150, halign:'center',align:'left',
+					formatter:function(value,rowData,rowIndex){
+						return "NO : "+value+" <br>Tgl : "+rowData.tgl_order
+					}
+				},
+				{field:'zona',title:'Zona',width:40, halign:'center',align:'center'},
+				{field:'alamat_pengiriman',title:'Alamat Pengiriman',width:350, halign:'center',align:'left'},
+				{field:'jasa_pengiriman',title:'Jasa Kirim',width:100, halign:'center',align:'left'},
+				{field:'nama_lengkap',title:'PIC',width:200, halign:'center',align:'left',
+					formatter:function(value,rowData,rowIndex){
+						if(rowData.jenis_pembeli=='SEKOLAH')
+							return rowData.nama_kepala_sekolah;
+						else 
+							return value
+					}
+				},
+				
+				
+				//{field:'nama_sekolah',title:'Nama Sekolah',width:200, halign:'center',align:'left'},
+				{field:'grand_total',title:'Total',width:150, halign:'center',align:'right',
+					formatter:function(value,rowData,rowIndex){
+						return NumberFormat(value);
+					}
+				},
+			];
+		break;
+		case "manajemen_gudang_umum":
+			judulnya = "Manajemen Order Pelanggan Umum";
+			urlnya = "manajemen_gudang_umum";
+			fitnya = true;
+			nowrap=false;
+			//footer=true;
+			//param['flag']=(modnya=='gudang_konfirmasi' ? 'P' : 'PK');
+			row_number=true;
+			frozen[modnya] = [	
+				{field:'id_pemesanan',title:'Lihat Detil',width:80, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						var modul="invoice";
+						return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modnya+"\",\""+value+"\")'><img src='"+host+"__assets/eb/easyui/themes/icons/activity.png'></a>";
+					}
+				},
+				{field:'id',title:'Status',width:120, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						var modul="cetak_bast";
+						//return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modul+"\",\""+value+"\")'><img src='"+host+"__assets/easyui/themes/icons/print.png'></a>";
+						if(rowData.flag=='P'){
+							return "Proses Cetak/Produksi";
+						}else if(rowData.flag=='PK'){
+							return "Proses Packing";
+						}else{
+							return "Selesai";
+						}
+					},
+					styler:function(value,rowData,rowIndex){
+						if(rowData.flag=='P'){return 'background:green;color:#ffffff;'}
+						else if(rowData.flag=='PK'){return 'background:yellow;color:navy;'}
+					}
+					
+				},
+				
+				{field:'flag',title:'Packing',width:80, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						var modul="set_packing";
+						if(value=='P'){
+							return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modul+"\",\""+rowData.id+"\")'><img src='"+host+"__assets/eb/easyui/themes/icons/bank.png'></a>";
+						}else{
+							return "<img src='"+host+"__assets/eb/easyui/themes/icons/ok.png'>";
+						}
+					}
+				},
+				{field:'create_by',title:'Kirim',width:80, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						var modul="set_kirim_umum";
+						if(rowData.flag=='PK'){
+							return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modul+"\",\""+rowData.id+"\")'><img src='"+host+"__assets/eb/easyui/themes/icons/send-icon.png'></a>";
+						}else if(rowData.flag=='P'){
+							return "<img src='"+host+"__assets/eb/easyui/themes/icons/edit_remove.png'>";
+						}else{
+							return "<img src='"+host+"__assets/eb/easyui/themes/icons/ok.png'>";
+						}
+					}
+				},
+				{field:'no_gudang',title:'No Gudang - TGL',width:150, halign:'center',align:'left',
+					formatter:function(value,rowData,rowIndex){
+						return "NO : "+value+" <br>Tgl : "+rowData.tgl_masuk
+					}
+				}
+				
+			];
+			kolom[modnya] = [	
+				{field:'no_konfirmasi',title:'No Konfirmasi - TGL',width:150, halign:'center',align:'left',
+					formatter:function(value,rowData,rowIndex){
+						return "NO : "+value+" <br>Tgl : "+rowData.tgl_konfirmasi
+					}
+				},
+				{field:'no_order',title:'No Order - TGL ',width:150, halign:'center',align:'left',
+					formatter:function(value,rowData,rowIndex){
+						return "NO : "+value+" <br>Tgl : "+rowData.tgl_order
+					}
+				},
+				{field:'zona',title:'Zona',width:40, halign:'center',align:'center'},
+				{field:'alamat_pengiriman',title:'Alamat Pengiriman',width:350, halign:'center',align:'left'},
+				{field:'jasa_pengiriman',title:'Jasa Kirim',width:100, halign:'center',align:'left'},
+				{field:'nama_lengkap',title:'PIC',width:200, halign:'center',align:'left',
+					formatter:function(value,rowData,rowIndex){
+						if(rowData.jenis_pembeli=='SEKOLAH')
+							return rowData.nama_kepala_sekolah;
+						else 
+							return value
+					}
+				},
+				
+				
+				//{field:'nama_sekolah',title:'Nama Sekolah',width:200, halign:'center',align:'left'},
+				{field:'total_pembayaran',title:'Total',width:150, halign:'center',align:'right',
+					formatter:function(value,rowData,rowIndex){
+						return NumberFormat(value);
+					}
+				},
+			];
+		break;
+		case "ver_gudang_sekolah":
+		case "ver_gudang_umum":
+			judulnya = (modnya=='ver_gudang_sekolah' ? "Daftar Order Pelanggan Sekolah" : "Daftar Order Pelanggan Umum");
+			urlnya = modnya;
+			fitnya = true;
+			nowrap=false;
+			//footer=true;
+			row_number=true;
+			frozen[modnya] = [	
+				{field:'id',title:'Verifikasi/Detil',width:80, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modnya+"\",\""+value+"\")'><img src='"+host+"__assets/eb/easyui/themes/icons/log.gif'></a>";
+					}
+				},
+				{field:'flag_ver_gudang',title:'Verifikasi Gudang',width:120, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						if(value=='P'){
+							return 'Belum Diverifikasi';
+						}
+						else if(value=='PA'){
+							return 'Tunggu Verifikasi dari Admin';
+						}
+						else if(value=='RA'){
+							return 'Return Verifikasi dari Admin';
+						}
+						else if(value=='F'){
+							return 'Sudah Diverifikasi';
+						}
+						else{
+							return 'Belum Diverifikasi';
+						} 
+					},
+					styler:function(value,rowData,rowIndex){
+						if(value=='P'){
+							return 'background:yellow;color:navy;'
+						}
+						else if(value=='PA'){
+							return 'background:yellow;color:navy;'
+						}
+						else if(value=='RA'){
+							return 'background:yellow;color:navy;'
+						}
+						else if(value=='F'){
+							return 'background:green;color:navy;'
+						}
+						else {
+							return 'background:yellow;color:navy;'
+						}
+						
+					}
+				},
+				{field:'flag_ver',title:'Verifikasi Admin',width:120, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						if(value=='P'){
+							return 'Belum Diverifikasi';
+						}
+						else if(value=='RG'){
+							return 'Return Verifikasi dari Gudang';
+						}
+						else if(value=='TG'){
+							return 'Tunggu Verifikasi dari Gudang';
+						}
+						else if(value=='C'){
+							return 'Cancel';
+						}
+						else{
+							return 'Sudah Diverifikasi';
+						} 
+					},
+					styler:function(value,rowData,rowIndex){
+						if(value=='P'){
+							return 'background:yellow;color:navy;'
+						}
+						else if(value=='RG'){
+							return 'background:yellow;color:navy;'
+						}
+						else if(value=='TG'){
+							return 'background:blue;color:#ffffff;'
+						}
+						else if(value=='C'){
+							return 'background:red;color:navy;'
+						}
+						else {
+							return 'background:green;color:#ffffff;'
+						}
+						
+					}
+				},
+				
+				{field:'no_order',title:'No Order/Invoice',width:130, halign:'center',align:'center'},
+				{field:'tgl_order',title:'Tgl. Order',width:150, halign:'center',align:'center'},
+				{field:'zona',title:'Zona',width:80, halign:'center',align:'center'},
+				
+			];
+			kolom[modnya] = [	
+				{field:(modnya=='invoice' ? "nama_sekolah" : "nama_lengkap"),title:(modnya=='invoice' ? 'Nama Sekolah' : "Nama Lengkap"),width:200, halign:'center',align:'left'},
+				{field:'sub_total',title:'Sub. Total',width:150, halign:'center',align:'right',
+					formatter:function(value,rowData,rowIndex){
+						return NumberFormat(value);
+					}
+				},
+				{field:'pajak',title:'Pajak',width:150, halign:'center',align:'right',
+					formatter:function(value,rowData,rowIndex){
+						return NumberFormat(value);
+					}
+				},
+				{field:'grand_total',title:'Grand Total',width:150, halign:'center',align:'right',
+					formatter:function(value,rowData,rowIndex){
+						return NumberFormat(value);
+					}
+				},
+				
+				
+				
+				
+			];
+		break;
+		case "ver_sekolah":
+		case "ver_umum":
+			judulnya = (modnya=='ver_sekolah' ? "Daftar Order Pelanggan Sekolah" : "Daftar Order Pelanggan Umum");
+			urlnya = modnya;
+			fitnya = true;
+			nowrap=false;
+			//footer=true;
+			row_number=true;
+			frozen[modnya] = [	
+				{field:'id',title:'Verifikasi/Detil',width:80, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modnya+"\",\""+value+"\")'><img src='"+host+"__assets/eb/easyui/themes/icons/log.gif'></a>";
+					}
+				},
+				{field:'flag_ver',title:'Verifikasi Admin',width:120, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						if(value=='P'){
+							return 'Belum Diverifikasi';
+						}
+						else if(value=='RG'){
+							return 'Return Verifikasi dari Gudang';
+						}
+						else if(value=='TG'){
+							return 'Tunggu Verifikasi dari Gudang';
+						}
+						else if(value=='C'){
+							return 'Cancel';
+						}
+						else{
+							return 'Sudah Diverifikasi';
+						} 
+					},
+					styler:function(value,rowData,rowIndex){
+						if(value=='P'){
+							return 'background:yellow;color:navy;'
+						}
+						else if(value=='RG'){
+							return 'background:yellow;color:navy;'
+						}
+						else if(value=='TG'){
+							return 'background:blue;color:#ffffff;'
+						}
+						else if(value=='C'){
+							return 'background:red;color:navy;'
+						}
+						else {
+							return 'background:green;color:#ffffff;'
+						}
+						
+					}
+				},
+				{field:'flag_ver_gudang',title:'Verifikasi Gudang',width:120, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						if(value=='P'){
+							return 'Belum Diverifikasi';
+						}
+						else if(value=='PA'){
+							return 'Tunggu Verifikasi dari Admin';
+						}
+						else if(value=='RA'){
+							return 'Return Verifikasi dari Admin';
+						}
+						else if(value=='F'){
+							return 'Sudah Diverifikasi';
+						}
+						else{
+							return 'Belum Diverifikasi';
+						} 
+					},
+					styler:function(value,rowData,rowIndex){
+						if(value=='P'){
+							return 'background:yellow;color:navy;'
+						}
+						else if(value=='PA'){
+							return 'background:yellow;color:navy;'
+						}
+						else if(value=='RA'){
+							return 'background:yellow;color:navy;'
+						}
+						else if(value=='F'){
+							return 'background:green;color:navy;'
+						}
+						else {
+							return 'background:yellow;color:navy;'
+						}
+						
+					}
+				},
+				{field:'no_order',title:'No Order/Invoice',width:130, halign:'center',align:'center'},
+				{field:'tgl_order',title:'Tgl. Order',width:150, halign:'center',align:'center'},
+				{field:'zona',title:'Zona',width:80, halign:'center',align:'center'},
+				
+			];
+			kolom[modnya] = [	
+				{field:(modnya=='invoice' ? "nama_sekolah" : "nama_lengkap"),title:(modnya=='invoice' ? 'Nama Sekolah' : "Nama Lengkap"),width:200, halign:'center',align:'left'},
+				{field:'sub_total',title:'Sub. Total',width:150, halign:'center',align:'right',
+					formatter:function(value,rowData,rowIndex){
+						return NumberFormat(value);
+					}
+				},
+				{field:'pajak',title:'Pajak',width:150, halign:'center',align:'right',
+					formatter:function(value,rowData,rowIndex){
+						return NumberFormat(value);
+					}
+				},
+				{field:'grand_total',title:'Grand Total',width:150, halign:'center',align:'right',
+					formatter:function(value,rowData,rowIndex){
+						return NumberFormat(value);
+					}
+				},
+				
+				
+				
+				
+			];
+		break;
 		case "mapping_paket_belum":
 			judulnya = "Data Master Buku";
 			urlnya = "mapping_paket_belum";
@@ -267,132 +700,120 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 			row_number=true;
 			
 			kolom[modnya] = [	
-				{field:'no_order',title:'No. Order',width:200, halign:'center',align:'center'},
-				{field:'status_order',title:'Status Bayar',width:150, halign:'center',align:'center',
+				{field:'no_order',title:'No. Order',width:150, halign:'center',align:'center'},
+				{field:'jenis_pembeli',title:'Pelanggan',width:100, halign:'center',align:'center'},
+				{field:'verifikasi',title:'Stat. Verifikasi',width:100, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
 						if(value=='P'){
-							return "Proses Pembayaran";
-						}else if(value=='B'){
-							return "Proses";
+							return "Proses Verifikasi";
 						}else if(value=='F'){
-							//return "Sudah DiBayar <br/>"+rowData.tanggal_transfer;
-							return "Sudah DiBayar <br/>";
+							return "Sudah Terverifikasi";
 						}else{
 							return "-";
 						}
 					},
 					styler:function(value,rowData,rowIndex){
-						if(value=='P'){
-							return 'background:green;color:#ffffff;';
-						}else if(value=='B'){
-							return 'background:white;color:navy;';
-						}else if(value=='F'){
-							return 'background:white;color:navy;';
-						}else {
-							return 'background:red;color:navy;';
-						}
+						if(value=='P'){return 'background-color:red;color:#FFFFFF';}
+						else if(value=='F'){return 'background-color:#edf1f4;color:navy';}
+						else return 'background-color:red;color:#FFFFFF';
 					}
 				},
-				{field:'status_konfirmasi',title:'Status Konfirmasi',width:150, halign:'center',align:'center',
+				{field:'konfirmasi',title:'Stat. Konfirmasi',width:100, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
-						if(rowData.status_order == 'B'){	
-							return "Proses";
+						if(value=='P'){
+							return "Proses Konfirmasi";
+						}else if(value=='F'){
+							return "Sudah Konfirmasi";
 						}else{
-							if(value=='P'){
-								return "Tunggu Konfirmasi";
-							}else if(value=='B'){
-								return "Proses";
-							}else if(value=='F'){
-								return "Sudah Dikonfirmasi <br/>"+rowData.tanggal_konfirmasi;
-								//return "Sudah Dikonfirmasi <br/>";
-							}else{
-								return "-";
-							}
+							return "-";
 						}
 					},
 					styler:function(value,rowData,rowIndex){
-						if(rowData.status_order == 'B'){
-							return 'background:white;color:navy;'
-						}else{
-							if(value=='P'){
-								return 'background:green;color:#ffffff;'
-							}else if(value=='B'){
-								return 'background:white;color:navy;'
-							}else if(value=='F'){
-								return 'background:white;color:navy;'
-							}else{
-								return 'background:red;color:navy;'
-							}
-						}
+						if(value=='P'){return 'background-color:red;color:#FFFFFF';}
+						else if(value=='F'){return 'background-color:#edf1f4;color:navy';}
+						else return 'background-color:red;color:#FFFFFF';
 					}
 				},
-				{field:'status_gudang',title:'Status Gudang',width:150, halign:'center',align:'center',
+				{field:'produksi',title:'Stat. Produksi',width:100, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
 						if(value=='P'){
-							return "Tunggu Konfirmasi Packing";
-						}else if(value=='PK'){
+							return "Proses Produksi";
+						}else if(value=='F'){
+							return "Produksi Selesai";
+						}else{
+							return "-";
+						}
+					},
+					styler:function(value,rowData,rowIndex){
+						if(value=='P'){return 'background-color:red;color:#FFFFFF';}
+						else if(value=='F'){return 'background-color:#edf1f4;color:navy';}
+						else return 'background-color:red;color:#FFFFFF';
+					}
+				},
+				{field:'packing',title:'Stat. Packing',width:100, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						if(value=='P'){
 							return "Proses Packing";
 						}else if(value=='F'){
-							return "Proses Pengiriman <br/>";
-							//return "Proses Pengiriman <br/>"+rowData.tanggal_masuk_gudang;
+							return "Packing Selesai";
 						}else{
 							return "-";
 						}
 					},
 					styler:function(value,rowData,rowIndex){
-						if(value=='P'){return 'background:green;color:#ffffff;'}
-						else if(value=='PK'){return 'background:yellow;color:navy;'}
-						else if(value=='F'){return 'background:white;color:navy;'}
-						else {return 'background:red;color:navy;'}
+						if(value=='P'){return 'background-color:red;color:#FFFFFF';}
+						else if(value=='F'){return 'background-color:#edf1f4;color:navy';}
+						else return 'background-color:red;color:#FFFFFF';
 					}
 				},
-				{field:'status_kirim',title:'Status Pengiriman',width:150, halign:'center',align:'center',
+				{field:'kirim',title:'Stat. Pengiriman',width:150, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
 						if(value=='P'){
 							return "Proses Pengiriman";
 						}else if(value=='F'){
-							return "Sudah Dikirim <br/>";
-							//return "Sudah Dikirim <br/>"+rowData.tanggal_masuk_gudang;
+							return "Proses Kirim Dengan No Resi : "+rowData.no_resi;
 						}else{
 							return "-";
 						}
 					},
 					styler:function(value,rowData,rowIndex){
-						if(value=='P'){return 'background:green;color:#ffffff;'}
-						else if(value=='F'){return 'background:white;color:navy;'}
-						else {return 'background:red;color:navy;'}
+						if(value=='P'){return 'background-color:red;color:#FFFFFF';}
+						else if(value=='F'){return 'background-color:#edf1f4;color:navy';}
+						else return 'background-color:red;color:#FFFFFF';
 					}
 				},
-				{field:'no_resi',title:'No Resi',width:150, halign:'center',align:'center'},
-				{field:'tanggal_terimanya',title:'Terima Barang',width:150, halign:'center',align:'center',
+				{field:'tanda_terima',title:'Stat. Tnd.Terima',width:100, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
-						if(value == null){
-							return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\"terima_barang\",\""+rowData.id+"\")'><img src='"+host+"__assets/eb/easyui/themes/icons/icon-laporan.png'></a>";
+						if(value=='P'){
+							return "Menunggu Tanda Terima";
+						}else if(value=='F'){
+							return "Tanda Terima Selesai";
 						}else{
-							return "Sudah Terima <br/>"+value+" - "+rowData.jam_terima;
+							return "-";
 						}
+					},
+					styler:function(value,rowData,rowIndex){
+						if(value=='P'){return 'background-color:red;color:#FFFFFF';}
+						else if(value=='F'){return 'background-color:#edf1f4;color:navy';}
+						else return 'background-color:red;color:#FFFFFF';
 					}
 				},
-				{field:'file_bast',title:'File BAST',width:150, halign:'center',align:'center',
+				{field:'bast',title:'Stat. BAST',width:100, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
-						if(value == null){
-							return "<font color='red'>Belum Upload</font>";
+						if(value=='P'){
+							return "Menunggu BAST";
+						}else if(value=='F'){
+							return "BAST Selesai";
 						}else{
-							return "<a href='"+host+"__repository/bast_tandaterima/"+value+"' target='_blank'>Lihat File</a>"	
+							return "-";
 						}
+					},
+					styler:function(value,rowData,rowIndex){
+						if(value=='P'){return 'background-color:red;color:#FFFFFF';}
+						else if(value=='F'){return 'background-color:#edf1f4;color:navy';}
+						else return 'background-color:red;color:#FFFFFF';
 					}
-				},
-				{field:'file_tanda_terima',title:'File Tanda Terima',width:150, halign:'center',align:'center',
-					formatter:function(value,rowData,rowIndex){
-						if(value == null){
-							return "<font color='red'>Belum Upload</font>";
-						}else{
-							return "<a href='"+host+"__repository/bast_tandaterima/"+value+"' target='_blank'>Lihat File</a>"	
-						}
-					}
-				},
-				{field:'tanggal_upload',title:'Tanggal Upload',width:150, halign:'center',align:'center'}
-				
+				}
 			];
 		break;
 		case "member_sekolah":
@@ -537,39 +958,23 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 				},
 			];
 		break;
-		case "konfirmasi":
-			judulnya = "Daftar Konfirmasi Order Pelanggan";
-			urlnya = "tbl_konfirmasi";
+		
+		case "konfirmasi_umum":
+			judulnya = "Daftar Konfirmasi Order Pelanggan Umum";
+			urlnya = "konfirmasi_umum";
 			fitnya = true;
 			nowrap=false;
 			//footer=true;
 			row_number=true;
 			frozen[modnya] = [	
-				{field:'id_pemesanan',title:'Lihat Detil',width:80, halign:'center',align:'center',
+				{field:'id_pemesanan',title:'Lihat Detil & Konfirm',width:120, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
 						//var modul="invoice";
 						return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modnya+"\",\""+value+"\")'><img src='"+host+"__assets/eb/easyui/themes/icons/Windows-View-Detail-icon.png'></a>";
 					}
 				},
-				{field:'id',title:'Cetak BAST',width:80, halign:'center',align:'center',
-					formatter:function(value,rowData,rowIndex){
-						var modul="cetak_bast";
-						if(rowData.jenis_pembeli=='SEKOLAH'){
-							if(rowData.flag=='F'){
-								return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modul+"\",\""+value+"\")'><img src='"+host+"__assets/eb/easyui/themes/icons/Printer-Ink-icon.png'></a>";
-							}else if(rowData.flag=='BP'){
-								return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modul+"\",\""+value+"\")'><img src='"+host+"__assets/eb/easyui/themes/icons/Printer-Ink-icon.png'></a>";
-							}else if(rowData.flag=='C'){
-								return "DiCancel";
-							}else{
-								return "Silahkan Kirim Ke Gudang";
-							}
-						}else{
-							return "<a href='javascript:void(0);' class='btn btn-small' ><img src='"+host+"__assets/eb/easyui/themes/icons/yellow-cross-icon.png'></a>";
-						}
-					}
-				},
-				{field:'flag',title:'Kirim Gudang',width:80, halign:'center',align:'center',
+				
+				/*{field:'flag',title:'Kirim Gudang',width:80, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
 						var modul="kirim_gudang";
 						if(value=='P'){
@@ -582,7 +987,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 							return "<img src='"+host+"__assets/eb/easyui/themes/icons/ok.png'>";
 						}
 					}
-				},
+				},*/
 				{field:'create_by',title:'Cancel Pemesanan',width:120, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
 						var modul="cancel_pesanan";
@@ -591,7 +996,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 						}else if(rowData.flag=='B'){
 							return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modul+"\",\""+rowData.id+"\")'><img src='"+host+"__assets/eb/easyui/themes/icons/no.png'></a>";
 						}else if(rowData.flag=='F'){
-							return "Status Sudah Finish";
+							return "Sudah Terkonfirmasi";
 						}else{
 							return "<img src='"+host+"__assets/easyui/themes/icons/ok.png'>";
 						}
@@ -641,6 +1046,73 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 				},
 			];
 		break;
+		case "konfirmasi_sekolah":
+			judulnya = "Daftar Invoice Order Pelanggan Sekolah";
+			urlnya = "tbl_h_pemesanan";
+			fitnya = true;
+			nowrap=false;
+			//footer=true;
+			row_number=true;
+			frozen[modnya] = [	
+				{field:'id',title:'Lihat Detil & Konfirm',width:120, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modnya+"\",\""+value+"\")'><img src='"+host+"__assets/eb/easyui/themes/icons/log.gif'></a>";
+					}
+				},
+				{field:'status',title:'Status',width:120, halign:'center',align:'left',
+					formatter:function(value,rowData,rowIndex){
+						if(value=='P' || value=='T'){
+							return 'Proses Pembayaran';
+						}else if(value=='C'){
+							return 'DiCancel';
+						}else if(value=='B'){
+							return 'Proses';
+						}else{
+							return 'Sudah Bayar';
+						} 
+					},
+					styler:function(value,rowData,rowIndex){
+						if(value=='P' || value=='T'){
+							return 'background:yellow;color:navy;'
+						}else if(value=='B'){
+							return 'background:yellow;color:yellow;color:navy;';
+						}else if(value=='C'){
+							return 'background:red;color:#ffffff;';
+						}else {
+							return 'background:green;color:#ffffff;'
+						}
+						
+					}
+				},
+				{field:'no_order',title:'No Order/Invoice',width:130, halign:'center',align:'center'},
+				{field:'tgl_order',title:'Tgl. Order',width:150, halign:'center',align:'center'},
+				{field:'zona',title:'Zona',width:80, halign:'center',align:'center'},
+				
+			];
+			kolom[modnya] = [	
+				{field:(modnya=='invoice' ? "nama_sekolah" : "nama_lengkap"),title:(modnya=='invoice' ? 'Nama Sekolah' : "Nama Lengkap"),width:200, halign:'center',align:'left'},
+				{field:'sub_total',title:'Sub. Total',width:150, halign:'center',align:'right',
+					formatter:function(value,rowData,rowIndex){
+						return NumberFormat(value);
+					}
+				},
+				{field:'pajak',title:'Pajak',width:150, halign:'center',align:'right',
+					formatter:function(value,rowData,rowIndex){
+						return NumberFormat(value);
+					}
+				},
+				{field:'grand_total',title:'Grand Total',width:150, halign:'center',align:'right',
+					formatter:function(value,rowData,rowIndex){
+						return NumberFormat(value);
+					}
+				},
+				
+				
+				
+				
+			];
+		break;
+		
 		case "invoice":
 		case "invoice_umum":
 			judulnya = (modnya=='invoice' ? "Daftar Invoice Order Pelanggan Sekolah" : "Daftar Invoice Order Pelanggan Umum");
@@ -657,7 +1129,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 				},
 				{field:'status',title:'Status',width:120, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
-						if(value=='P'){
+						if(value=='P' || value=='T'){
 							return 'Proses Pembayaran';
 						}else if(value=='C'){
 							return 'DiCancel';
@@ -668,7 +1140,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 						} 
 					},
 					styler:function(value,rowData,rowIndex){
-						if(value=='P'){
+						if(value=='P' || value=='T'){
 							return 'background:yellow;color:navy;'
 						}else if(value=='B'){
 							return 'background:yellow;color:yellow;color:navy;';
@@ -1831,7 +2303,7 @@ function simpan_form(id_form,id_cancel,msg){
 				grid_nya.datagrid('reload');
 			}else{
 				console.log(r);
-				$.messager.alert('MKS - STORE Back-Office',"Tdak Dapat Menyimpan Data",'error');
+				$.messager.alert('MKS - STORE Back-Office',"Tdak Dapat Menyimpan Data" + r,'error');
 			}
 		});
 	}else{
@@ -1840,6 +2312,11 @@ function simpan_form(id_form,id_cancel,msg){
 }
 function get_detil(mod,id_data,par1){
 	switch(mod){
+		case "konfirmasi_sekolah_form":
+			$.post(host+'backoffice-form/konfirmasi_sekolah',{mod:mod,id:id_data,editstatus:'add'},function(r){
+				windowForm(r,'Konfirmasi Pembayaran',700,450);
+			});
+		break;
 		case "invoice_edit":
 			$.post(host+'backoffice-form/invoice_edit',{mod:mod,id:id_data,editstatus:'edit',par_mod:par1},function(r){
 				windowForm(r,'Detil Invoice',700,400);
@@ -1850,6 +2327,7 @@ function get_detil(mod,id_data,par1){
 			//openWindowWithPost(host+'backoffice-Cetak',{mod:mod,id:id_data});
 		break;
 		case "kirim_gudang":
+		case "kirim_gudang_umum":
 			$.post(host+'backoffice-form/remark',{mod:mod,id:id_data},function(r){
 				windowForm(r,'Pesan Gudang',580,250);
 			});
@@ -1865,6 +2343,8 @@ function get_detil(mod,id_data,par1){
 		break;
 		case "set_packing":
 		case "set_kirim":
+		case "set_kirim_sekolah":
+		case "set_kirim_umum":
 			$.post(host+'backoffice-form/remark',{mod:mod,id:id_data},function(r){
 				windowForm(r,'Manajemen Order',580,250);
 			});
