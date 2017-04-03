@@ -54,7 +54,7 @@ $config['proxy_ips'] = '';
 
 $config['client_id'] = 'bkk13am';
 $config['client_secret'] = 'ae044c5653e256aa8a0a53ed3cbd9db6';
-$config['redirect_uri'] = 'http://www.aldeaz.id/katalog';
+$config['redirect_uri'] = 'http://bukusekolah.mks-store.id';
 
 $config['token_endpoint'] = 'http://data.dikdasmen.kemdikbud.go.id/sso/token';
 $config['authorize_endpoint'] = 'http://data.dikdasmen.kemdikbud.go.id/sso/auth';
