@@ -100,17 +100,17 @@
 						});
 						uploadObj_foto_buku_{$acak}.startUpload();
 					}else{
-						$.messager.alert('Aldeaz Back-Office','Data Input Buku Sudah Tersimpan','info');
+						$.messager.alert('MKS Store Back-Office','Data Input Buku Sudah Tersimpan','info');
 						$('#batal_buku_{$acak}').trigger('click');
 						grid_nya.datagrid('reload');
 					}
 				}else{
 					//console.log(r);
-					$.messager.alert('Aldeaz Back-Office',"Tdak Dapat Menyimpan Data",'error');
+					$.messager.alert('MKS Store Back-Office',"Tdak Dapat Menyimpan Data",'error');
 				}
 			});
 		}else{
-			$.messager.alert('Aldeaz Back-Office',"Isi Data Yang Kosong ",'info');
+			$.messager.alert('MKS Store Back-Office',"Isi Data Yang Kosong ",'info');
 		} 
 	
 		/* simpan_form('form_input_{$acak}','batal_buku_{$acak}','Data Input Buku Sudah Tersimpan'); */

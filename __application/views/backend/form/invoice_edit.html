@@ -76,11 +76,11 @@
 		
 		submit_form('form_input_{$acak}',function(r){
 			if(r==1){
-				$.messager.alert('Aldeaz',"Ubah Data Invoice Detil Berhasil",'info');
+				$.messager.alert('MKS Store',"Ubah Data Invoice Detil Berhasil",'info');
 				get_detil("{$par_mod|default:'invoice'}",{$data.detil.tbl_h_pemesanan_id});
 				closeWindow();
 			}else{
-				$.messager.alert('Aldeaz',"Gagal",'error');
+				$.messager.alert('MKS Store',"Gagal",'error');
 			}
 		});
 		
