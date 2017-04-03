@@ -159,7 +159,7 @@ class Lib {
 			"protocol"	=>"smtp"
 			,"mailtype" => "html"
 			,"smtp_host" => "ssl://smtp.gmail.com"
-			,"smtp_user" => "aldeaz.id@gmail.com"
+			,"smtp_user" => "none.id@gmail.com"
 			,"smtp_pass" => ""
 			,"smtp_port" => "465",
 			'charset' => 'utf-8',
@@ -167,10 +167,10 @@ class Lib {
 		);
 		*/
 		
-		//,"smtp_user" => "aldeaz.id@gmail.com","smtp_pass" => "wonogiri100km" */
+		//,"smtp_user" => "none.id@gmail.com","smtp_pass" => "wonogiri100km" */
 		
 		$ci->email->initialize($config);
-		//$ci->email->from("aldeaz.id@gmail.com", "Aldeaz Notifikasi");
+		//$ci->email->from("none.id@gmail.com", "MKS Store Notifikasi");
 		$ci->email->from("notification@mks-store.id", "MKS-Store Notifikasi");
 		$ci->email->to($email);
 		$ci->email->subject($subject);
