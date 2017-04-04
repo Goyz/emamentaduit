@@ -13,21 +13,51 @@ class Mbackend extends CI_Model{
 				$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
 		}
 		switch($type){
+			case "cl_provinsi_indo":
+				$sql="SELECT kode_prov as id,provinsi as text 
+				FROM cl_provinsi_indo ORDER BY provinsi ASC";
+			break;
+			case "cl_kab_kota_indo":
+				$sql="SELECT kode_kab_kota as id, kab_kota as txt  
+				FROM cl_kab_kota_indo 
+				WHERE cl_provinsi_kode='".$this->input->post('v2')."' ORDER BY kab_kota ASC";
+			break;
+			case "cl_kecamatan_indo":
+				$sql="SELECT kode_kecamatan as id, kecamatan as txt  
+				FROM cl_kecamatan_indo 
+				WHERE cl_kab_kota_kode='".$this->input->post('v2')."' ORDER BY kecamatan ASC";
+			break;
+			case "tbl_registration":
+				if($balikan=='row_array'){
+					$where .=" AND A.id=".$this->input->post('id');
+				}
+				$sql = "SELECT A.*,CONCAT(A.alamat,', ',B.provinsi,' ',C.kab_kota,' ',D.kecamatan)as lokasi
+						FROM tbl_registration A
+						LEFT JOIN cl_provinsi_indo B ON A.cl_provinsi_id=B.kode_prov
+						LEFT JOIN cl_kab_kota_indo C ON A.cl_kab_kota_id=C.kode_kab_kota
+						LEFT JOIN cl_kecamatan_indo D ON A.cl_kecamatan_id=D.kode_kecamatan 
+						".$where;	
+			break;
 			case "kabkota":
 				$sql="SELECT A.* 
 					  FROM cl_kab_kota A 
 					  ".$where." ORDER BY A.kab_kota ASC ";
 			break;
 			case "get_distribusi_kabkota":
+				$tgl_mulai=$this->input->post('tgl_mulai');
+				$tgl_akhir=$this->input->post('tgl_akhir');
 				$sql="SELECT B.npsn,A.no_order,B.nama_sekolah,C.kab_kota,
 						A.flag_ver,SUM(A.grand_total)AS grand_total
 						FROM tbl_h_pemesanan A
 						LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id
 						LEFT JOIN cl_kab_kota C ON B.cl_kab_kota_kode=C.kode_kab_kota
-						WHERE (B.cl_kab_kota_kode <> '' AND B.cl_kab_kota_kode = '".$p1."')
+						WHERE A.tgl_order BETWEEN '".$tgl_mulai."' AND '".$tgl_akhir." 23:59:00'
 						GROUP BY B.npsn,A.no_order,B.nama_sekolah,C.kab_kota,A.flag_ver ";
+				//echo $sql;exit;
 			break;
 			case "get_buku_kabkota":
+				$tgl_mulai=$this->input->post('tgl_mulai');
+				$tgl_akhir=$this->input->post('tgl_akhir');
 				$sql="SELECT G.tingkatan,E.judul_buku,SUM(A.qty)as qty 
 						FROM tbl_d_pemesanan A
 						LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
@@ -36,8 +66,9 @@ class Mbackend extends CI_Model{
 						LEFT JOIN tbl_buku E ON A.tbl_buku_id=E.id
 						LEFT JOIN cl_kelas F ON E.cl_kelas_id=F.id
 						LEFT JOIN cl_tingkatan G ON F.cl_tingkatan_id=G.id
-						WHERE (C.cl_kab_kota_kode <> '' AND C.cl_kab_kota_kode = '".$p1."') 
+						WHERE B.tgl_order BETWEEN '".$tgl_mulai."' AND '".$tgl_akhir." 23:59:00'
 						GROUP BY G.tingkatan,E.judul_buku ";
+						//echo $sql;exit;
 			break;
 			case "mapping_paket_belum":
 				$id_paket = $this->input->post('id_paket');
@@ -196,12 +227,12 @@ class Mbackend extends CI_Model{
 								LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
 								LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id
 								WHERE C.jenis_pembeli='".$kat."' 
-								AND B.create_date BETWEEN '".$tgl_mulai."' AND '".$tgl_akhir." 23:59:00'
+								AND B.tgl_order BETWEEN '".$tgl_mulai."' AND '".$tgl_akhir." 23:59:00'
 								GROUP BY A.tbl_h_pemesanan_id
 							)AS F ON F.tbl_h_pemesanan_id=A.id
 							LEFT JOIN tbl_konfirmasi G ON G.tbl_h_pemesanan_id=A.id
 							WHERE B.jenis_pembeli='".$kat."' 
-							AND A.create_date BETWEEN '".$tgl_mulai."' AND '".$tgl_akhir." 23:59:00'";
+							AND A.tgl_order BETWEEN '".$tgl_mulai."' AND '".$tgl_akhir." 23:59:00'";
 					//echo $sql;
 				}else if($mod=='detil_penjualan_SEKOLAH' || $mod=='detil_penjualan_UMUM'){
 					$sql="SELECT A.tbl_h_pemesanan_id,SUM(A.qty)as jml_buku,
@@ -243,10 +274,12 @@ class Mbackend extends CI_Model{
 					//echo "<pre>";print_r($data);exit;
 					return $data;
 				}else if($mod=='lap_bast_SEKOLAH' || $mod=='lap_bast_UMUM'){
-					$sql="SELECT A.*,D.nama_sekolah,D.nama_lengkap,D.npsn,B.no_konfirmasi,B.total_pembayaran,C.no_order,C.grand_total
+					$sql="SELECT A.*,D.nama_sekolah,D.nama_lengkap,D.npsn,B.no_konfirmasi,
+							B.total_pembayaran,C.no_order,C.grand_total
 							FROM tbl_bast A
-							LEFT JOIN tbl_konfirmasi B ON A.tbl_konfirmasi_id=B.id
-							LEFT JOIN tbl_h_pemesanan C ON B.tbl_h_pemesanan_id=C.id
+							
+							LEFT JOIN tbl_h_pemesanan C ON A.tbl_h_pemesanan_id=C.id
+							LEFT JOIN tbl_konfirmasi B ON B.tbl_h_pemesanan_id=C.id
 							LEFT JOIN tbl_registrasi D ON C.tbl_registrasi_id=D.id
 							WHERE D.jenis_pembeli='".$kat."' 
 							AND A.create_date BETWEEN '".$tgl_mulai."' AND '".$tgl_akhir." 23:59:00'";
@@ -254,8 +287,8 @@ class Mbackend extends CI_Model{
 				}else if($mod=='lap_kwitansi_SEKOLAH' || $mod=='lap_kwitansi_UMUM'){
 					$sql="SELECT A.*,D.nama_sekolah,D.nama_lengkap,D.npsn,B.no_konfirmasi,B.total_pembayaran,C.no_order,C.grand_total
 							FROM tbl_kwitansi A
-							LEFT JOIN tbl_konfirmasi B ON A.tbl_konfirmasi_id=B.id
-							LEFT JOIN tbl_h_pemesanan C ON B.tbl_h_pemesanan_id=C.id
+							LEFT JOIN tbl_h_pemesanan C ON A.tbl_h_pemesanan_id=C.id
+							LEFT JOIN tbl_konfirmasi B ON B.tbl_h_pemesanan_id=C.id
 							LEFT JOIN tbl_registrasi D ON C.tbl_registrasi_id=D.id
 							WHERE D.jenis_pembeli='".$kat."' 
 							AND A.create_date BETWEEN '".$tgl_mulai."' AND '".$tgl_akhir." 23:59:00'";
@@ -393,14 +426,15 @@ class Mbackend extends CI_Model{
 			break;
 			case "tbl_konfirmasi":
 			case "konfirmasi_umum":
-				
+			case "konfirmasi_sekolah":
+				if($type=="konfirmasi_sekolah")$where .=" AND C.jenis_pembeli='SEKOLAH'";
+				else $where .=" AND C.jenis_pembeli='UMUM'";
 				$sql="SELECT A.*,B.no_order,B.tgl_order,B.zona,C.nama_sekolah,C.nama_lengkap,
 						B.id as id_pemesanan,C.jenis_pembeli,C.nama_kepala_sekolah 
 						FROM tbl_konfirmasi A 
 						LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
 						LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id
-					  ".$where." 
-						AND C.jenis_pembeli='UMUM'
+						".$where." 
 					  ORDER BY A.id DESC";
 			
 			break;
@@ -447,7 +481,10 @@ class Mbackend extends CI_Model{
 				$data=array();
 				$id=$this->input->post('id');
 				if($id)$where .=" AND A.id=".$id;
-				$sql="SELECT A.*,B.nama_sekolah,B.nama_lengkap,B.jenis_pembeli,C.id as id_konf,C.flag as flag_konf 
+				$sql="SELECT A.*,B.nama_sekolah,B.nama_lengkap,B.jenis_pembeli,
+					  C.id as id_konf,C.flag as flag_konf,
+					  C.no_konfirmasi,C.tgl_konfirmasi,C.total_pembayaran,C.nama_bank_pengirim,C.atas_nama_pengirim,
+					  C.tanggal_transfer,C.nama_bank_penerima,C.file_bukti_bayar
 					  FROM tbl_h_pemesanan A 
 					  LEFT JOIN tbl_konfirmasi C ON C.tbl_h_pemesanan_id=A.id
 					  LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id ".$where;
@@ -645,7 +682,15 @@ class Mbackend extends CI_Model{
 		}
 		
 		switch($table){
-			
+			case "tbl_registration":
+				//print_r($data);exit;
+				if($sts_crud=='add'){
+					$data['registration_date']=date('Y-m-d H:i:s');
+					$data['create_by']=$this->auth['username'];
+					$data['password']=$this->encrypt->encode($data['password']);
+				}
+				if(!isset($data['status'])){$data['status']=0;}
+			break;
 			case "admin":
 				//print_r($data);exit;
 				if($sts_crud=='add')$data['password']=$this->encrypt->encode($data['password']);
@@ -720,6 +765,7 @@ class Mbackend extends CI_Model{
 			case "tbl_konfirmasi_sekolah":
 				$table='tbl_konfirmasi';
 				//print_r($_FILES);exit;
+				/*
 				$sql=" SELECT *  FROM tbl_konfirmasi ";
 				$res=$this->db->query($sql)->result_array();
 				if(count($res)>0){
@@ -748,7 +794,9 @@ class Mbackend extends CI_Model{
 				
 				$sql="UPDATE tbl_monitoring_order SET konfirmasi='F' WHERE tbl_h_pemesanan_id=".$data['tbl_h_pemesanan_id'];
 				$this->db->query($sql);
-				
+				*/
+				$sql="UPDATE tbl_monitoring_order SET konfirmasi='F' WHERE tbl_h_pemesanan_id=".$this->input->post('id');
+				$this->db->query($sql);
 			break;
 		}
 		

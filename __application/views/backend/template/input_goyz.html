@@ -4,9 +4,11 @@
 {if $type eq 'select'}
 	<select name="{$name|default:''}" id="{$id_na|default:''}{$acak}" class="form-control validasi" style="{$style_type|default:''}" >
 		<option value="">-- Pilih --</option>
+		{if !empty($data_combo)}
 		{foreach from=$data_combo|default:"" item=i}
 			<option value="{$i.id}" {if $id_combo|default:"" eq $i.id}selected{/if}>{$i.text}</option>
 		{/foreach}
+		{/if}
 	</select>
 {elseif $type eq 'text'}
 	<input  type="text" class="{$class|default:''}" id="{$id_na}" name="{$name}" value="{$value|default:''}" style="{$style_type|default:''}" />

@@ -152,6 +152,36 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 	var row_number=true;
 	var nowrap=true;
 	switch(modnya){
+		case "pic_sales":
+			judulnya = "Daftar PIC Sales MKS";
+			urlnya = "tbl_registration";
+			fitnya = true;
+			nowrap=false;
+			//footer=true;
+			row_number=true;
+			param['id_paket'] = param_tambahan;
+			kolom[modnya] = [	
+				{field:'status',title:'Status',width:100, halign:'center',align:'left',
+					formatter:function(value,rowData,rowIndex){
+						if(value==1){
+							return "Aktif";
+						}else{
+							return "Tidak Aktif";
+						}
+					},
+					styler:function(value,rowData,rowIndex){
+						if(value==1){return 'background:green;color:#ffffff;'}
+						else {return 'background:red;color:#ffffff;'}
+						
+					}
+				},
+				{field:'email_address',title:'Email',width:230, halign:'center',align:'left'},
+				{field:'nama_lengkap',title:'Nama',width:150, halign:'center',align:'left'},
+				{field:'registration_date',title:'Tgl. Register',width:150, halign:'center',align:'center'},
+				{field:'lokasi',title:'Alamat Prov/Kabkota/Kec',width:400, halign:'center',align:'left'},
+				{field:'no_handphone',title:'No. HP',width:100, halign:'center',align:'center'}
+			];
+		break;
 		case "manajemen_gudang_sekolah":
 			judulnya = "Manajemen Order Pelanggan Sekolah";
 			urlnya = "manajemen_gudang_sekolah";
@@ -959,9 +989,10 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 			];
 		break;
 		
+		case "konfirmasi_sekolah":
 		case "konfirmasi_umum":
-			judulnya = "Daftar Konfirmasi Order Pelanggan Umum";
-			urlnya = "konfirmasi_umum";
+			judulnya = (modnya=='konfirmasi_sekolah' ? "Daftar Konfirmasi Order Pelanggan Sekolah" : "Daftar Konfirmasi Order Pelanggan Umum");
+			urlnya = (modnya=='konfirmasi_sekolah' ? "konfirmasi_sekolah" : "konfirmasi_umum");
 			fitnya = true;
 			nowrap=false;
 			//footer=true;
@@ -1046,7 +1077,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 				},
 			];
 		break;
-		case "konfirmasi_sekolah":
+		/*case "konfirmasi_sekolah":
 			judulnya = "Daftar Invoice Order Pelanggan Sekolah";
 			urlnya = "tbl_h_pemesanan";
 			fitnya = true;
@@ -1112,7 +1143,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 				
 			];
 		break;
-		
+		*/
 		case "invoice":
 		case "invoice_umum":
 			judulnya = (modnya=='invoice' ? "Daftar Invoice Order Pelanggan Sekolah" : "Daftar Invoice Order Pelanggan Umum");
@@ -2294,14 +2325,18 @@ function gen_editor(id){
 	
 }
 function simpan_form(id_form,id_cancel,msg){
+	
 	if ($('#'+id_form).form('validate')){
+		loadingna();
 		submit_form(id_form,function(r){
 			//console.log(r)
 			if(r==1){
+				winLoadingClose();
 				$.messager.alert('MKS - STORE Back-Office',msg,'info');
 				$('#'+id_cancel).trigger('click');
 				grid_nya.datagrid('reload');
 			}else{
+				winLoadingClose();
 				console.log(r);
 				$.messager.alert('MKS - STORE Back-Office',"Tdak Dapat Menyimpan Data" + r,'error');
 			}
@@ -2354,6 +2389,7 @@ function get_detil(mod,id_data,par1){
 		case "detil_penjualan":
 		case "lap_bast":
 		case "lap_kwitansi":
+		
 			$('#isi_laporan_'+id_data).html('').addClass('loading');
 			$.post(host+'backoffice-GetDetil',{mod:mod+'_'+$('#kat_'+id_data).val(),tgl_mulai:$('#tgl_mulai_'+id_data).datebox('getValue'),tgl_akhir:$('#tgl_akhir_'+id_data).datebox('getValue'),'kat':$('#kat_'+id_data).val()},function(r){
 				$('#isi_laporan_'+id_data).removeClass('loading').html(r);
@@ -2363,7 +2399,7 @@ function get_detil(mod,id_data,par1){
 		case "lap_distribusi_kabkota":
 		case "lap_buku_kabkota":
 			$('#isi_laporan_'+id_data).html('').addClass('loading');
-			$.post(host+'backoffice-GetDetil',{mod:mod,kabkota:$('#kabkota_'+id_data).val()},function(r){
+			$.post(host+'backoffice-GetDetil',{mod:mod,tgl_mulai:$('#tgl_mulai_'+id_data).datebox('getValue'),tgl_akhir:$('#tgl_akhir_'+id_data).datebox('getValue')},function(r){
 				$('#isi_laporan_'+id_data).removeClass('loading').html(r);
 			});
 			

@@ -79,7 +79,7 @@
 		{if $auth.flag_group eq 'F' || $auth.flag_group eq 'S'}
 		<li>
 			<a href="javascript:void(0);"  class="dropdown-toggle" >
-				<i class="icon-print"></i>
+				<i class="icon-briefcase"></i>
 				<span class="menu-text">Invoice & Konfirmasi</span>
 				<b class="arrow icon-angle-down"></b>
 			</a>
@@ -114,7 +114,7 @@
 		{if $auth.flag_group eq 'G' || $auth.flag_group eq 'S'}
 		<li>
 			<a href="javascript:void(0);"  class="dropdown-toggle" >
-				<i class="icon-print"></i>
+				<i class="icon-inbox"></i>
 				<span class="menu-text">Manajemen Gudang</span>
 				<b class="arrow icon-angle-down"></b>
 			</a>
@@ -245,6 +245,12 @@
 			<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/pengguna','admin');$('#judul_kecil').html('Manajemen User')">
 				<i class="icon-user"></i>
 				<span class="menu-text">Manajemen User</span>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:void(0);" onclick="loadUrl(this, '{$host}backoffice-grid/pic_sales','tbl_registration');$('#judul_kecil').html('Daftar PIC Sales')">
+				<i class="icon-bookmark-empty"></i>
+				<span class="menu-text">Register PIC Sales</span>
 			</a>
 		</li>
 		<li>

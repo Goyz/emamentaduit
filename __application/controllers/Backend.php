@@ -37,6 +37,10 @@ class Backend extends JINGGA_Controller {
 	function combo_option($mod){
 		$opt="";
 		switch($mod){
+			case "pic_sales":
+				$opt .="<option value='A.email_address'>Email</option>";
+				$opt .="<option value='A.nama_lengkap'>Nama</option>";
+			break;
 			case "produk":
 				$opt .="<option value='A.judul_buku'>Judul Buku</option>";
 				$opt .="<option value='A.deskripsi_buku'>Desc. Buku</option>";
@@ -141,7 +145,18 @@ class Backend extends JINGGA_Controller {
 						$this->nsmarty->assign('data',$data);
 					}
 				break;
-			
+				case "pic_sales":
+					$prov=$this->mbackend->getdata('cl_provinsi_indo','result_array');
+					//$kabkota=$this->mbackend->getdata('cl_kabkota_indo','result_array');
+					//$kec=$this->mbackend->getdata('cl_kecamatan_indo','result_array');
+					$this->nsmarty->assign('prov',$prov);
+					//$this->nsmarty->assign('kabkota',$kabkota);
+					//$this->nsmarty->assign('kec',$kec);
+					if($sts=='edit'){
+						$data=$this->mbackend->getdata('tbl_registration','row_array');
+						$this->nsmarty->assign('data',$data);
+					}
+				break;
 				case "invoice_edit":
 					$this->nsmarty->assign('par_mod',$this->input->post('par_mod'));
 					
@@ -261,6 +276,7 @@ class Backend extends JINGGA_Controller {
 		switch($mod){
 			case "konfirmasi":
 			case "konfirmasi_umum":
+			case "konfirmasi_sekolah":
 				$cetak=$this->input->post('flag_cetak');
 				$temp="backend/modul/invoice.html";
 				$data=$this->mbackend->getdata('get_pemesanan_konfirmasi','result_array');
@@ -276,7 +292,7 @@ class Backend extends JINGGA_Controller {
 			case "ver_gudang_sekolah":
 			case "manajemen_gudang_sekolah":
 			case "manajemen_gudang_umum":
-			case "konfirmasi_sekolah":
+			
 				//if($mod=='gudang_konfirmasi'){}
 				$cetak=$this->input->post('flag_cetak');
 				$temp="backend/modul/invoice.html";
@@ -307,12 +323,12 @@ class Backend extends JINGGA_Controller {
 			break;
 			case "lap_distribusi_kabkota":
 				$kabkota=$this->input->post('kabkota');
-				$data=$this->mbackend->getdata('get_distribusi_kabkota','result_array',$kabkota);
+				$data=$this->mbackend->getdata('get_distribusi_kabkota','result_array');
 				$this->nsmarty->assign('data',$data);
 			break;
 			case "lap_buku_kabkota":
 				$kabkota=$this->input->post('kabkota');
-				$data=$this->mbackend->getdata('get_buku_kabkota','result_array',$kabkota);
+				$data=$this->mbackend->getdata('get_buku_kabkota','result_array');
 				$this->nsmarty->assign('data',$data);
 			break;
 		}
@@ -454,15 +470,15 @@ class Backend extends JINGGA_Controller {
 					//$file_name=$nomor;
 				break;
 				case "lap_buku_kabkota":
-					$kabkota=$this->input->post('kabkota');
-					$data=$this->mbackend->getdata('get_buku_kabkota','result_array',$kabkota);
+					//$kabkota=$this->input->post('kabkota');
+					$data=$this->mbackend->getdata('get_buku_kabkota','result_array');
 					$this->nsmarty->assign('data',$data);
 					$file_name='REKAP '.$kabkota;
 					$judul="REKAPITULASI KEBUTUHAN BUKU";
 				break;
 				case "lap_distribusi_kabkota":
-					$kabkota=$this->input->post('kabkota');
-					$data=$this->mbackend->getdata('get_distribusi_kabkota','result_array',$kabkota);
+					//$kabkota=$this->input->post('kabkota');
+					$data=$this->mbackend->getdata('get_distribusi_kabkota','result_array');
 					$file_name=$kabkota;
 					$judul="Pesanan Aktif - Kota Distribusi";
 				break;
@@ -563,7 +579,14 @@ class Backend extends JINGGA_Controller {
 		$mod=$this->input->post('mod');
 		switch($mod){
 			case "tbl_h_pemesanan":
+			case "tbl_konfirmasi":
 				$sts='edit';
+				if($mod == 'tbl_konfirmasi'){
+					$data=array('id'=>$this->input->post('id_konf'),
+								'flag'=>$this->input->post('flag')
+					);
+					$this->mbackend->simpandata('tbl_konfirmasi_sekolah',$data,$sts);
+				}
 				$data=array('id'=>$this->input->post('id'),
 							'status'=>$this->input->post('status')
 				);

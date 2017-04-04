@@ -1,53 +1,111 @@
  <div class="span12">
 	<div class="row-fluid">
 		<fieldset>
-		<div class="span6">
-			<table width="100%" cellpadding="1" cellspacing="1">
-				<tr>
-					<td style="width:10%">&nbsp;</td>
-					<td style="width:40%">NO. Pesanan</td>
-					<td width="2%">:</td>
-					<td>{$data.header.no_order|default:'-'}</td>
-				</tr>
-				<tr>
-					<td style="width:10%">&nbsp;</td>
-					<td style="width:40%">Tanggal Pesan</td>
-					<td width="2%">:</td>
-					<td>{$data.header.tgl_order|default:'-'}</td>
-				</tr>
-				<tr>
-					<td style="width:10%">&nbsp;</td>
-					<td style="width:40%">{if $data.header.jenis_pembeli eq 'SEKOLAH'} Nama Sekolah {else} Nama Lengkap{/if}</td>
-					<td width="2%">:</td>
-					<td>{if $data.header.jenis_pembeli eq 'SEKOLAH'}{$data.header.nama_sekolah|default:'-'}{else}{$data.header.nama_lengkap|default:'-'}{/if}</td>
-				</tr>
-				
-			</table>
-		</div>
-		<div class="span6">
-			<table width="100%">
-				<tr>
-					<td style="width:10%">&nbsp;</td>
-					<td style="width:40%">Zona</td>
-					<td width="2%">:</td>
-					<td>{$data.header.zona|default:'-'}</td>
-				</tr>
-				<tr>
-					<td style="width:10%">&nbsp;</td>
-					<td style="width:40%">Sub Total</td>
-					<td width="2%">:</td>
-					<td>{$data.header.sub_total|number_format:2:',':'.'|default:'-'}</td>
-				</tr>
-				<tr>
-					<td style="width:10%">&nbsp;</td>
-					<td style="width:40%">Grand Total</td>
-					<td width="2%">:</td>
-					<td>{$data.header.grand_total|number_format:2:',':'.'|default:'-'}</td>
-				</tr>
-			</table>
+		{if $mod eq 'konfirmasi_sekolah' || $mod eq 'konfirmasi_umum'}
+			<legend>Data Invoice</legend>
+		{/if}
+		<div class="span12">
+			<div class="span6">
+				<table width="100%" cellpadding="1" cellspacing="1">
+					<tr>
+						<td style="width:10%">&nbsp;</td>
+						<td style="width:40%">NO. Pesanan</td>
+						<td width="2%">:</td>
+						<td>{$data.header.no_order|default:'-'}</td>
+					</tr>
+					<tr>
+						<td style="width:10%">&nbsp;</td>
+						<td style="width:40%">Tanggal Pesan</td>
+						<td width="2%">:</td>
+						<td>{$data.header.tgl_order|default:'-'}</td>
+					</tr>
+					<tr>
+						<td style="width:10%">&nbsp;</td>
+						<td style="width:40%">{if $data.header.jenis_pembeli eq 'SEKOLAH'} Nama Sekolah {else} Nama Lengkap{/if}</td>
+						<td width="2%">:</td>
+						<td>{if $data.header.jenis_pembeli eq 'SEKOLAH'}{$data.header.nama_sekolah|default:'-'}{else}{$data.header.nama_lengkap|default:'-'}{/if}</td>
+					</tr>
+					
+				</table>
+			</div>
+			<div class="span6">
+				<table width="100%">
+					<tr>
+						<td style="width:10%">&nbsp;</td>
+						<td style="width:40%">Zona</td>
+						<td width="2%">:</td>
+						<td>{$data.header.zona|default:'-'}</td>
+					</tr>
+					<tr>
+						<td style="width:10%">&nbsp;</td>
+						<td style="width:40%">Sub Total</td>
+						<td width="2%">:</td>
+						<td>{$data.header.sub_total|number_format:2:',':'.'|default:'-'}</td>
+					</tr>
+					<tr>
+						<td style="width:10%">&nbsp;</td>
+						<td style="width:40%">Grand Total</td>
+						<td width="2%">:</td>
+						<td>{$data.header.grand_total|number_format:2:',':'.'|default:'-'}</td>
+					</tr>
+				</table>
+			</div>
 		</div>
 		</fieldset>
 	</div>
+	{if $mod eq 'konfirmasi_sekolah' || $mod eq 'konfirmasi_umum'}
+	<div class="row-fluid">
+		<fieldset><legend>Data Pembayaran</legend>
+		<div class="span12">
+			<div class="span6">
+				<table width="100%" cellpadding="1" cellspacing="1">
+					<tr>
+						<td style="width:10%">&nbsp;</td>
+						<td style="width:40%">NO. Konfirmasi</td>
+						<td width="2%">:</td>
+						<td>{$data.header.no_konfirmasi|default:'-'}</td>
+					</tr>
+					<tr>
+						<td style="width:10%">&nbsp;</td>
+						<td style="width:40%">Tanggal Konfirmasi</td>
+						<td width="2%">:</td>
+						<td>{$data.header.tgl_konfirmasi|default:'-'}</td>
+					</tr>
+					<tr>
+						<td style="width:10%">&nbsp;</td>
+						<td style="width:40%">Nama Bank Pengirim</td>
+						<td width="2%">:</td>
+						<td>{$data.header.nama_bank_pengirim|default:'-'}</td>
+					</tr>
+					
+				</table>
+			</div>
+			<div class="span6">
+				<table width="100%">
+					<tr>
+						<td style="width:10%">&nbsp;</td>
+						<td style="width:40%">Nama Bank Penerima</td>
+						<td width="2%">:</td>
+						<td>{$data.header.nama_bank_penerima|default:'-'}</td>
+					</tr>
+					<tr>
+						<td style="width:10%">&nbsp;</td>
+						<td style="width:40%">Atas Nama Pengirim</td>
+						<td width="2%">:</td>
+						<td>{$data.header.atas_nama_pengirim|default:'-'}</td>
+					</tr>
+					<tr>
+						<td style="width:10%">&nbsp;</td>
+						<td style="width:40%">Total Pembayaran</td>
+						<td width="2%">:</td>
+						<td>{$data.header.total_pembayaran|number_format:2:',':'.'|default:'-'}</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		</fieldset>
+	</div>
+	{/if}
 	<div class="row-fluid">
 		<table class="table table-hover">
 			<thead>
@@ -269,31 +327,55 @@ $('#konf_{$acak}').bind('click',function(){
 $('#batal_pesanan_{$acak}').bind('click',function(){
 	$.messager.confirm('MKS - STORE','Apakah Yakin Data Pesanan Ini Akan Dibatalkan dan tidak diproses ?',function(re){
 		if(re){
+			loadingna();
 			$.post(host+'backoffice-SetFlag',{ mod:'tbl_h_pemesanan',id:{$data.header.id|default:0},'status':'C' },function(r){
 				if(r==1){
 					$.messager.alert('MKS - STORE',"Invoice/Pemesanan Ini Sudah Dibatalkan Dan Tidak Dapat Diproses ",'info');
 					$('#batal_{$acak}').trigger('click');
 					grid_nya.datagrid('reload');
+					winLoadingClose();
 				}else{
 					$.messager.alert('MKS - STORE',"Gagal "+r,'error');
+					winLoadingClose();
 				}
 			});
 		}
 	});
 });
 $('#konf_sekolah_{$acak}').bind('click',function(){
-	get_detil('konfirmasi_sekolah_form',{$data.header.id});
+	var id_konf={$data.header.id_konf|default:0};
+	$.messager.confirm('MKS - STORE','Apakah Sudah Valid Data Pembayaran Dan Data Tagihan Invoice ?',function(re){
+		if(re){
+			loadingna();
+			$.post(host+'backoffice-SetFlag',{ mod:'tbl_konfirmasi',id:{$data.header.id|default:0},'status':'F','flag':'F','id_konf':id_konf },function(r){
+				if(r==1){
+					$.messager.alert('MKS - STORE',"Konfirmasi Pembayaran Selesai ",'info');
+					$('#batal_{$acak}').trigger('click');
+					grid_nya.datagrid('reload');
+					winLoadingClose();
+				}else{
+					$.messager.alert('MKS - STORE',"Gagal "+r,'error');
+					winLoadingClose();
+				}
+			});
+		}
+	});
 });
+/*$('#konf_sekolah_{$acak}').bind('click',function(){
+	get_detil('konfirmasi_sekolah_form',{$data.header.id});
+});*/
 $('#ver_{$acak}').bind('click',function(){
 	var id_na={$data.header.id|default:'-'};
 	$.messager.confirm('MKS - STORE','Apakah Yakin Data Sudah Valid?',function(re){
 		if(re){
+			loadingna();
 			$.post('{$host}backend/simpandata/tbl_h_pemesanan',{ editstatus:'edit',id:id_na,flag_ver:'TG',flag_ver_gudang:'P' },function(r){
 				if(r==1){
 					$.messager.alert('MKS - STORE',"Data Sudah Terverifikasi Dan Menunggu Verifikasi Gudang",'info');
 					$('#batal_{$acak}').trigger('click');
 					grid_nya.datagrid('reload');
-				}
+					winLoadingClose();
+				}else{ winLoadingClose(); }
 			});
 		}
 	});
@@ -302,12 +384,14 @@ $('#ver_ok_{$acak}').bind('click',function(){
 	var id_na={$data.header.id|default:'-'};
 	$.messager.confirm('MKS - STORE','Apakah Yakin Data Sudah Valid?',function(re){
 		if(re){
+			loadingna();
 			$.post('{$host}backend/simpandata/tbl_h_pemesanan',{ editstatus:'edit',id:id_na,flag_ver:'F',flag_ver_gudang:'F',gd:1,mod_na:'{$mod}' },function(r){
 				if(r==1){
 					$.messager.alert('MKS - STORE',"Data Sudah Terverifikasi",'info');
 					$('#batal_{$acak}').trigger('click');
 					grid_nya.datagrid('reload');
-				}
+					winLoadingClose();
+				}else{ winLoadingClose(); }
 			});
 		}
 	});
@@ -316,12 +400,14 @@ $('#ver_gd_{$acak}').bind('click',function(){
 	var id_na={$data.header.id|default:'-'};
 	$.messager.confirm('MKS - STORE','Apakah Yakin Data Sudah Valid?',function(re){
 		if(re){
+			loadingna();
 			$.post('{$host}backend/simpandata/tbl_h_pemesanan',{ editstatus:'edit',id:id_na,flag_ver:'F',flag_ver_gudang:'F',gd:1,mod_na:'{$mod}' },function(r){
 				if(r==1){
 					$.messager.alert('MKS - STORE',"Data Sudah Terverifikasi",'info');
 					$('#batal_{$acak}').trigger('click');
 					grid_nya.datagrid('reload');
-				}
+					winLoadingClose();
+				}else{ winLoadingClose(); }
 			});
 		}
 	});
@@ -330,12 +416,14 @@ $('#ver_updt_{$acak}').bind('click',function(){
 	var id_na={$data.header.id|default:'-'};
 	$.messager.confirm('MKS - STORE','Apakah Yakin Dengan Perubahan Data Dan Akan DiVerifikasi kembali Oleh Admin?',function(re){
 		if(re){
+			loadingna();
 			$.post('{$host}backend/simpandata/tbl_h_pemesanan',{ editstatus:'edit',id:id_na,flag_ver:'RG',flag_ver_gudang:'PA' },function(r){
 				if(r==1){
 					$.messager.alert('MKS - STORE',"Perubahan Data Sudah Dikirim Ke Admin dan Menunggu Konfirmasi Admin",'info');
 					$('#batal_{$acak}').trigger('click');
 					grid_nya.datagrid('reload');
-				}
+					winLoadingClose();
+				}else{ winLoadingClose(); }
 			});
 		}
 	});
@@ -344,11 +432,14 @@ $('.batalkan_{$acak}').bind('click',function(){
 	var id_na=$(this).attr('data');
 	$.messager.confirm('MKS - STORE','Apakah Ingin Membatalkan Detil Invoice Ini?',function(re){
 		if(re){
+			loadingna();
 			$.post('{$host}backend/set_flag',{ mod:'tbl_d_pemesanan',flag:'C',id:id_na },function(r){
 				if(r==1){
+					winLoadingClose();
 					$.messager.alert('MKS - STORE',"Data Detil Invoice Sudah DiBatalkan",'info');
 					get_detil("invoice",{$data.header.id|default:0});
-				}
+					
+				}else{ winLoadingClose(); }
 			});
 		}
 	});
@@ -357,11 +448,13 @@ $('.hapuskan_{$acak}').bind('click',function(){
 	var id_na=$(this).attr('data');
 	$.messager.confirm('MKS - STORE','Apakah Ingin Menghapus Detil Invoice Ini?',function(re){
 		if(re){
+			loadingna();
 			$.post('{$host}backend/simpandata',{ mod:'tbl_d_pemesanan',editstatus:'delete',id:id_na },function(r){
 				if(r==1){
+					winLoadingClose();
 					$.messager.alert('MKS - STORE',"Data Detil Invoice Sudah Dihapus",'info');
 					get_detil("invoice",{$data.header.id|default:0});
-				}
+				}else{ winLoadingClose(); }
 			});
 		}
 	});
