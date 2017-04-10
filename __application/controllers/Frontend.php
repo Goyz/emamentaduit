@@ -254,7 +254,7 @@ class Frontend extends CI_Controller {
 						$data_invoice = $this->mfrontend->getdata('header_pesanan', 'row_array', $no_order);
 						if($data_invoice){ 
 							$data_customer = $this->db->get_where('tbl_registrasi', array('id'=>$data_invoice['tbl_registrasi_id']))->row_array();
-							$data_tracking = $this->mfrontend->getdata('tracking_pesanan', 'row_array', $no_order);
+							$data_tracking = $this->mfrontend->getdata('tracking_pesanan', 'row_array', $data_invoice["idpesan"]);
 							$data_invoice['grand_total'] = number_format($data_invoice['grand_total'],0,",",".");
 							
 							$this->nsmarty->assign( 'data_invoice', $data_invoice ); 
@@ -1201,6 +1201,24 @@ class Frontend extends CI_Controller {
 					);
 					$this->cart->update($data);
 				}
+				
+				$kontent = $this->cart->contents();
+				$tot_price = 0;
+				$tot_qty = 0;
+				foreach($kontent as $key => $v){
+					$tot_price += $v["subtotal"];
+					$tot_qty += $v["qty"];
+				}
+				
+				$array_return = array(
+					"total_harga" => number_format($tot_price,0,",","."),
+					"total_qty" => number_format($tot_qty,0,",","."),
+				);
+				echo json_encode($array_return);
+			break;
+			case "deletekeranjang":
+				$rowid = $this->input->post("rwid");
+				$this->cart->remove($rowid);
 				
 				$kontent = $this->cart->contents();
 				$tot_price = 0;

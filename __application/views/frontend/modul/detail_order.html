@@ -20,7 +20,7 @@
 							</tr>
 							<tr>
 								<td>Zona Pengiriman</td>
-								<td>{$data_invoice.zona|default:'-'}</td>
+								<td>{$data_invoice.zona_pengiriman|default:'-'}</td>
 							</tr>
 							<tr>
 								<td>Grand Total</td>
@@ -67,7 +67,7 @@
 							</tr>
 							<tr>
 								<td>Zona Pengiriman</td>
-								<td>{$data_invoice.zona|default:'-'}</td>
+								<td>{$data_invoice.zona_pengiriman|default:'-'}</td>
 							</tr>
 							<tr>
 								<td>Grand Total</td>
@@ -88,19 +88,27 @@
 					<table class="table table-bordered table-hover">
 						<thead>
 							<tr>
-								<td class="text-center" width="20%">Status Pembayaran</td>
-								<td class="text-center" width="20%">Status Konfirmasi</td>
-								<td class="text-center" width="20%">Status Pengiriman</td>
-								<td class="text-center" width="20%">No. Resi</td>
+								<td class="text-center" width="20%">Verifikasi Stok</td>
+								<td class="text-center" width="20%">Pembayaran</td>
+								<td class="text-center" width="20%">Produksi</td>
+								<td class="text-center" width="20%">Packing</td>
+								<td class="text-center" width="20%">Pengiriman</td>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
-								<td class="text-center" >{$data_tracking.status_pembayaran|default:"-"}</td>
-								<td class="text-center" >{$data_tracking.status_konfirmasi|default:"-"}</td>
-								<td class="text-center" >{$data_tracking.status_tracking|default:"-"}</td>
-								<td class="text-center" >{$data_tracking.no_resi|default:"-"}</td>
+								<td class="text-center" >{$data_tracking.status_verifikasi_stok|default:"-"}</td>
+								<td class="text-center" >{$data_tracking.status_konfirmasi_pembayaran|default:"-"}</td>
+								<td class="text-center" >{$data_tracking.status_produksi|default:"-"}</td>
+								<td class="text-center" >{$data_tracking.status_packing|default:"-"}</td>
+								<td class="text-center" >{$data_tracking.status_kirim|default:"-"}</td>
 							</tr>
+							{if $data_tracking.no_resi|default:'' neq null}
+							<tr style="font-weight:bold;">
+								<td class="text-center"  colspan="2">No. Resi Pengiriman</td>
+								<td colspan="3">{$data_tracking.no_resi|default:''}</td>
+							</tr>
+							{/if}
 						</tbody>
 					</table>
 				</div>
@@ -112,8 +120,10 @@
 						{if $auth.jenis_pembeli eq "SEKOLAH"}
 							<a id='ctk_bast' href='javascript:void(0);' class="btn btn-primary">Cetak BAST</a> 
 							<a id='ctk_kwt' href='javascript:void(0);' class="btn btn-primary">Cetak KWITANSI</a> 
+							{*
 							<a id='ctk_tt' href='javascript:void(0);' class="btn btn-primary">Cetak Tanda Terima</a> 
 							<a id='ctk_sp' href='javascript:void(0);' class="btn btn-primary">Cetak Surat Pesanan</a> 
+							*}
 						{/if}
 						<a href="{$host}datapesanan" class="btn btn-danger" >Kembali<a/>
 

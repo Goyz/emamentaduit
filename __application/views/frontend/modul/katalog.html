@@ -11,10 +11,10 @@
             <h3 class="subtitle">Filtering Data</h3>
             <div class="box-category">
 				<ul id="cat_accordion">
-                    <li class="cutom-parent-li"><a href="javascript:void(0);" class="cutom-parent">Tingkatan<span class="dcjq-icon"></span></a> <span class="down"></span>
+                    <li class="cutom-parent-li"><a href="javascript:void(0);" onClick="$('#tingkatan').trigger('click');" class="cutom-parent">Tingkatan<span class="dcjq-icon"></span></a> <span id="tingkatan" class="down"></span>
                         <ul style="display: block;">
 							{foreach from=$data_tingkatan item=row}                           
-								<li class="cutom-parent-li"><a href="javascript:void(0);" class="cutom-parent">{$row.tingkatan}<span class="dcjq-icon"></span></a> <span class="down"></span>
+								<li class="cutom-parent-li"><a href="javascript:void(0);" onClick="$('#{$row.tingkatan}').trigger('click');" class="cutom-parent">{$row.tingkatan}<span class="dcjq-icon"></span></a> <span id="{$row.tingkatan}" class="down"></span>
 									<ul style="display: none;">
 									{if $row.detil}
 										{foreach from=$row.detil item=riw}
@@ -26,14 +26,14 @@
 						   {/foreach}
                         </ul>
                     </li>
-                    <li class="cutom-parent-li"><a href="javascript:void(0);" class="cutom-parent">Kategori<span class="dcjq-icon"></span></a> <span class="down"></span>
+                    <li class="cutom-parent-li"><a href="javascript:void(0);" onClick="$('#kategori').trigger('click');" class="cutom-parent">Kategori<span class="dcjq-icon"></span></a> <span id="kategori" class="down"></span>
                         <ul style="display: block;">
 							{foreach from=$data_kategori item=rows}                          
 								<li><a href="javascript:void(0);" onClick="loaddatabook('kate','{$rows.id}');">{$rows.nama_kategori}</a></li>
 						   {/foreach}
                         </ul>
                     </li>
-                    <li class="cutom-parent-li"><a href="javascript:void(0);" class="cutom-parent">Pengguna Buku<span class="dcjq-icon"></span></a> <span class="down"></span>
+                    <li class="cutom-parent-li"><a href="javascript:void(0);" onClick="$('#pengguna').trigger('click');" class="cutom-parent">Pengguna Buku<span class="dcjq-icon"></span></a> <span id="pengguna" class="down"></span>
                         <ul style="display: block;">
 							{foreach from=$data_pengguna item=rowss}                        
 								<li><a href="javascript:void(0);" onClick="loaddatabook('grp','{$rowss.id}');">{$rowss.nama_group}</a></li>
@@ -54,23 +54,13 @@
                         </div>
 					</div>
                     <div class="col-sm-2 ">
-                        <label class="control-label" for="input-sort">Cari Data</label>
+                        <label class="control-label" for="input-sort">Temukan Buku Anda</label>
                     </div>
                     <div class="col-md-4 col-sm-2 ">
-						<input type="text" class="form-control col-sm-3" />
-						{*
-						<select id="input-sort" class="form-control col-sm-3">
-                            <option value="" selected="selected">Default</option>
-                            <option value="">Name (A - Z)</option>
-                            <option value="">Name (Z - A)</option>
-                            <option value="">Price (Low &gt; High)</option>
-                            <option value="">Price (High &gt; Low)</option>
-                            <option value="">Rating (Highest)</option>
-                            <option value="">Rating (Lowest)</option>
-                            <option value="">Model (A - Z)</option>
-                            <option value="">Model (Z - A)</option>
-                        </select>
-						*}
+						<input id="txtcari" type="text" class="form-control" />
+                    </div>
+                    <div class="col-md-4 col-sm-2 ">
+						<a class="btn-primary col-sm-3" type="button" onclick='searchdt();'>Cari</a>
                     </div>
                 </div>
             </div>
@@ -80,10 +70,10 @@
 				<div id="konten-buku" class="row products-category" style="margin-top: 10px !important;">
 					{if $data_buku}
 						{foreach from=$data_buku item=row}
-							<div style="min-height:400px !important;" class="product-layout product-grid col-lg-3 col-md-3 col-sm-4 col-xs-12">
+							<div style="min-height:300px !important;" class="product-layout product-grid col-lg-3 col-md-3 col-sm-4 col-xs-12">
 								<div class="product-thumb">
 									<div class="image">
-										<img style="max-height:300px !important;" src="{$row.foto_buku}" alt=" {$row.judul_buku} " title=" {$row.judul_buku} " class="img-responsive">
+										<img style="height:200px !important;" src="{$row.foto_buku}" alt=" {$row.judul_buku} " title=" {$row.judul_buku} " class="img-responsive">
 									</div>
 									<div>
 										<div class="caption">
@@ -230,11 +220,11 @@ function pagjs(delimeter, typ, ixds, srch, pagangka){
 }
 
 function searchdt(){
-	var vlcr = $('#cari').val();
-	$('#konten-utama-buku').html('');
+	var vlcr = $('#txtcari').val();
+	$('#kontenproduk').html('');
 	$.post(host+'filtering-data', { 'cr':vlcr }, function(rpload){
 		parsload = $.parseJSON(rpload);
-		$('#konten-utama-buku').html(parsload.page);
+		$('#kontenproduk').html(parsload.page);
 	});
 }
 

@@ -145,13 +145,13 @@
 							<div class="form-group">
 								<label for="input-telephone" class="col-sm-3 control-label">No. Telp</label>
 								<div class="col-sm-8">
-									<input class="form-control" value="{$auth.no_telp_customer}" id="no_telp" name="no_telp" type="tel">
+									<input class="form-control numerics" value="{$auth.no_telp_customer}" id="no_telp" name="no_telp" type="tel">
 								</div>
 							</div>
 							<div class="form-group required">
 								<label for="input-fax" class="col-sm-3 control-label">No. Handphone</label>
 								<div class="col-sm-8">
-									<input class="form-control validasi" value="{$auth.no_hp_customer}" required id="no_handphone" name="no_handphone" type="text">
+									<input class="form-control validasi numerics" value="{$auth.no_hp_customer}" required id="no_handphone" name="no_handphone" type="text">
 								</div>
 							</div>
 						</fieldset>
@@ -182,7 +182,7 @@
 							<div class="form-group required">
 								<label for="input-firstname" class="col-sm-3 control-label">Kode Pos</label>
 								<div class="col-sm-2">
-									<input class="form-control" required id="kd_pos" name="kd_pos" type="text">
+									<input class="form-control numerics" required id="kd_pos" name="kd_pos" type="text">
 								</div>
 							</div>														
 							<div class="form-group required">
@@ -225,6 +225,7 @@
 </div>
 
 <script>
+	$(".numerics").numeric();
 	$(".validasi").validatebox({ required:true }); 
 	$('#provinsi').bind('change', function(){
 		fillCombo(host+'combo-kab-kota', 'kabupaten', '', $(this).val() );

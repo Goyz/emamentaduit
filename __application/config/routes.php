@@ -70,6 +70,7 @@ $route['keranjang-belanja-masuk'] = 'frontend/keranjang_belanja/add'; // kepake
 $route['keranjang-belanja-masuk-paket'] = 'frontend/keranjang_belanja/add_paket'; // kepake
 $route['hapus-keranjang'] = 'frontend/keranjang_belanja/delete'; //kepake
 $route['perbaharui-keranjang'] = 'frontend/keranjang_belanja/update'; //kepake
+$route['perbaharui-keranjang-hapus'] = 'frontend/keranjang_belanja/deletekeranjang'; //kepake
 
 $route['selesaibelanja'] = 'frontend/getdisplay/main_page/selesaibelanja'; // kepake
 $route['loading-selesaibelanja'] = 'frontend/getdisplay/loading_page/selesaibelanja'; //kepake
@@ -121,6 +122,9 @@ $route['ubahpassword'] = 'frontend/getdisplay/main_page/ubahpassword';
 $route['loading-ubahpassword'] = 'frontend/getdisplay/loading_page/ubahpassword';
 $route['submit-update-password'] = 'frontend/cruddata/form/ubahpassword';
 
+// Utk Reporting Kementerian Pendidikan
+$route['data_pesanan_all'] = 'frontend/report_kementerian/all';
+
 
 // ROuting gak kepake
 
@@ -145,7 +149,6 @@ $route['riwayatpesanan'] = 'frontend/getdisplay/main_page/riwayat';
 $route['loading-riwayat'] = 'frontend/getdisplay/loading_page/pesananriwayat';
 $route['loading-riwayatform'] = 'frontend/getdisplay/loading_page/formriwayat';
 
-
 $route['komplain'] = 'frontend/getdisplay/main_page/komplain';
 $route['loading-komplain'] = 'frontend/getdisplay/loading_page/laykomplainbro';
 $route['submit-komplain'] = 'frontend/cruddata/form/komp';
@@ -157,12 +160,6 @@ $route['pembatalan'] = 'frontend/getdisplay/main_page/pembatalan';
 $route['loading-pembatalan'] = 'frontend/getdisplay/loading_page/pembatalanpesan';
 $route['loading-formpemb'] = 'frontend/getdisplay/loading_page/formpembatalancuy';
 $route['submit-pembatalan'] = 'frontend/cruddata/form/pembss';
-
-
-
-
-
-$route['data_pesanan_all'] = 'frontend/report_kementerian/all';
 
 
 

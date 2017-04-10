@@ -57,7 +57,7 @@
 					</div>
                 </div>
 				<div class="row">
-					
+					{if $auth}
 					<form id='frmsbmpaket' url="{$host}keranjang-belanja-masuk-paket" method='post' enctype="multipart/form-data" class="form-horizontal">
 						<div class="table-responsive">
 							<table class="table">
@@ -102,7 +102,24 @@
 							{/if}
 						</div>
 					</form>
-				
+					{else}
+					<div class="product-info">
+						<div id="content" class="col-sm-12">
+							<div class="col-sm-12">
+								<ul class="price-box">
+									<li class="price">
+										<span itemprop="price">
+											<center>Login Untuk Melihat Harga</center>
+											<span itemprop="availability" content="In Stock"></span>
+										</span>
+									</li>
+									<li></li>
+									<li></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					{/if}
 				</div>
 			</div>
         </div>

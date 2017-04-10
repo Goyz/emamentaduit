@@ -16,10 +16,13 @@
                         </div>
 					</div>
                     <div class="col-sm-2 ">
-                        <label class="control-label" for="input-sort">Cari Data</label>
+                        <label class="control-label" for="input-sort">Temukan Buku Paket Anda</label>
                     </div>
                     <div class="col-md-4 col-sm-2 ">
-						<input type="text" class="form-control col-sm-3" />
+						<input type="text" id="txtcaripaket" class="form-control col-sm-3" />
+                    </div>
+					<div class="col-md-3 col-sm-2 ">
+						<a class="btn-primary col-sm-3" type="button" onclick='searchdt();'>Cari</a>
                     </div>
                 </div>
             </div>
@@ -179,11 +182,11 @@ function pagjs(delimeter, typ, ixds, srch, pagangka){
 }
 
 function searchdt(){
-	var vlcr = $('#cari').val();
-	$('#konten-utama-buku').html('');
+	var vlcr = $('#txtcaripaket').val();
+	$('#kontenproduk').html('');
 	$.post(host+'filtering-datapaket', { 'cr':vlcr }, function(rpload){
 		parsload = $.parseJSON(rpload);
-		$('#konten-utama-buku').html(parsload.page);
+		$('#kontenproduk').html(parsload.page);
 	});
 }
 

@@ -193,7 +193,7 @@ class Mfrontend extends CI_Model{
 			break;
 			case "header_pesanan":
 				$sql = "
-					SELECT A.*, A.id as idpesan, A.status as sts_pesan,
+					SELECT A.*, A.id as idpesan, A.status as sts_pesan, A.zona as zona_pengiriman,
 						B.jasa_pengiriman, C.metode_pembayaran, D.*, E.provinsi, F.kab_kota, G.kecamatan
 					FROM tbl_h_pemesanan A
 					LEFT JOIN cl_jasa_pengiriman B ON B.id = A.cl_jasa_pengiriman_id
@@ -227,6 +227,33 @@ class Mfrontend extends CI_Model{
 			
 			case "tracking_pesanan":
 				$sql = "
+					SELECT A.no_resi,
+						CASE A.verifikasi 
+						WHEN 'P' THEN 'VERIFIKASI STOK BARANG'
+						WHEN 'F' THEN 'SUDAH VERIFIKASI'
+						END AS status_verifikasi_stok,
+						CASE A.konfirmasi
+						WHEN 'P' THEN 'VERIFIKASI PEMBAYARAN'
+						WHEN 'F' THEN 'SUDAH BAYAR'
+						END AS status_konfirmasi_pembayaran,
+						CASE A.produksi
+						WHEN 'P' THEN 'PROSES PRODUKSI'
+						WHEN 'F' THEN 'PRODUKSI SELESAI'
+						END AS status_produksi,
+						CASE A.packing
+						WHEN 'P' THEN 'PROSES PACKING'
+						WHEN 'F' THEN 'PACKING SELESAI'
+						END AS status_packing,
+						CASE A.kirim
+						WHEN 'P' THEN 'PROSES KIRIM'
+						WHEN 'F' THEN 'BARANG TERKIRIM'
+						END AS status_kirim
+					FROM tbl_monitoring_order A
+					WHERE A.tbl_h_pemesanan_id = '".$p1."'
+				";
+				
+				/*
+				$sql = "
 					SELECT CASE A.status 
 							WHEN 'P' THEN 'BELUM DIBAYAR'
 							WHEN 'F' THEN 'SUDAH DIBAYAR'
@@ -248,6 +275,7 @@ class Mfrontend extends CI_Model{
 					LEFT JOIN  tbl_tracking_pengiriman C ON C.tbl_h_pemesanan_id = A.id 
 					WHERE A.no_order = '".$p1."'
 				";
+				*/
 			break;
 			
 			case "riwayat_pesanan":
@@ -629,11 +657,10 @@ class Mfrontend extends CI_Model{
 			break;
 			case "checkout":				
 				$kdmarketing = null;
-				/*
 				if(isset($data['kdmar'])){
 					$dbmarketing = $this->load->database('marketing',true);
-					$array_cek_kdmarketing = array( 'member_user' => $data['kdmar'] );
-					$cek_kdmarketing = $dbmarketing->get_where('tbl_member', $array_cek_kdmarketing)->row_array();
+					$array_cek_kdmarketing = array( 'registration_code' => $data['kdmar'] );
+					$cek_kdmarketing = $dbmarketing->get_where('tbl_registration', $array_cek_kdmarketing)->row_array();
 					if(!$cek_kdmarketing){
 						$array = array("msg"=>2);
 						//echo 2; exit;
@@ -644,7 +671,7 @@ class Mfrontend extends CI_Model{
 				}else{
 					$kdmarketing = null;
 				}
-				*/
+				
 				
 				$acak_no_order = "";
 				
@@ -695,6 +722,8 @@ class Mfrontend extends CI_Model{
 						'create_date' => date('Y-m-d H:i:s'),
 						'zona' => $zona_pilihan['zona_pilihan'],
 						'kode_marketing' => $kdmarketing,
+						'flag_ver' => "P",
+						'flag_ver_gudang' => "P",
 						'alamat_pengiriman_registrasi' => $data['alamat_pengiriman'],
 						'alamat_pengiriman_lain' =>$data['alamat_pengiriman_lain']
 					);
@@ -718,6 +747,7 @@ class Mfrontend extends CI_Model{
 						}
 						$this->db->insert_batch('tbl_d_pemesanan', $array_batch);
 						
+						/* Proses Bypass Status Pembayaran - Koding Lawas
 						if($this->auth["jenis_pembeli"] == "SEKOLAH"){
 							$sql_maxkonf = "
 								SELECT MAX(no_konfirmasi) as konfirmasi_no
@@ -736,6 +766,7 @@ class Mfrontend extends CI_Model{
 							);
 							$this->db->insert('tbl_konfirmasi', $array_konfirmasi);
 						}
+						*/
 						
 						$array_email = array(
 							'pemesan' => $nama_pemesan,

@@ -27,36 +27,40 @@
 									<td class="text-center">{$rows.tgl_orderr}</td>
 									<td class="text-right">{$rows.total_pesanan}</td>
 									<td class="text-right">
-										<a href="{$host}detailorder/{$rows.no_order}">Detail Order</a>
-										{if $auth.jenis_pembeli eq "UMUM"}
-											{if $rows.flag_konfirm eq 0}
-												&nbsp;&nbsp;|&nbsp;&nbsp;
-												<a href="{$host}konfirmasi/{$rows.no_order}">Konfirmasi Pembayaran</a>
-											{elseif $rows.flag_konfirm eq 1}
-												&nbsp;&nbsp;|&nbsp;&nbsp;
-												<span>Sudah Bayar</span>
-											{elseif $rows.flag_konfirm eq 2}
-												&nbsp;&nbsp;|&nbsp;&nbsp;
-												<span>Menunggu Verifikasi Pembayaran</span>
-											{/if}
-										{elseif $auth.jenis_pembeli eq "SEKOLAH"}	
-											{if $rows.flag_konfirm eq 0}
-												&nbsp;&nbsp;|&nbsp;&nbsp;
-												<a href="{$host}konfirmasi/{$rows.no_order}">Konfirmasi Pembayaran</a>
-											{elseif $rows.flag_konfirm eq 1}
-												&nbsp;&nbsp;|&nbsp;&nbsp;
-												<span>Sudah Bayar</span>
-											{elseif $rows.flag_konfirm eq 2}
-												&nbsp;&nbsp;|&nbsp;&nbsp;
-												<span>Menunggu Verifikasi Pembayaran</span>
-											{/if}
-											
-											{if $rows.flag_upload eq 0}
-												&nbsp;&nbsp;|&nbsp;&nbsp;
-												<a href="{$host}uploadfile/{$rows.no_order}">Upload File BAST & Tanda Terima</a>
-											{elseif $rows.flag_upload eq 1}
-												&nbsp;&nbsp;|&nbsp;&nbsp;
-												<span>Sudah Upload</span>
+										{if $rows.status eq 'C'}
+											<center><font color="red">Pesanan Dibatalkan</font></center>
+										{else}
+											<a href="{$host}detailorder/{$rows.no_order}">Detail Order</a>
+											{if $auth.jenis_pembeli eq "UMUM"}
+												{if $rows.flag_konfirm eq 0}
+													&nbsp;&nbsp;|&nbsp;&nbsp;
+													<a href="{$host}konfirmasi/{$rows.no_order}">Konfirmasi Pembayaran</a>
+												{elseif $rows.flag_konfirm eq 1}
+													&nbsp;&nbsp;|&nbsp;&nbsp;
+													<span>Sudah Bayar</span>
+												{elseif $rows.flag_konfirm eq 2}
+													&nbsp;&nbsp;|&nbsp;&nbsp;
+													<span>Menunggu Verifikasi Pembayaran</span>
+												{/if}
+											{elseif $auth.jenis_pembeli eq "SEKOLAH"}	
+												{if $rows.flag_konfirm eq 0}
+													&nbsp;&nbsp;|&nbsp;&nbsp;
+													<a href="{$host}konfirmasi/{$rows.no_order}">Konfirmasi Pembayaran</a>
+												{elseif $rows.flag_konfirm eq 1}
+													&nbsp;&nbsp;|&nbsp;&nbsp;
+													<span>Sudah Bayar</span>
+												{elseif $rows.flag_konfirm eq 2}
+													&nbsp;&nbsp;|&nbsp;&nbsp;
+													<span>Menunggu Verifikasi Pembayaran</span>
+												{/if}
+												
+												{if $rows.flag_upload eq 0}
+													&nbsp;&nbsp;|&nbsp;&nbsp;
+													<a href="{$host}uploadfile/{$rows.no_order}">Upload File BAST & Tanda Terima</a>
+												{elseif $rows.flag_upload eq 1}
+													&nbsp;&nbsp;|&nbsp;&nbsp;
+													<span>Sudah Upload</span>
+												{/if}
 											{/if}
 										{/if}
 									</td>

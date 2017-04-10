@@ -452,12 +452,12 @@ class Backend extends JINGGA_Controller {
 				case "ver_gudang_sekolah":
 				case "manajemen_gudang_sekolah":
 				case "manajemen_gudang_umum":
-					$judul="INVOICE";
+					$judul="SURAT PESANAN BUKU BARU";
 					$data=$this->mbackend->getdata('get_pemesanan','result_array');
 					$file_name=$data['header']['no_order'];
 				break;
 				case "surat_jalan":
-					$judul="Surat Jalan";
+					$judul="SURAT JALAN EKSPEDISI MKS-Store";
 					$data=$this->mbackend->getdata('get_pemesanan','result_array');
 					$file_name=$data['header']['no_order'];
 				break;

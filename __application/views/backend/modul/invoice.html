@@ -8,46 +8,52 @@
 			<div class="span6">
 				<table width="100%" cellpadding="1" cellspacing="1">
 					<tr>
-						<td style="width:10%">&nbsp;</td>
-						<td style="width:40%">NO. Pesanan</td>
+						<td width="10%">&nbsp;</td>
+						<td width="30%">No. Pesanan</td>
 						<td width="2%">:</td>
-						<td>{$data.header.no_order|default:'-'}</td>
+						<td width="40%">{$data.header.no_order|default:'-'}</td>
 					</tr>
 					<tr>
-						<td style="width:10%">&nbsp;</td>
-						<td style="width:40%">Tanggal Pesan</td>
-						<td width="2%">:</td>
-						<td>{$data.header.tgl_order|default:'-'}</td>
+						<td>&nbsp;</td>
+						<td>Tgl. Order</td>
+						<td>:</td>
+						<td>{$data.header.tanggal_order|default:'-'}</td>
 					</tr>
 					<tr>
-						<td style="width:10%">&nbsp;</td>
-						<td style="width:40%">{if $data.header.jenis_pembeli eq 'SEKOLAH'} Nama Sekolah {else} Nama Lengkap{/if}</td>
-						<td width="2%">:</td>
+						<td>&nbsp;</td>
+						<td>{if $data.header.jenis_pembeli eq 'SEKOLAH'} Nama Sekolah {else} Nama Lengkap{/if}</td>
+						<td>:</td>
 						<td>{if $data.header.jenis_pembeli eq 'SEKOLAH'}{$data.header.nama_sekolah|default:'-'}{else}{$data.header.nama_lengkap|default:'-'}{/if}</td>
 					</tr>
-					
 				</table>
 			</div>
 			<div class="span6">
 				<table width="100%">
 					<tr>
-						<td style="width:10%">&nbsp;</td>
-						<td style="width:40%">Zona</td>
+						<td width="10%">&nbsp;</td>
+						<td width="30%">Zona</td>
 						<td width="2%">:</td>
-						<td>{$data.header.zona|default:'-'}</td>
+						<td width="40%">{$data.header.zona|default:'-'}</td>
 					</tr>
 					<tr>
-						<td style="width:10%">&nbsp;</td>
-						<td style="width:40%">Sub Total</td>
-						<td width="2%">:</td>
-						<td>{$data.header.sub_total|number_format:2:',':'.'|default:'-'}</td>
+						<td>&nbsp;</td>
+						<td>Total Pembayaran</td>
+						<td>:</td>
+						<td>Rp. {$data.header.grand_total|number_format:0:',':'.'|default:'-'}</td>
 					</tr>
 					<tr>
-						<td style="width:10%">&nbsp;</td>
-						<td style="width:40%">Grand Total</td>
-						<td width="2%">:</td>
-						<td>{$data.header.grand_total|number_format:2:',':'.'|default:'-'}</td>
-					</tr>
+						<td>&nbsp;</td>
+						<td>Alamat Pengiriman</td>
+						<td >:</td>
+						<td>
+							{if $data.header.alamat_pengiriman_lain neq ''}
+								{$data.header.alamat_pengiriman_lain|default:'-'}
+							{else}
+								{$data.header.alamat_pengiriman_registrasi|default:'-'}
+							{/if}
+						</td>
+					</tr>				
+					
 				</table>
 			</div>
 		</div>
@@ -61,7 +67,7 @@
 				<table width="100%" cellpadding="1" cellspacing="1">
 					<tr>
 						<td style="width:10%">&nbsp;</td>
-						<td style="width:40%">NO. Konfirmasi</td>
+						<td style="width:40%">No. Konfirmasi</td>
 						<td width="2%">:</td>
 						<td>{$data.header.no_konfirmasi|default:'-'}</td>
 					</tr>
@@ -111,14 +117,14 @@
 			<thead>
 			<tr>
 				
-				<th style="text-align:left;">No.</th>
-				<th>Judul Buku</th>
-				<th style="text-align:right;">Harga (Sesuai Zona {$data.header.zona})</th>
-				<th style="text-align:right;">Jumlah/Qty</th>
+				<th style="text-align:center;">No.</th>
+				<th style="text-align:center;">Judul Buku</th>
+				<th style="text-align:center;">Harga (Zona {$data.header.zona})</th>
+				<th style="text-align:center;">Quantity</th>
 				{if $mod eq 'manajemen_gudang_sekolah' || $mod eq 'manajemen_gudang_umum'}
-				<th style="text-align:right;">Berat (Kg)</th>
+				<th style="text-align:center;">Berat (Kg)</th>
 				{else}
-				<th style="text-align:right;">Total</th>
+				<th style="text-align:center;">Total</th>
 				{/if}
 				
 				{if $mod eq 'ver_sekolah' || $mod eq 'ver_umum'}
@@ -149,15 +155,15 @@
 				
 				<td >{$smarty.foreach.x.iteration}</td>
 				<td>{$i.judul_buku|default:'-'}</td>
-				<td style="text-align:right;">Rp. {$i.harga|number_format:2:',':'.'|default:'-'}</th>
+				<td style="text-align:right;">Rp. {$i.harga|number_format:0:',':'.'|default:'-'}</th>
 				<td style="text-align:right;">
-					{$i.qty|number_format:2:',':'.'|default:'-'}
+					{$i.qty|number_format:0:',':'.'|default:'-'}
 					
 				</td>
 				{if $mod eq 'manajemen_gudang_sekolah' || $mod eq 'manajemen_gudang_umum'}
-				<td style="text-align:right;">{($i.berat/100)|number_format:2:',':'.'|default:'-'} Kg</td>
+				<td style="text-align:right;">{($i.berat/100)|number_format:0:',':'.'|default:'-'} Kg</td>
 				{else}
-				<td style="text-align:right;">Rp.{$i.total|number_format:2:',':'.'|default:'-'}</td>
+				<td style="text-align:right;">Rp.{$i.total|number_format:0:',':'.'|default:'-'}</td>
 				{/if}
 				
 				{if $mod eq 'ver_sekolah' || $mod eq 'ver_umum'}
@@ -209,14 +215,15 @@
 			</tr>
 			{/foreach}
 			</tbody>
-			
+			<thead>
+			{*
 			<tr style="font-weight:bold;">
 				<td colspan="3" align="center">SUB TOTAL</td>
-				<td style="text-align:right;">{$tot_qty|number_format:2:',':'.'|default:'-'}</td>
+				<td style="text-align:right;">{$tot_qty|number_format:0:',':'.'|default:'-'}</td>
 				{if $mod eq 'manajemen_gudang_sekolah' || $mod eq 'manajemen_gudang_umum'}
-				<td style="text-align:right;">{($tot_berat/100)|number_format:2:',':'.'|default:'-'} Kg</td>
+				<td style="text-align:right;">{($tot_berat/100)|number_format:0:',':'.'|default:'-'} Kg</td>
 				{else}
-				<td style="text-align:right;">Rp.{$tot_harga|number_format:2:',':'.'|default:'-'}</td>
+				<td style="text-align:right;">Rp.{$tot_harga|number_format:0:',':'.'|default:'-'}</td>
 				{/if}
 				{if $mod eq 'ver_sekolah' || $mod eq 'ver_umum'}
 				{if $data.header.flag_ver|default:'P' eq 'P' || $data.header.flag_ver|default:'P' eq 'RG'}
@@ -247,9 +254,10 @@
 				{/if}
 			</tr>
 			{/if}
+			*}
 			<tr style="font-weight:bold;">
-				<td colspan="3" align="center">GRAND TOTAL</td>
-				<td align="center">&nbsp;</td>
+				<td colspan="3" align="center">TOTAL PEMBAYARAN</td>
+				<td style="text-align:right;">{$tot_qty|number_format:0:',':'.'|default:'-'}</td>
 				<!--td align="right">Rp.{(($tot_harga * 0.1) + $tot_harga)|number_format:2:',':'.'|default:'-'}</td-->
 				{if $mod eq 'manajemen_gudang_sekolah' || $mod eq 'manajemen_gudang_umum'}
 				<td style="text-align:right;">{($tot_berat/100)|number_format:2:',':'.'|default:'-'} Kg</td>
@@ -267,6 +275,7 @@
 				{/if}
 				{/if}
 			</tr>
+			</thead>
 		</table>
 	</div>
 </div>

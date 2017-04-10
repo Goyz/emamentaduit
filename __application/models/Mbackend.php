@@ -31,12 +31,14 @@ class Mbackend extends CI_Model{
 				if($balikan=='row_array'){
 					$where .=" AND A.id=".$this->input->post('id');
 				}
-				$sql = "SELECT A.*,CONCAT(A.alamat,', ',B.provinsi,' ',C.kab_kota,' ',D.kecamatan)as lokasi
+				$sql = "SELECT A.*,CONCAT(A.alamat,', ',D.kecamatan,', ',C.kab_kota,', Provinsi ',B.provinsi)as lokasi,
+							DATE_FORMAT(A.registration_date,'%d %b %Y %h:%i %p') as tanggal_daftar
 						FROM tbl_registration A
 						LEFT JOIN cl_provinsi_indo B ON A.cl_provinsi_id=B.kode_prov
 						LEFT JOIN cl_kab_kota_indo C ON A.cl_kab_kota_id=C.kode_kab_kota
 						LEFT JOIN cl_kecamatan_indo D ON A.cl_kecamatan_id=D.kode_kecamatan 
-						".$where;	
+						".$where."
+					";	
 			break;
 			case "kabkota":
 				$sql="SELECT A.* 
@@ -349,11 +351,11 @@ class Mbackend extends CI_Model{
 			*/
 			case "tbl_monitor":
 				$sql=" SELECT A.*,C.jenis_pembeli,B.no_order 
-							FROM tbl_monitoring_order A  
-							LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
-							LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id
-							WHERE B.status <> 'C'
-				
+						FROM tbl_monitoring_order A  
+						LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
+						LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id
+						WHERE B.status <> 'C'
+						ORDER BY id DESC
 				";
 			break;
 			case "tbl_registrasi":
@@ -408,7 +410,7 @@ class Mbackend extends CI_Model{
 						LEFT JOIN cl_jasa_pengiriman E ON C.cl_jasa_pengiriman_id=E.id
 						".$where." 
 						 ORDER BY A.tgl_masuk DESC"; 
-					//echo $sql;
+					//echo $sql;exit;
 			break;
 			case "manajemen_gudang_umum":
 				$where .=" AND D.jenis_pembeli = 'UMUM'";
@@ -436,7 +438,6 @@ class Mbackend extends CI_Model{
 						LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id
 						".$where." 
 					  ORDER BY A.id DESC";
-			
 			break;
 			case "get_bast":
 				$data=array();
@@ -466,7 +467,8 @@ class Mbackend extends CI_Model{
 				$data=array();
 				$id=$this->input->post('id');
 				if($id)$where .=" AND A.id=".$id;
-				$sql="SELECT A.*,B.nama_sekolah,B.nama_lengkap,B.jenis_pembeli 
+				$sql="SELECT A.*,B.nama_sekolah,B.nama_lengkap,B.jenis_pembeli,
+						DATE_FORMAT(A.tgl_order,'%d %b %Y %h:%i %p') as tanggal_order
 					  FROM tbl_h_pemesanan A 
 					  LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id ".$where;
 				$data['header']=$this->db->query($sql)->row_array();
@@ -686,6 +688,7 @@ class Mbackend extends CI_Model{
 				//print_r($data);exit;
 				if($sts_crud=='add'){
 					$data['registration_date']=date('Y-m-d H:i:s');
+					$data['role'] = "PIC";
 					$data['create_by']=$this->auth['username'];
 					$data['password']=$this->encrypt->encode($data['password']);
 				}

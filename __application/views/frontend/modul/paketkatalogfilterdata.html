@@ -4,7 +4,7 @@
 			<div style="min-height:350px !important;" class="product-layout product-grid col-lg-3 col-md-3 col-sm-4 col-xs-12">
 				<div class="product-thumb">
 					<div class="image">
-						<img src="{$row.foto_buku}" alt=" {$row.judul_buku} " title=" {$row.judul_buku} " class="img-responsive">
+						<img src="{$row.foto_buku}" alt=" {$row.nama_paket} " title=" {$row.nama_paket} " class="img-responsive">
 					</div>
 					<div>
 						<div class="caption">
@@ -41,9 +41,9 @@
 		<ul class="pagination">
 			{foreach from=$array_paging item=pag}
 				{if $pag.angka eq '1'}
-					<li id="{$pag.angka}" class="active isipaging"><a href="javascript:void(0);" onclick="pagjs('{$pag.limitnya}','{$typefilter}', '{$idfilter}', '{$crfilter}', '{$pag.angka}');">{$pag.angka}</a></li>
+					<li id="{$pag.angka}" class="active isipaging"><a href="javascript:void(0);" onclick="pagjs('{$pag.limitnya}','','','', '{$pag.angka}');">{$pag.angka}</a></li>
 				{else}
-					<li id="{$pag.angka}" class="isipaging"><a href="javascript:void(0);" onclick="pagjs('{$pag.limitnya}','{$typefilter}', '{$idfilter}', '{$crfilter}', '{$pag.angka}');">{$pag.angka}</a></li>
+					<li id="{$pag.angka}" class="isipaging"><a href="javascript:void(0);" onclick="pagjs('{$pag.limitnya}','','','','{$pag.angka}');">{$pag.angka}</a></li>
 				{/if}
 			{/foreach}
 		</ul>
