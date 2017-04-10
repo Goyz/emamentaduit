@@ -16,7 +16,8 @@ Number.prototype.format = function(n, x, s, c) {
 ----------------------------------------------------- */
 $('#cat_accordion').cutomAccordion({
 		saveState: false,
-		autoExpand: true
+		autoExpand: true,
+		disableLink: true
 	});
 
 /*---------------------------------------------------

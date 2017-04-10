@@ -161,7 +161,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 			row_number=true;
 			param['id_paket'] = param_tambahan;
 			kolom[modnya] = [	
-				{field:'status',title:'Status',width:100, halign:'center',align:'left',
+				{field:'status',title:'Status',width:100, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
 						if(value==1){
 							return "Aktif";
@@ -177,9 +177,10 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 				},
 				{field:'email_address',title:'Email',width:230, halign:'center',align:'left'},
 				{field:'nama_lengkap',title:'Nama',width:150, halign:'center',align:'left'},
-				{field:'registration_date',title:'Tgl. Register',width:150, halign:'center',align:'center'},
-				{field:'lokasi',title:'Alamat Prov/Kabkota/Kec',width:400, halign:'center',align:'left'},
-				{field:'no_handphone',title:'No. HP',width:100, halign:'center',align:'center'}
+				{field:'role',title:'Jabatan',width:120, halign:'center',align:'center'},				
+				{field:'tanggal_daftar',title:'Tgl. Register',width:150, halign:'center',align:'center'},
+				{field:'lokasi',title:'Alamat Lengkap',width:400, halign:'center',align:'left'},
+				{field:'no_handphone',title:'No. HP',width:100, halign:'center',align:'center'},
 			];
 		break;
 		case "manajemen_gudang_sekolah":
@@ -191,7 +192,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 			//param['flag']=(modnya=='gudang_konfirmasi' ? 'P' : 'PK');
 			row_number=true;
 			frozen[modnya] = [	
-				{field:'id_pemesanan',title:'Lihat Detil',width:80, halign:'center',align:'center',
+				{field:'id_pemesanan',title:'Detail',width:80, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
 						var modul="invoice";
 						return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modnya+"\",\""+value+"\")'><img src='"+host+"__assets/eb/easyui/themes/icons/activity.png'></a>";
@@ -252,7 +253,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 						}
 					}
 				},
-				{field:'no_gudang',title:'No Gudang - TGL',width:150, halign:'center',align:'left',
+				{field:'no_gudang',title:'No. Gudang - Tgl',width:150, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
 						return "NO : "+value+" <br>Tgl : "+rowData.tgl_masuk
 					}
@@ -261,7 +262,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 			];
 			kolom[modnya] = [	
 				
-				{field:'no_order',title:'No Order - TGL ',width:150, halign:'center',align:'left',
+				{field:'no_order',title:'No. Pesanan - Tgl ',width:150, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
 						return "NO : "+value+" <br>Tgl : "+rowData.tgl_order
 					}
@@ -296,7 +297,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 			//param['flag']=(modnya=='gudang_konfirmasi' ? 'P' : 'PK');
 			row_number=true;
 			frozen[modnya] = [	
-				{field:'id_pemesanan',title:'Lihat Detil',width:80, halign:'center',align:'center',
+				{field:'id_pemesanan',title:'Detail',width:80, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
 						var modul="invoice";
 						return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modnya+"\",\""+value+"\")'><img src='"+host+"__assets/eb/easyui/themes/icons/activity.png'></a>";
@@ -351,12 +352,12 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 				
 			];
 			kolom[modnya] = [	
-				{field:'no_konfirmasi',title:'No Konfirmasi - TGL',width:150, halign:'center',align:'left',
+				{field:'no_konfirmasi',title:'No. Konfirmasi - Tgl',width:150, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
 						return "NO : "+value+" <br>Tgl : "+rowData.tgl_konfirmasi
 					}
 				},
-				{field:'no_order',title:'No Order - TGL ',width:150, halign:'center',align:'left',
+				{field:'no_order',title:'No. Pesanan - Tgl ',width:150, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
 						return "NO : "+value+" <br>Tgl : "+rowData.tgl_order
 					}
@@ -391,7 +392,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 			//footer=true;
 			row_number=true;
 			frozen[modnya] = [	
-				{field:'id',title:'Verifikasi/Detil',width:80, halign:'center',align:'center',
+				{field:'id',title:'Detail',width:80, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
 						return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modnya+"\",\""+value+"\")'><img src='"+host+"__assets/eb/easyui/themes/icons/log.gif'></a>";
 					}
@@ -471,7 +472,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 					}
 				},
 				
-				{field:'no_order',title:'No Order/Invoice',width:130, halign:'center',align:'center'},
+				{field:'no_order',title:'No. Pesanan',width:130, halign:'center',align:'center'},
 				{field:'tgl_order',title:'Tgl. Order',width:150, halign:'center',align:'center'},
 				{field:'zona',title:'Zona',width:80, halign:'center',align:'center'},
 				
@@ -508,7 +509,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 			//footer=true;
 			row_number=true;
 			frozen[modnya] = [	
-				{field:'id',title:'Verifikasi/Detil',width:80, halign:'center',align:'center',
+				{field:'id',title:'Detail',width:80, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
 						return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modnya+"\",\""+value+"\")'><img src='"+host+"__assets/eb/easyui/themes/icons/log.gif'></a>";
 					}
@@ -587,7 +588,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 						
 					}
 				},
-				{field:'no_order',title:'No Order/Invoice',width:130, halign:'center',align:'center'},
+				{field:'no_order',title:'No. Pesanan',width:130, halign:'center',align:'center'},
 				{field:'tgl_order',title:'Tgl. Order',width:150, halign:'center',align:'center'},
 				{field:'zona',title:'Zona',width:80, halign:'center',align:'center'},
 				
@@ -902,7 +903,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 			//param['flag']=(modnya=='gudang_konfirmasi' ? 'P' : 'PK');
 			row_number=true;
 			frozen[modnya] = [	
-				{field:'id_pemesanan',title:'Lihat Detil',width:80, halign:'center',align:'center',
+				{field:'id_pemesanan',title:'Detail',width:80, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
 						var modul="invoice";
 						return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modnya+"\",\""+value+"\")'><img src='"+host+"__assets/eb/easyui/themes/icons/activity.png'></a>";
@@ -998,7 +999,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 			//footer=true;
 			row_number=true;
 			frozen[modnya] = [	
-				{field:'id_pemesanan',title:'Lihat Detil & Konfirm',width:120, halign:'center',align:'center',
+				{field:'id_pemesanan',title:'Detail',width:120, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
 						//var modul="invoice";
 						return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modnya+"\",\""+value+"\")'><img src='"+host+"__assets/eb/easyui/themes/icons/Windows-View-Detail-icon.png'></a>";
@@ -1153,7 +1154,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 			//footer=true;
 			row_number=true;
 			frozen[modnya] = [	
-				{field:'id',title:'Lihat Detil',width:80, halign:'center',align:'center',
+				{field:'id',title:'Detail',width:80, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
 						return "<a href='javascript:void(0);' class='btn btn-small' onclick='get_detil(\""+modnya+"\",\""+value+"\")'><img src='"+host+"__assets/eb/easyui/themes/icons/log.gif'></a>";
 					}
@@ -1339,11 +1340,10 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 	}
 	
 	grid_nya=$("#"+divnya).datagrid({
-		title:judulnya,
+		title:'',
         height:tingginya,
         width:lebarnya,
 		rownumbers:row_number,
-		iconCls:'database',
         fit:fitnya,
         striped:true,
         pagination:true,

@@ -44,6 +44,23 @@ function kumpulAction(type, p1, p2, p3){
 				}
 			})
 		break;
+		case "krj_hapus_cekout": 
+			if(confirm('Anda yakin untuk menghapus data ini dari keranjang belanja ?')){
+				postkumpul["rwid"] = p1;
+				$.post(host+'perbaharui-keranjang-hapus', postkumpul, function(resp){
+					if(resp){
+						var parsing = $.parseJSON(resp);
+						$("#qtynya").html(parsing.total_qty);
+						$("#pricenya").html(parsing.total_harga);
+						$("#cart_"+p1).remove();
+						
+						if(parsing.total_qty == 0){
+							$('#sbmblj').remove();
+						}
+					}
+				});
+			}
+		break;
 		case "krj_hapus":
 			postkumpul["rwid"] = p1;
 			$.post(host+'hapus-keranjang', postkumpul, function(resp){
