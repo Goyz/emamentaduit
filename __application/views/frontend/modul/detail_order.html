@@ -41,19 +41,27 @@
 					<table class="table table-bordered table-hover">
 						<thead>
 							<tr>
-								<td class="text-center" width="20%">Status Pembayaran</td>
-								<td class="text-center" width="20%">Status Konfirmasi</td>
-								<td class="text-center" width="20%">Status Pengiriman</td>
-								<td class="text-center" width="20%">No. Resi</td>
+								<td class="text-center" width="20%">Verifikasi Stok</td>
+								<td class="text-center" width="20%">Pembayaran</td>
+								<td class="text-center" width="20%">Produksi</td>
+								<td class="text-center" width="20%">Packing</td>
+								<td class="text-center" width="20%">Pengiriman</td>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
-								<td class="text-center" >{$data_tracking.status_pembayaran|default:"-"}</td>
-								<td class="text-center" >{$data_tracking.status_konfirmasi|default:"-"}</td>
-								<td class="text-center" >{$data_tracking.status_tracking|default:"-"}</td>
-								<td class="text-center" >{$data_tracking.no_resi|default:"-"}</td>
+								<td class="text-center" >{$data_tracking.status_verifikasi_stok|default:"-"}</td>
+								<td class="text-center" >{$data_tracking.status_konfirmasi_pembayaran|default:"-"}</td>
+								<td class="text-center" >{$data_tracking.status_produksi|default:"-"}</td>
+								<td class="text-center" >{$data_tracking.status_packing|default:"-"}</td>
+								<td class="text-center" >{$data_tracking.status_kirim|default:"-"}</td>
 							</tr>
+							{if $data_tracking.no_resi|default:'' neq null}
+							<tr style="font-weight:bold;">
+								<td class="text-center"  colspan="2">No. Resi Pengiriman</td>
+								<td colspan="3">{$data_tracking.no_resi|default:''}</td>
+							</tr>
+							{/if}
 						</tbody>
 					</table>
 				</div>

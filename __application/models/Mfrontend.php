@@ -813,6 +813,28 @@ class Mfrontend extends CI_Model{
 					
 					$total_pembayaran = trim($data['jml_trf']);
 					$total_pembayaran = str_replace(".", "", $total_pembayaran);
+					$array_insert = array(
+						'no_konfirmasi' => $acak_no_konf,
+						'tgl_konfirmasi' => date('Y-m-d'),
+						'tbl_h_pemesanan_id' => $data_inv['id'],
+						'total_pembayaran' => (int)$total_pembayaran,
+						'nama_bank_pengirim' => $data['bank_pengirim'],
+						'atas_nama_pengirim' => $data['atas_nama'],
+						'tanggal_transfer' => $data['tgl_trf'],
+						'nama_bank_penerima' => $data['bank_tujuan'],
+						'flag' => 'P',
+						'create_date' => date('Y-m-d H:i:s'),
+						'create_by' => "SALES - ".$this->auth["nama_lengkap"],
+						'file_bukti_bayar' => $filename,
+					);
+					$crud = $this->db->insert('tbl_konfirmasi', $array_insert);
+					if($crud){
+						//$this->db->update('tbl_h_pemesanan', array('status'=>'F'), array('no_order'=>$data['inv']) );
+						$email = $this->getdata('getemail_cust', 'row_array', $data['inv']);
+						$this->lib->kirimemail('email_konfirmasi', $email['email'], $data['inv']);
+					}
+					
+					/*
 					if($data_inv['status'] == 'P'){ // konfirmasi untuk pembeli umum
 						$array_insert = array(
 							'no_konfirmasi' => $acak_no_konf,
@@ -855,6 +877,7 @@ class Mfrontend extends CI_Model{
 						}
 						
 					}
+					*/
 					
 				}
 			break;

@@ -5,12 +5,96 @@
 		<ul class="breadcrumb">
 			<li><a href="{$host}"><i class="fa fa-home"></i></a></li>
 			<li><a href="{$host}katalog">Katalog</a></li>
-			<li><a href="{$host}selesaibelanja">Ringkasan Belanjaan Anda</a></li>
+			<li><a href="{$host}selesaibelanja">Ringkasan Belanja Buku Anda</a></li>
 		</ul>
 		
 		<div class="panel panel-default">
 			<div class="panel-heading"> 
-				<h4 class="panel-title"><i class="fa fa-user"></i> Informasi Pesanan</h4>
+				<h4 class="panel-title"><i class="fa fa-user"></i> Informasi Pembeli</h4>
+			</div>
+			<div id="collapse-shipping" class="panel-collapse collapse in">
+				<div class="panel-body">
+					<div class="form-horizontal">
+						{if $auth.jenis_pembeli eq "SEKOLAH"}
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Nama Sekolah</label>
+								<div class="col-sm-8">
+									<div class="form-control">{$auth.nama_lengkap}</div>
+								</div>
+							</div>	
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Alamat Sekolah</label>
+								<div class="col-sm-8">
+									<div class="form-control">{$auth.alamat_pengiriman}</div>
+								</div>
+							</div>	
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Alamat Pengiriman</label>
+								<div class="col-sm-8">
+									{if $arraynya.alamat_registrasi neq null}
+										<div class="form-control">{$arraynya.alamat_registrasi}</div>
+									{else}
+										<div class="form-control">{$arraynya.alamat_lain}</div>
+									{/if}
+								</div>
+							</div>	
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Zona Pengiriman</label>
+								<div class="col-sm-2">
+									<div class="form-control">{$auth.zona_pengiriman}</div>
+								</div>
+							</div>	
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Estimasi Pengiriman</label>
+								<div class="col-sm-2">
+									<div class="form-control">{$estimasi|default:'-'}</div>
+								</div>
+							</div>	
+						{elseif $auth.jenis_pembeli eq "UMUM"}
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Nama Lengkap</label>
+								<div class="col-sm-2">
+									<div class="form-control">{$auth.nama_lengkap}</div>
+								</div>
+							</div>	
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Alamat Pembeli</label>
+								<div class="col-sm-8">
+									<div class="form-control">{$auth.alamat_pengiriman}</div>
+								</div>
+							</div>	
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Alamat Pengiriman</label>
+								<div class="col-sm-8">
+									{if $arraynya.alamat_registrasi neq null}
+										<div class="form-control">{$arraynya.alamat_registrasi}</div>
+									{else}
+										<div class="form-control">{$arraynya.alamat_lain}</div>
+									{/if}
+								</div>
+							</div>								
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Zona Pengiriman</label>
+								<div class="col-sm-8">
+									<div class="form-control">{$auth.zona_pengiriman}</div>
+								</div>
+							</div>		
+							<div class="form-group required">
+								<label for="input-firstname" class="col-sm-3 control-label">Estimasi Pengiriman</label>
+								<div class="col-sm-2">
+									<div class="form-control">{$estimasi|default:'-'}</div>
+								</div>
+							</div>								
+						{/if}
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		
+		<div class="panel panel-default">
+			<div class="panel-heading"> 
+				<h4 class="panel-title"><i class="fa fa-align-justify"></i> Informasi Pesanan</h4>
 			</div>
 			<div id="collapse-shipping" class="panel-collapse collapse in">
 				<div class="panel-body">

@@ -486,7 +486,8 @@ class Mbackend extends CI_Model{
 				$sql="SELECT A.*,B.nama_sekolah,B.nama_lengkap,B.jenis_pembeli,
 					  C.id as id_konf,C.flag as flag_konf,
 					  C.no_konfirmasi,C.tgl_konfirmasi,C.total_pembayaran,C.nama_bank_pengirim,C.atas_nama_pengirim,
-					  C.tanggal_transfer,C.nama_bank_penerima,C.file_bukti_bayar
+					  C.tanggal_transfer,C.nama_bank_penerima,C.file_bukti_bayar,
+					  DATE_FORMAT(A.tgl_order,'%d %b %Y %h:%i %p') as tanggal_order
 					  FROM tbl_h_pemesanan A 
 					  LEFT JOIN tbl_konfirmasi C ON C.tbl_h_pemesanan_id=A.id
 					  LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id ".$where;

@@ -451,6 +451,12 @@ class Frontend extends CI_Controller {
 							}
 						}
 						
+						if($zona_pilihan){
+							$estimasi = $this->db->get_where('cl_zona', array('zona_code'=>$zona_pilihan['zona_pilihan']))->row_array();	
+							$this->nsmarty->assign('estimasi', $estimasi['estimasi']);
+							$this->nsmarty->assign('provinsi', $zona_pilihan['provinsi']);							
+						}
+						
 						$this->nsmarty->assign('zona', $zona_pilihan['zona_pilihan']);						
 						$this->nsmarty->assign('data_buku', $data_buku);
 						$this->nsmarty->assign('data_paket', $data_paket);
@@ -729,7 +735,7 @@ class Frontend extends CI_Controller {
 						echo $jumlah_item;
 						exit;
 					break;
-					case "selesaibelanja": //nangkene
+					case "selesaibelanja": 
 						$temp = "frontend/modul/selesai_belanja.html";
 						$data_cart = $this->cart->contents();
 						$estimasi = $this->db->get_where('cl_zona', array('zona_code'=>$zona_pilihan['zona_pilihan']))->row_array();
@@ -796,11 +802,14 @@ class Frontend extends CI_Controller {
 						if($type == 'checkout'){
 							$no_order = $this->input->post('no_order');
 							$data_header_pesanan = $this->mfrontend->getdata('header_pesanan', 'row_array', $no_order);
+							
 							$arraynya = array();
 							if($data_header_pesanan){
 								$data_detail_pesanan = $this->mfrontend->getdata('detail_pesanan', 'result_array', $data_header_pesanan['idpesan']);
 								$arraynya['no_order'] = $no_order;
 								$arraynya['tgl_order'] = $data_header_pesanan['tgl_order'];
+								$arraynya['alamat_registrasi'] = $data_header_pesanan['alamat_pengiriman_registrasi'];
+								$arraynya['alamat_lain'] = $data_header_pesanan['alamat_pengiriman_lain'];
 								$arraynya['grand_total'] = number_format($data_header_pesanan['grand_total'],0,",",".");
 								$arraynya['detail_pesanan'] = array();
 								$totalqty = 0;
@@ -817,10 +826,16 @@ class Frontend extends CI_Controller {
 								$arraynya['jasa_pengiriman'] = $data_header_pesanan["jasa_pengiriman"];
 								$arraynya['metode_pembayaran'] = $data_header_pesanan["metode_pembayaran"];
 							}
+							
+							if($zona_pilihan){
+								$estimasi = $this->db->get_where('cl_zona', array('zona_code'=>$zona_pilihan['zona_pilihan']))->row_array();
+								$this->nsmarty->assign('estimasi', $estimasi['estimasi']);
+							}
+							
 							$this->nsmarty->assign('arraynya', $arraynya);
-							$this->nsmarty->assign('pesan', "Terima Kasih telah berbelanja di AldeaZ.ID : SILAHKAN CEK EMAIL ANDA.");
+							$this->nsmarty->assign('pesan', "Terima Kasih telah berbelanja di MKS-Store : SILAHKAN CEK EMAIL ANDA.");
 						}elseif($type == "konfirmasi"){
-							$this->nsmarty->assign('pesan', "Terima Kasih telah melakukan konfirmasi pembayaran di Aldeaz.id : SILAHKAN CEK EMAIL ANDA");
+							$this->nsmarty->assign('pesan', "Terima Kasih telah melakukan konfirmasi pembayaran di MKS-Store : SILAHKAN CEK EMAIL ANDA");
 						}
 						$this->nsmarty->assign('type', $type);
 					break;
