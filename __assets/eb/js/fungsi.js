@@ -704,6 +704,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 						if(value=='A'){return 'Administrator';}
 						else if(value=='G'){return 'Gudang';}
 						else if(value=='S'){return 'Superadmin';}
+						else if(value=='L'){return 'LKPP';}
 					}
 				}
 			];
