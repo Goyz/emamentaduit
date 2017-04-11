@@ -13,6 +13,9 @@ class Mbackend extends CI_Model{
 				$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
 		}
 		switch($type){
+			case "tbl_komentar":
+				$sql="SELECT A.*,B.nama_lengkap FROM tbl_komentar A LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id ".$where;
+			break;
 			case "cl_provinsi_indo":
 				$sql="SELECT kode_prov as id,provinsi as text 
 				FROM cl_provinsi_indo ORDER BY provinsi ASC";

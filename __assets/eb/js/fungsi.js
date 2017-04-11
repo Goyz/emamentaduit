@@ -723,6 +723,39 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 				{field:'create_date',title:'Tgl. komplain',width:150, halign:'center',align:'center'}
 			];
 		break;
+		case "komentar":
+			judulnya = "Daftar Komentar Pelanggan ";
+			urlnya = "tbl_komentar";
+			fitnya = true;
+			nowrap=false;
+			//footer=true;
+			row_number=true;
+			kolom[modnya] = [	
+				{field:'nama_lengkap',title:'Nama Lengkap',width:200, halign:'center',align:'left'},
+				{field:'rating',title:'Rating',width:120, halign:'center',align:'center',
+					styler:function(value,rowData,rowIndex){
+						if(value==1){return 'background-color:red;color:#FFFFFF';}
+						else if(value==2){return 'background-color:red;color:#FFFFFF';}
+						else if(value==3){return 'background-color:yellow;color:navy';}
+					}
+				},
+				{field:'komentar',title:'Komentar',width:400, halign:'center',align:'left'},
+				{field:'create_date',title:'Tgl. Komentar',width:150, halign:'center',align:'center'},
+				{field:'flag',title:'Status',width:100, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						var mod_na='komentar_set_flag';
+						if(value==1){
+							return "<a href='javascript:void(0);' class='btn btn-small btn-success' onclick='get_detil(\""+mod_na+"\",\""+rowData.id+"\",0)'>Aktif</a>";
+						}else{
+							return "<a href='javascript:void(0);' class='btn btn-small btn-alert' onclick='get_detil(\""+mod_na+"\",\""+rowData.id+"\",1)'>Tidak Aktif</a>";
+						}
+					},
+					styler:function(value,rowData,rowIndex){
+						if(value==0){return 'background-color:red;color:#FFFFFF';}
+					}
+				}
+			];
+		break;
 		case "monitor_order":
 			judulnya = "Monitoring Order Pelanggan ";
 			urlnya = "tbl_monitor";
@@ -2348,6 +2381,15 @@ function simpan_form(id_form,id_cancel,msg){
 }
 function get_detil(mod,id_data,par1){
 	switch(mod){
+		case "komentar_set_flag":
+			$.post(host+'backoffice-SetFlag',{mod:mod,id:id_data,flag:par1},function(r){
+				if(r==1){
+					grid_nya.datagrid('reload');
+				}else{
+					alert('Gagal' + r);
+				}
+			});
+		break;
 		case "konfirmasi_sekolah_form":
 			$.post(host+'backoffice-form/konfirmasi_sekolah',{mod:mod,id:id_data,editstatus:'add'},function(r){
 				windowForm(r,'Konfirmasi Pembayaran',700,450);

@@ -41,6 +41,10 @@ class Backend extends JINGGA_Controller {
 				$opt .="<option value='A.email_address'>Email</option>";
 				$opt .="<option value='A.nama_lengkap'>Nama</option>";
 			break;
+			case "komentar":
+				$opt .="<option value='B.nama_lengkap'>Nama lengkap</option>";
+				$opt .="<option value='A.komentar'>Komentar</option>";
+			break;
 			case "produk":
 				$opt .="<option value='A.judul_buku'>Judul Buku</option>";
 				$opt .="<option value='A.deskripsi_buku'>Desc. Buku</option>";
@@ -578,6 +582,14 @@ class Backend extends JINGGA_Controller {
 	function set_flag(){
 		$mod=$this->input->post('mod');
 		switch($mod){
+			case "komentar_set_flag":
+				$sts='edit';
+				$data=array('id'=>$this->input->post('id'),
+							'flag'=>$this->input->post('flag')
+				);
+				echo $this->mbackend->simpandata('tbl_komentar',$data,$sts);
+				exit;
+			break;
 			case "tbl_h_pemesanan":
 			case "tbl_konfirmasi":
 				$sts='edit';
