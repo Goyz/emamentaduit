@@ -66,22 +66,52 @@
                 <div class="container">
                     <div class="table-container">
                         <!-- Logo Start -->
-                        <div class="col-table-cell col-lg-4 col-md-4 col-sm-12 col-xs-12 inner">
+                        <div class="col-table-cell col-lg-3 col-md-4 col-sm-12 col-xs-12 inner">
                             <div id="logo">
                                 <a href="#">
-                                    <img class="img-responsive" style="height:40% !important;width: 40% !important;" src="{$host}__assets/images/logo_mks.png" title="MKS Store" alt="MKS Store" />
+                                    <img class="img-responsive" style="height:60% !important;width: 60% !important;" src="{$host}__assets/images/logo_mks.png" title="MKS Store" alt="MKS Store" />
                                 </a>
                             </div>
                         </div>
                         <!-- Logo End -->
                         <!-- Search Start-->
-                        <div class="col-table-cell col-lg-5 col-md-5 col-md-push-0 col-sm-6 col-sm-push-6 col-xs-12">
-                            <center>
-                                <h3 style="color:#fff !important;font-weight:bold;">ONE STOP ONLINE BOOK STORE</h3></center>
+                        <div class="col-table-cell col-lg-7 col-md-5 col-md-push-0 col-sm-6 col-sm-push-6 col-xs-12">
+                            <nav id="menu" class="navbar">
+								<div class="container">
+									<div class="navbar-header"> <span class="visible-xs visible-sm"> Menu <b></b></span></div>
+									<div class="collapse navbar-collapse navbar-ex1-collapse">
+										<ul class="nav navbar-nav">
+											{if $auth}
+											<li ><a class="contact-link" title="Home" href="{$host}"><span>Profile</span></a></li>
+											<li><a class="contact-link" title="Data Pesanan" href="{$host}datapesanan"><span>Data Pesanan</span></a></li>
+											{else}
+											<li><a class="contact-link" title="Home" href="{$host}"><span>Beranda</span></a></li>
+											{/if}
+
+											<li class="dropdown information-link"><a>Katalog</a>
+												<div class="dropdown-menu">
+													<ul>
+														<li><a href="{$host}katalog">Buku Satuan</a></li>
+														<li><a href="{$host}katalogpaket">Buku Paket</a></li>
+													</ul>
+												</div>
+											</li>
+											<li class="contact-link"><a href="{$host}bantuan">Bantuan</a></li>							
+											<li class="contact-link"><a href="{$host}testimonial">Testimoni</a></li>
+											<li class="contact-link"><a href="{$host}kontak">Kontak</a></li>
+										</ul>
+									</div>
+								</div>
+							</nav>
+							{*
+							<center>
+                                <h3 style="color:#fff !important;font-weight:bold;">ONE STOP ONLINE BOOK STORE</h3>
+							</center>
+							*}
                         </div>
                         <!-- Search End-->
                         <!-- Mini Cart Start-->
-                        <div class="col-table-cell col-lg-3 col-md-3 col-md-pull-0 col-sm-6 col-sm-pull-6 col-xs-12 inner">
+                        <div class="col-table-cell col-lg-2 col-md-3 col-md-pull-0 col-sm-6 col-sm-pull-6 col-xs-12 inner">
                             <div id="cart">
                                 <button type="button" id="krjblj" onClick="kumpulAction('krj');" data-toggle="dropdown" data-loading-text="Loading..." class="heading dropdown-toggle">
                                     <span class="cart-icon pull-left flip"></span> <span id="cart-total">Keranjang Belanja</span>
@@ -95,6 +125,7 @@
             </header>
             <!-- Header End-->
             <!-- Main Menu Start-->
+			{*
             <nav id="menu" class="navbar">
                 <div class="container">
                     <div class="navbar-header"> <span class="visible-xs visible-sm"> Menu <b></b></span></div>
@@ -122,6 +153,7 @@
                     </div>
                 </div>
             </nav>
+			*}
             <!-- Main Menu End-->
         </div>
 

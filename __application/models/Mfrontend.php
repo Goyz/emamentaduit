@@ -43,6 +43,7 @@ class Mfrontend extends CI_Model{
 						B.nama_lengkap, B.nama_sekolah, B.jenis_pembeli
 					FROM tbl_komentar A
 					LEFT JOIN tbl_registrasi B ON B.id = A.tbl_registrasi_id
+					WHERE flag = 1
 					ORDER BY id DESC
 				";
 			break;
@@ -652,6 +653,7 @@ class Mfrontend extends CI_Model{
 					'rating' => $data['rating'],
 					'komentar' => $data['kmntr'],
 					'create_date' => date('Y-m-d H:i:s'),
+					'flag' => 1
 				);
 				$insert_registrasi = $this->db->insert('tbl_komentar', $data_komentar);
 			break;

@@ -8,14 +8,14 @@
 			{include file="backend/template/input_goyz.html" label="Provinsi" type="select" name="cl_provinsi_id" id_na="cl_provinsi_id" data_combo=$prov class="validasi" id_combo=$data.cl_provinsi_id|default:'' style_type="width:80%" }
 			{include file="backend/template/input_goyz.html" label="Kabkota" type="select" name="cl_kab_kota_id" id_na="cl_kab_kota_id" class="validasi" style_type="width:80%"}
 			{include file="backend/template/input_goyz.html" label="Kecamatan" type="select" name="cl_kecamatan_id" id_na="cl_kecamatan_id" class="validasi imel" style_type="width:80%"}
-			{include file="backend/template/input_goyz.html" label="Email" type="text" name="email_address" id_na="email_address"  style_type="width:80%" class="validasi" value=$data.email_address|default:''}
+			{include file="backend/template/input_goyz.html" label="Email" type="text" name="email_address" id_na="email_address"  style_type="width:80%" class="validasi emailss" value=$data.email_address|default:''}
 			{if $sts eq 'add'}
 			{include file="backend/template/input_goyz.html" label="Password" type="pwd" name="password" id_na="password"  style_type="width:80%" class="validasi" value=$data.password|default:''}
 			{/if}
 			{include file="backend/template/input_goyz.html" label="Nama Lengkap" type="text" name="nama_lengkap" id_na="nama_lengkap"  style_type="width:80%" class="validasi" value=$data.nama_lengkap|default:''}
 			{include file="backend/template/input_goyz.html" label="Alamat" type="text" name="alamat" id_na="alamat"  style_type="width:80%" class="validasi" value=$data.alamat|default:''}
-			{include file="backend/template/input_goyz.html" label="Kode Pos" type="text" name="kode_pos" id_na="kode_pos"  style_type="width:30%" class="" value=$data.kode_pos|default:''}
-			{include file="backend/template/input_goyz.html" label="No HP" type="text" name="no_handphone" id_na="no_handphone"  style_type="width:30%" class="validasi" value=$data.no_handphone|default:''}
+			{include file="backend/template/input_goyz.html" label="Kode Pos" type="text" name="kode_pos" id_na="kode_pos"  style_type="width:30%" class="numerics" value=$data.kode_pos|default:''}
+			{include file="backend/template/input_goyz.html" label="No HP" type="text" name="no_handphone" id_na="no_handphone"  style_type="width:30%" class="validasi numerics" value=$data.no_handphone|default:''}
 			<tr>
 				<td>&nbsp;</td><td style="width:20%">Status</td><td>:</td>
 				<td style="font-weight:bold;">
@@ -38,6 +38,10 @@
 <script>
 	var upl_vid=0;
 	$(".validasi").validatebox({ required:true }); 
+	$('.emailss').validatebox({
+		validType: 'email'
+	});
+	$(".numerics").numeric();	
 	$('.angka').numberbox({
 		min:0,
 		precision:2,

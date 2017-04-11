@@ -690,11 +690,20 @@ class Mbackend extends CI_Model{
 		switch($table){
 			case "tbl_registration":
 				//print_r($data);exit;
+				$cek_email = $this->db->get_where("tbl_registration", array("username"=>$data["email_address"]) )->row_array();
+				if($cek_email){
+					echo "Email Sudah Ada Dalam System Database PIC Sales"; // Email Exist Brayy
+					exit;
+				}
+				
 				if($sts_crud=='add'){
+					$password = $data["password"];
+					
 					$data['registration_date']=date('Y-m-d H:i:s');
 					$data['role'] = "PIC";
-					$data['create_by']=$this->auth['username'];
-					$data['password']=$this->encrypt->encode($data['password']);
+					$data['create_by']= $this->auth['username'];
+					$data['username']= $data["email_address"];
+					$data['password']= $this->encrypt->encode($data['password']);
 				}
 				if(!isset($data['status'])){$data['status']=0;}
 			break;
@@ -813,6 +822,11 @@ class Mbackend extends CI_Model{
 				if($table=="tbl_buku"){
 					$id=$this->db->insert_id();
 				}
+				
+				if($table == "tbl_registration"){
+					$this->lib->kirimemail('email_register_pic', $data['email_address'], $password, $data['nama_lengkap'] );
+				}
+
 			break;
 			case "edit":
 				if($table=='tbl_h_pemesanan'){
