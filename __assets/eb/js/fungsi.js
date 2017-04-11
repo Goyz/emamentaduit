@@ -2366,13 +2366,13 @@ function simpan_form(id_form,id_cancel,msg){
 			//console.log(r)
 			if(r==1){
 				winLoadingClose();
-				$.messager.alert('MKS - STORE Back-Office',msg,'info');
+				$.messager.alert('MKS - STORE Back-Office', msg, 'info');
 				$('#'+id_cancel).trigger('click');
 				grid_nya.datagrid('reload');
 			}else{
 				winLoadingClose();
 				console.log(r);
-				$.messager.alert('MKS - STORE Back-Office',"Tdak Dapat Menyimpan Data" + r,'error');
+				$.messager.alert('MKS - STORE Back-Office',"Tdak Dapat Menyimpan Data <br/>" + r,'error');
 			}
 		});
 	}else{
