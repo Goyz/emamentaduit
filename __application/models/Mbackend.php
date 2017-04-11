@@ -40,7 +40,7 @@ class Mbackend extends CI_Model{
 						LEFT JOIN cl_provinsi_indo B ON A.cl_provinsi_id=B.kode_prov
 						LEFT JOIN cl_kab_kota_indo C ON A.cl_kab_kota_id=C.kode_kab_kota
 						LEFT JOIN cl_kecamatan_indo D ON A.cl_kecamatan_id=D.kode_kecamatan 
-						".$where."
+						".$where." AND A.role = 'PIC'
 					";	
 			break;
 			case "kabkota":
