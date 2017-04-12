@@ -50,11 +50,57 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td class="text-center" >{$data_tracking.status_verifikasi_stok|default:"-"}</td>
-								<td class="text-center" >{$data_tracking.status_konfirmasi_pembayaran|default:"-"}</td>
-								<td class="text-center" >{$data_tracking.status_produksi|default:"-"}</td>
-								<td class="text-center" >{$data_tracking.status_packing|default:"-"}</td>
-								<td class="text-center" >{$data_tracking.status_kirim|default:"-"}</td>
+								<td class="text-center" >
+									{$data_tracking.status_verifikasi_stok|default:"-"}
+									
+									{if $data_tracking.status_verifikasi_stok eq 'CEK STOK GUDANG'}
+										<br>
+										{$data_tracking.tanggal_p_ver|default:"-"}
+									{else}
+										<br>
+										{$data_tracking.tanggal_f_ver|default:"-"}
+									{/if}
+								</td>
+								<td class="text-center" >
+									{$data_tracking.status_konfirmasi_pembayaran|default:"-"}
+									{if $data_tracking.status_konfirmasi_pembayaran eq 'VERIFIKASI PEMBAYARAN'}
+										<br>
+										{$data_tracking.tanggal_p_konf|default:""}
+									{else}
+										<br>
+										{$data_tracking.tanggal_f_konf|default:""}
+									{/if}
+								</td>
+								<td class="text-center" >
+									{$data_tracking.status_produksi|default:"-"}
+									{if $data_tracking.status_produksi eq 'PROSES PRODUKSI'}
+										<br>
+										{$data_tracking.tanggal_p_prod|default:""}
+									{else}
+										<br>
+										{$data_tracking.tanggal_f_prod|default:""}
+									{/if}
+								</td>
+								<td class="text-center" >
+									{$data_tracking.status_packing|default:"-"}
+									{if $data_tracking.status_packing eq 'PROSES PACKING'}
+										<br/>
+										{$data_tracking.tanggal_p_pack|default:""}
+									{else}
+										<br/>
+										{$data_tracking.tanggal_f_pack|default:""}
+									{/if}
+								</td>
+								<td class="text-center" >
+									{$data_tracking.status_kirim|default:"-"}
+									{if $data_tracking.status_kirim eq 'PROSES KIRIM'}
+										<br/>
+										{$data_tracking.tanggal_p_pack|default:""}
+									{else}
+										<br/>
+										{$data_tracking.tanggal_f_pack|default:""}
+									{/if}
+								</td>
 							</tr>
 							{if $data_tracking.no_resi|default:'' neq null}
 							<tr style="font-weight:bold;">

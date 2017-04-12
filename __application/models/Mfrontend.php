@@ -230,8 +230,8 @@ class Mfrontend extends CI_Model{
 				$sql = "
 					SELECT A.no_resi,
 						CASE A.verifikasi 
-						WHEN 'P' THEN 'VERIFIKASI STOK BARANG'
-						WHEN 'F' THEN 'SUDAH VERIFIKASI'
+						WHEN 'P' THEN 'CEK STOK GUDANG'
+						WHEN 'F' THEN 'STOK TERSEDIA'
 						END AS status_verifikasi_stok,
 						CASE A.konfirmasi
 						WHEN 'P' THEN 'VERIFIKASI PEMBAYARAN'
@@ -247,8 +247,19 @@ class Mfrontend extends CI_Model{
 						END AS status_packing,
 						CASE A.kirim
 						WHEN 'P' THEN 'PROSES KIRIM'
-						WHEN 'F' THEN 'BARANG TERKIRIM'
-						END AS status_kirim
+						WHEN 'F' THEN 'BARANG DIKIRIM'
+						END AS status_kirim,
+						DATE_FORMAT(A.verifikasi_p_date,'%d %b %Y %h:%i %p') as tanggal_p_ver,
+						DATE_FORMAT(A.verifikasi_f_date,'%d %b %Y %h:%i %p') as tanggal_f_ver,
+						DATE_FORMAT(A.konfirmasi_p_date,'%d %b %Y %h:%i %p') as tanggal_p_konf,
+						DATE_FORMAT(A.konfirmasi_f_date,'%d %b %Y %h:%i %p') as tanggal_f_konf,
+						DATE_FORMAT(A.produksi_p_date,'%d %b %Y %h:%i %p') as tanggal_p_prod,
+						DATE_FORMAT(A.produksi_f_date,'%d %b %Y %h:%i %p') as tanggal_f_prod,
+						DATE_FORMAT(A.packing_p_date,'%d %b %Y %h:%i %p') as tanggal_p_pack,
+						DATE_FORMAT(A.packing_f_date,'%d %b %Y %h:%i %p') as tanggal_f_pack,
+						DATE_FORMAT(A.kirim_date,'%d %b %Y %h:%i %p') as tanggal_kirim,
+						DATE_FORMAT(A.tanda_terima_date,'%d %b %Y %h:%i %p') as tanggal_tandaterima,
+						DATE_FORMAT(A.bast_date,'%d %b %Y %h:%i %p') as tanggal_bast
 					FROM tbl_monitoring_order A
 					WHERE A.tbl_h_pemesanan_id = '".$p1."'
 				";
@@ -660,9 +671,9 @@ class Mfrontend extends CI_Model{
 			case "checkout":				
 				$kdmarketing = null;
 				if(isset($data['kdmar'])){
-					$dbmarketing = $this->load->database('marketing',true);
+					//$dbmarketing = $this->load->database('marketing',true);
 					$array_cek_kdmarketing = array( 'registration_code' => $data['kdmar'] );
-					$cek_kdmarketing = $dbmarketing->get_where('tbl_registration', $array_cek_kdmarketing)->row_array();
+					$cek_kdmarketing = $this->db->get_where('tbl_registration', $array_cek_kdmarketing)->row_array();
 					if(!$cek_kdmarketing){
 						$array = array("msg"=>2);
 						//echo 2; exit;
@@ -826,7 +837,7 @@ class Mfrontend extends CI_Model{
 						'nama_bank_penerima' => $data['bank_tujuan'],
 						'flag' => 'P',
 						'create_date' => date('Y-m-d H:i:s'),
-						'create_by' => "SALES - ".$this->auth["nama_lengkap"],
+						'create_by' => "Akun Pembeli - ".$this->auth["email"],
 						'file_bukti_bayar' => $filename,
 					);
 					$crud = $this->db->insert('tbl_konfirmasi', $array_insert);

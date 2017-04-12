@@ -753,7 +753,7 @@ class Mbackend extends CI_Model{
 					if($this->input->post('mod')=='kirim_gudang_umum'){
 						$sql="UPDATE tbl_h_pemesanan set status='F' WHERE id=".$data['tbl_h_pemesanan_id'];
 						$this->db->query($sql);
-						$sql="UPDATE tbl_monitoring_order SET konfirmasi='F',produksi='P' WHERE tbl_h_pemesanan_id=".$data['tbl_h_pemesanan_id'];
+						$sql="UPDATE tbl_monitoring_order SET konfirmasi='F',konfirmasi_f_date='".date('Y-m-d H:i:s')."',produksi='P',produksi_p_date='".date('Y-m-d H:i:s')."' WHERE tbl_h_pemesanan_id=".$data['tbl_h_pemesanan_id'];
 						$this->db->query($sql);
 					}
 				}else if($this->input->post('mod')=='set_kirim' || $this->input->post('mod')=='set_kirim_sekolah' || $this->input->post('mod')=='set_kirim_umum'){
@@ -811,7 +811,8 @@ class Mbackend extends CI_Model{
 				$sql="UPDATE tbl_monitoring_order SET konfirmasi='F' WHERE tbl_h_pemesanan_id=".$data['tbl_h_pemesanan_id'];
 				$this->db->query($sql);
 				*/
-				$sql="UPDATE tbl_monitoring_order SET konfirmasi='F' WHERE tbl_h_pemesanan_id=".$this->input->post('id');
+				
+				$sql="UPDATE tbl_monitoring_order SET konfirmasi='F', konfirmasi_f_date='".date('Y-m-d H:i:s')."' WHERE tbl_h_pemesanan_id=".$this->input->post('id');
 				$this->db->query($sql);
 			break;
 		}
@@ -844,11 +845,13 @@ class Mbackend extends CI_Model{
 										'create_by'=>$this->auth['username']
 							);
 							$this->db->insert('tbl_gudang',$data_gd);
-							$sql="UPDATE tbl_monitoring_order SET verifikasi='F',produksi='P' WHERE tbl_h_pemesanan_id=".$id;
+							$sql = "
+								UPDATE tbl_monitoring_order SET verifikasi='F', verifikasi_f_date='".date('Y-m-d H:i:s')."', produksi='P', produksi_p_date='".date('Y-m-d H:i:s')."'
+								WHERE tbl_h_pemesanan_id=".$id;
 							$this->db->query($sql);
 						}else{
 							$data['status']='T';
-							$sql="UPDATE tbl_monitoring_order SET verifikasi='F' WHERE tbl_h_pemesanan_id=".$id;
+							$sql="UPDATE tbl_monitoring_order SET verifikasi='F', verifikasi_f_date='".date('Y-m-d H:i:s')."' WHERE tbl_h_pemesanan_id=".$id;
 							$this->db->query($sql);
 						}
 						
