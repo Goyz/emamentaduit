@@ -357,7 +357,7 @@ class Mbackend extends CI_Model{
 						FROM tbl_monitoring_order A  
 						LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
 						LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id
-						WHERE B.status <> 'C'
+						".$where." AND B.status <> 'C'
 						ORDER BY id DESC
 				";
 			break;
