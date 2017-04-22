@@ -123,7 +123,7 @@ $route['loading-ubahpassword'] = 'frontend/getdisplay/loading_page/ubahpassword'
 $route['submit-update-password'] = 'frontend/cruddata/form/ubahpassword';
 
 // Utk Reporting Kementerian Pendidikan
-$route['data_pesanan_all'] = 'frontend/report_kementerian/all';
+$route['detail_paket'] = 'frontend/report_kementerian/all';
 
 
 // ROuting gak kepake

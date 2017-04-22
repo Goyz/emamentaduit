@@ -420,6 +420,7 @@ class Mfrontend extends CI_Model{
 	function get_report_kementerian($type, $balikan, $p1=""){
 		switch($type){
 			case "all_pesanan":
+				/*
 				$sql = "
 					SELECT A.id,
 						D.npsn, D.nama_sekolah, D.alamat_pengiriman, D.provinsi, D.kab_kota, D.no_hp_kepsek, D.email,
@@ -448,12 +449,73 @@ class Mfrontend extends CI_Model{
 					) as G ON G.tbl_h_pemesanan_id = A.id
 					ORDER BY D.provinsi, D.kab_kota DESC
 				";
+				*/
+				
+				$where = " WHERE 1=1 ";
+				$per_page = (isset($p1['per_page']) || $p1['per_page'] != null ? $p1['per_page'] : 200);
+				$page = (isset($p1['page'])  || $p1['page'] != null ? $p1['page'] : 1);
+				$sort = (isset($p1['sort'])  || $p1['sort'] != null ? $p1['sort'] : "DESC");
+				
+				$start = ( ($per_page*$page) - $per_page ); 
+				
+				// do not put $limit*($page - 1)
+				
+				if(isset($p1['start_date']) || $p1['start_date'] != null){
+					$where .= " AND (A.tgl_order BETWEEN '".$p1['start_date']."' AND '".$p1['end_date']."') ";
+				}
+				
+				if(isset($p1['id']) || $p1['id'] != null){
+					$where .= " AND A.id = '".$p1['id']."' ";
+				}
+				
+				$sql = "
+					SELECT A.id as idpesan, A.no_order as id_pesanan, 
+						D.*, A.grand_total,
+						DATE_FORMAT(A.create_date,'%Y-%m-%d %T') as tanggal_pesan,
+						DATE_FORMAT(B.kirim_date,'%Y-%m-%d %T') as tanggal_kirim,
+						DATE_FORMAT(B.konfirmasi_p_date,'%Y-%m-%d %T') as tanggal_konfirmasi,
+						DATE_FORMAT(B.bast_date,'%Y-%m-%d %T') as tanggal_bast, 
+						DATE_FORMAT(B.tanda_terima_date,'%Y-%m-%d') as tanggal_terima,
+						DATE_FORMAT(B.tanda_terima_date,'%T') as jam_terima,
+						DATE_FORMAT(C.tanggal_transfer,'%Y-%m-%d') as tanggal_bayar,
+						DATE_FORMAT(B.tanda_terima_date,'%Y-%m-%d %T') as tanggal_sampai,
+						C.total_pembayaran, E.no_bast, F.no_kwitansi, G.metode_pembayaran,
+						H.jasa_pengiriman
+					FROM tbl_h_pemesanan A
+					LEFT JOIN tbl_monitoring_order B ON B.tbl_h_pemesanan_id = A.id
+					LEFT JOIN tbl_konfirmasi C ON C.tbl_h_pemesanan_id = A.id
+					LEFT JOIN (
+							SELECT X.*, PR.provinsi, KB.kab_kota, KC.kecamatan
+							FROM tbl_registrasi X
+							LEFT JOIN cl_provinsi PR ON PR.kode_prov = X.cl_provinsi_kode
+							LEFT JOIN cl_kab_kota KB ON KB.kode_kab_kota = X.cl_kab_kota_kode
+							LEFT JOIN cl_kecamatan KC ON KC.kode_kecamatan = X.cl_kecamatan_kode
+							WHERE X.jenis_pembeli = 'SEKOLAH'
+					) as D ON D.id = A.tbl_registrasi_id
+					LEFT JOIN tbl_bast E ON E.tbl_h_pemesanan_id = A.id
+					LEFT JOIN tbl_kwitansi F ON F.tbl_h_pemesanan_id = A.id
+					LEFT JOIN cl_metode_pembayaran G ON G.id = A.cl_metode_pembayaran_id
+					LEFT JOIN cl_jasa_pengiriman H ON H.id = A.cl_jasa_pengiriman_id
+					
+					".$where."
+					ORDER BY id ".$sort."
+					LIMIT $start,$per_page
+				";
+				//echo $sql;exit;
 			break;
 			case "count_detail_pesanan":
 				$sql = "
-					SELECT SUM(qty) as quantity
-					FROM tbl_d_pemesanan
-					WHERE tbl_h_pemesanan_id = '".$p1."'
+					SELECT SUM(A.qty) as quantity, B.kode_buku, 
+						B.judul_buku, A.harga, A.qty
+					FROM tbl_d_pemesanan A
+					LEFT JOIN tbl_buku B ON B.id = A.tbl_buku_id
+					WHERE A.tbl_h_pemesanan_id = '".$p1."'
+				";
+			break;
+			case "count_semua_pesanan":
+				$sql = "
+					SELECT COUNT(id) as total
+					FROM tbl_h_pemesanan
 				";
 			break;
 		}
@@ -843,6 +905,7 @@ class Mfrontend extends CI_Model{
 					$crud = $this->db->insert('tbl_konfirmasi', $array_insert);
 					if($crud){
 						//$this->db->update('tbl_h_pemesanan', array('status'=>'F'), array('no_order'=>$data['inv']) );
+						
 						$email = $this->getdata('getemail_cust', 'row_array', $data['inv']);
 						$this->lib->kirimemail('email_konfirmasi', $email['email'], $data['inv']);
 					}

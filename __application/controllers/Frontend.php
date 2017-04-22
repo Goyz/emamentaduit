@@ -846,7 +846,7 @@ class Frontend extends CI_Controller {
 						$no_order = $this->input->post("ord");
 						$cek_no_order = $this->db->get_where("tbl_h_pemesanan", array("no_order"=>$no_order) )->row_array();
 						if($cek_no_order){ 
-							$cek_no_order["grand_total"] = "Rp. ".number_format($cek_no_order['grand_total'],0,",",".");
+							$cek_no_order["grand_total"] = number_format($cek_no_order['grand_total'],0,",",".");
 							$this->nsmarty->assign( 'data_order', $cek_no_order ); 
 							$this->nsmarty->assign( 'cek_order', "true" ); 
 						}else{ 
@@ -1293,25 +1293,99 @@ class Frontend extends CI_Controller {
 	}
 	
 	function report_kementerian($type){
-		$code_secret = $this->input->get('code_secret');
+		$code_secret = $this->input->get('secretkey');
 		if($code_secret != $this->client_secret){
-			echo "invalid code secret";exit;
+			//echo "invalid code secret";exit;
 		}
-		header('Content-Type: application/json');
 		
+		header('Content-Type: application/json');
 		switch($type){
 			case "all":
-				$data_pesanan = $this->mfrontend->get_report_kementerian('all_pesanan', 'result_array');
+				$per_page = $this->input->get('per_page');
+				$page = $this->input->get('page');
+				$sort = $this->input->get('sort');
+				$start_date = $this->input->get('start_date');
+				$end_date = $this->input->get('end_date');
+				$id = $this->input->get('id');
+				
+				$array_parameter = array(
+					'per_page' => $per_page,
+					'page' => $page,
+					'sort' => $sort,
+					'start_date' => $start_date,
+					'end_date' => $end_date,
+					'id' => $id,
+				);
+				
+				if(isset($id) || $id != null){
+					$per_page = 1;
+				}
+				
+				$array_pesanan = array();
+				$data_pesanan = $this->mfrontend->get_report_kementerian('all_pesanan', 'result_array', $array_parameter);
+				$count = $this->mfrontend->get_report_kementerian('count_semua_pesanan', 'row_array');
+				if( $count["total"] >0 ) { 
+					$limit = (isset($per_page) ? $per_page : 200);
+					$total_pages = ceil($count["total"]/$limit); 
+				}else{ 
+					$total_pages = 0; 
+				} 
+				
+				$array_pesanan['total'] = $count["total"];
+				$array_pesanan['current_page'] = (isset($page) ? $page : 1);
+				$array_pesanan['per_page'] = (isset($per_page) ? $per_page : 200);
+				$array_pesanan['total_page'] = $total_pages;
+				$array_pesanan['detail_paket'] = array();
+				
 				$no = 1;
 				foreach($data_pesanan as $k=>$v){
-					$detail_pesanan = $this->mfrontend->get_report_kementerian('count_detail_pesanan', 'row_array', $v['id']);
-					$data_pesanan[$k]['no'] = $no;
-					$data_pesanan[$k]['jumlah_buku'] = $detail_pesanan['quantity'];
-					$data_pesanan[$k]['jumlah_buku_dikirim'] = $detail_pesanan['quantity'];
+					$detail_pesanan = $this->mfrontend->get_report_kementerian('count_detail_pesanan', 'row_array', $v['idpesan']);
+					$bentuk = explode(" ", $v["nama_sekolah"]);
+					
+					$array_pesanan['detail_paket'][$k]['id'] = $v['idpesan'];
+					$array_pesanan['detail_paket'][$k]['id_pesanan'] = $v['id_pesanan'];
+					$array_pesanan['detail_paket'][$k]['sekolah_id'] = $v['sekolah_id'];
+					$array_pesanan['detail_paket'][$k]['bentuk'] = $bentuk[0];
+					$array_pesanan['detail_paket'][$k]['npsn'] = $v['npsn'];
+					$array_pesanan['detail_paket'][$k]['nama_sekolah'] = $v['nama_sekolah'];
+					$array_pesanan['detail_paket'][$k]['kd_prop'] = $v['kd_prov'];
+					$array_pesanan['detail_paket'][$k]['prop'] = $v['prov'];
+					$array_pesanan['detail_paket'][$k]['kd_kab_kota'] = $v['kd_kab'];
+					$array_pesanan['detail_paket'][$k]['kab_kota'] = $v['kab'];
+					$array_pesanan['detail_paket'][$k]['p_tgl_pesan'] = $v['tanggal_pesan'];
+					$array_pesanan['detail_paket'][$k]['p_tanggal_konfirmasi'] = $v['tanggal_konfirmasi'];
+					$array_pesanan['detail_paket'][$k]['p_waktu_pelaksanaan'] = $v["jasa_pengiriman"];
+					$array_pesanan['detail_paket'][$k]['p_kode_buku'] = $detail_pesanan['kode_buku'];
+					$array_pesanan['detail_paket'][$k]['p_jml_buku'] = $detail_pesanan['qty'];
+					$array_pesanan['detail_paket'][$k]['p_total_harga'] = ($detail_pesanan['qty'] * $detail_pesanan['harga']);
+					$array_pesanan['detail_paket'][$k]['k_tgl_kirim'] = $v['tanggal_kirim'];
+					$array_pesanan['detail_paket'][$k]['k_kode_buku'] = $detail_pesanan['kode_buku'];
+					$array_pesanan['detail_paket'][$k]['k_jml_buku'] = $detail_pesanan['qty'];
+					$array_pesanan['detail_paket'][$k]['s_tgl_sampai'] = $v["tanggal_sampai"]; //gak tau ambil darimana
+					$array_pesanan['detail_paket'][$k]['s_kode_buku'] = $detail_pesanan['kode_buku'];
+					$array_pesanan['detail_paket'][$k]['s_jml_buku'] = $detail_pesanan['quantity'];
+					$array_pesanan['detail_paket'][$k]['s_nama_penerima'] = ""; //gak tau ambil darimana;
+					$array_pesanan['detail_paket'][$k]['t_tgl_terima'] = $v['tanggal_terima'];
+					$array_pesanan['detail_paket'][$k]['t_kode_buku'] = $detail_pesanan['kode_buku'];
+					$array_pesanan['detail_paket'][$k]['t_jml_buku'] = $detail_pesanan['qty'];
+					$array_pesanan['detail_paket'][$k]['t_nomor_surat'] = $v['no_bast'];
+					$array_pesanan['detail_paket'][$k]['t_tanggal_bast'] = $v['tanggal_bast'];
+					$array_pesanan['detail_paket'][$k]['b_tgl_bayar'] = $v['tanggal_bayar'];
+					$array_pesanan['detail_paket'][$k]['b_kode_buku'] = $detail_pesanan['kode_buku'];
+					$array_pesanan['detail_paket'][$k]['b_jml_buku'] = $detail_pesanan['qty'];
+					$array_pesanan['detail_paket'][$k]['b_jml_bayar'] = $v['total_pembayaran'];
+					$array_pesanan['detail_paket'][$k]['active'] = 1;
+					$array_pesanan['detail_paket'][$k]['periode'] = 1;
+					$array_pesanan['detail_paket'][$k]['updated_date'] = date('Y-m-d H:i:s');
 					$no++;
 				}
 				
-				echo json_encode($data_pesanan);
+				/*
+				echo "<pre>";
+				print_r($array_pesanan);exit;
+				echo "</pre>";//*/
+				
+				echo json_encode($array_pesanan);
 			break;
 		}
 	}
