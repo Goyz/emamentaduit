@@ -2424,7 +2424,7 @@ function get_detil(mod,id_data,par1){
 		case "set_kirim_sekolah":
 		case "set_kirim_umum":
 			$.post(host+'backoffice-form/remark',{mod:mod,id:id_data},function(r){
-				windowForm(r,'Manajemen Order',580,250);
+				windowForm(r,'Manajemen Order',580,300);
 			});
 		break;
 		
