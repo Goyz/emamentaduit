@@ -1309,8 +1309,8 @@ class Frontend extends CI_Controller {
 				$id = $this->input->get('id');
 				
 				$array_parameter = array(
-					'per_page' => $per_page,
-					'page' => $page,
+					'per_page' => (isset($per_page) ? $per_page : 200 ),
+					'page' => (isset($page) ? $page : 1 ),
 					'sort' => $sort,
 					'start_date' => $start_date,
 					'end_date' => $end_date,
@@ -1342,6 +1342,7 @@ class Frontend extends CI_Controller {
 					$detail_pesanan = $this->mfrontend->get_report_kementerian('count_detail_pesanan', 'row_array', $v['idpesan']);
 					$bentuk = explode(" ", $v["nama_sekolah"]);
 					
+					$array_pesanan['detail_paket'][$k]['count'] = $no;
 					$array_pesanan['detail_paket'][$k]['id'] = $v['idpesan'];
 					$array_pesanan['detail_paket'][$k]['id_pesanan'] = $v['id_pesanan'];
 					$array_pesanan['detail_paket'][$k]['sekolah_id'] = $v['sekolah_id'];
@@ -1357,6 +1358,7 @@ class Frontend extends CI_Controller {
 					$array_pesanan['detail_paket'][$k]['p_waktu_pelaksanaan'] = $v["jasa_pengiriman"];
 					$array_pesanan['detail_paket'][$k]['p_kode_buku'] = $detail_pesanan['kode_buku'];
 					$array_pesanan['detail_paket'][$k]['p_jml_buku'] = $detail_pesanan['qty'];
+					$array_pesanan['detail_paket'][$k]['p_harga_konfirm'] = $detail_pesanan['harga'];
 					$array_pesanan['detail_paket'][$k]['p_total_harga'] = ($detail_pesanan['qty'] * $detail_pesanan['harga']);
 					$array_pesanan['detail_paket'][$k]['k_tgl_kirim'] = $v['tanggal_kirim'];
 					$array_pesanan['detail_paket'][$k]['k_kode_buku'] = $detail_pesanan['kode_buku'];
@@ -1449,8 +1451,8 @@ class Frontend extends CI_Controller {
 	}	
 	
 	function tester(){			
-		echo "<pre>";
-		print_r($this->auth);
+		//echo "<pre>";
+		//print_r($this->auth);
 		//print_r($this->cart->contents());
 		
 		//$this->cart->destroy();	
@@ -1464,6 +1466,20 @@ class Frontend extends CI_Controller {
 	}
 	
 	function test(){			
+		$data_pesanan = $this->db->get("tbl_h_pemesanan")->result_array();
+		$arraycek = array();
+		foreach($data_pesanan as $k => $v){
+			$cekdatareg = $this->db->get_where("tbl_registrasi", array("id"=>$v["tbl_registrasi_id"]) )->row_array();
+			if($cekdatareg){
+				continue;
+			}else{
+				$arraycek[$k]["id_registrasinya"] = $v["tbl_registrasi_id"];
+			}
+		}
+		
+		echo "<pre>";
+		print_r($arraycek);exit;
+		
 		/*
 		$curl = curl_init();
 		$url = 'http://www.mks-store.id/api/detail_paket?secretkey=7c222fb2927d828af22f592134e8932480637c0d--spesifik';
@@ -1523,7 +1539,7 @@ class Frontend extends CI_Controller {
 			$data_cart[$s]['subtotal'] = number_format($r['subtotal'],0,",",".");
 		}
 		
-		*/
+		
 		
 		$data_registrasi = array(
 						'jenis_pembeli' => 'UMUM',
@@ -1545,6 +1561,8 @@ class Frontend extends CI_Controller {
 		echo $this->lib->kirimemail('email_konfirmasi', "triwahyunugroho11@gmail.com", "12345");
 		
 		//echo $this->lib->kirimemail('email_test', "triwahyunugroho11@gmail.com");
+		
+		//*/
 	}
 	
 }

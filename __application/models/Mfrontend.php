@@ -498,7 +498,7 @@ class Mfrontend extends CI_Model{
 					LEFT JOIN cl_jasa_pengiriman H ON H.id = A.cl_jasa_pengiriman_id
 					
 					".$where."
-					ORDER BY id ".$sort."
+					ORDER BY A.id ".$sort."
 					LIMIT $start,$per_page
 				";
 				//echo $sql;exit;
