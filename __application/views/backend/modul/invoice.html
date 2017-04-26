@@ -48,8 +48,10 @@
 						<td>
 							{if $data.header.alamat_pengiriman_lain neq ''}
 								{$data.header.alamat_pengiriman_lain|default:'-'}
-							{else}
+							{elseif $data.header.alamat_pengiriman_registrasi neq ''}
 								{$data.header.alamat_pengiriman_registrasi|default:'-'}
+							{else}
+								{$data.header.alamat_pengiriman|default:'-'}
 							{/if}
 						</td>
 					</tr>				
