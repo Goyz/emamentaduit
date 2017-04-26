@@ -762,17 +762,19 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 			fitnya = true;
 			nowrap=false;
 			//footer=true;
-			row_number=true;
-			
-			kolom[modnya] = [	
+			row_number=false;
+			frozen[modnya] = [	
 				{field:'no_order',title:'No. Order',width:150, halign:'center',align:'center'},
-				{field:'jenis_pembeli',title:'Pelanggan',width:100, halign:'center',align:'center'},
-				{field:'verifikasi',title:'Stat. Verifikasi',width:100, halign:'center',align:'center',
+				{field:'jenis_pembeli',title:'Pelanggan',width:100, halign:'center',align:'center'},				
+			];
+
+			kolom[modnya] = [	
+				{field:'verifikasi',title:'Stat. Verifikasi',width:150, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
 						if(value=='P'){
-							return "Proses Verifikasi";
+							return "Proses Verifikasi <br/>"+rowData.tanggal_p_ver;
 						}else if(value=='F'){
-							return "Sudah Terverifikasi";
+							return "Sudah Terverifikasi <br/>"+rowData.tanggal_f_ver;
 						}else{
 							return "-";
 						}
@@ -783,12 +785,12 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 						else return 'background-color:red;color:#FFFFFF';
 					}
 				},
-				{field:'konfirmasi',title:'Stat. Konfirmasi',width:100, halign:'center',align:'center',
+				{field:'konfirmasi',title:'Stat. Konfirmasi',width:150, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
 						if(value=='P'){
-							return "Proses Konfirmasi";
+							return "Proses Konfirmasi <br/>"+rowData.tanggal_p_konf;
 						}else if(value=='F'){
-							return "Sudah Konfirmasi";
+							return "Sudah Konfirmasi <br/>"+rowData.tanggal_f_konf;
 						}else{
 							return "-";
 						}
@@ -799,12 +801,12 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 						else return 'background-color:red;color:#FFFFFF';
 					}
 				},
-				{field:'produksi',title:'Stat. Produksi',width:100, halign:'center',align:'center',
+				{field:'produksi',title:'Stat. Produksi',width:150, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
 						if(value=='P'){
-							return "Proses Produksi";
+							return "Proses Produksi <br/>"+rowData.tanggal_p_prod;
 						}else if(value=='F'){
-							return "Produksi Selesai";
+							return "Produksi Selesai <br/>"+rowData.tanggal_f_prod;
 						}else{
 							return "-";
 						}
@@ -815,12 +817,12 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 						else return 'background-color:red;color:#FFFFFF';
 					}
 				},
-				{field:'packing',title:'Stat. Packing',width:100, halign:'center',align:'center',
+				{field:'packing',title:'Stat. Packing',width:150, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
 						if(value=='P'){
-							return "Proses Packing";
+							return "Proses Packing <br/>"+rowData.tanggal_p_pack;
 						}else if(value=='F'){
-							return "Packing Selesai";
+							return "Packing Selesai <br/>"+rowData.tanggal_f_pack;
 						}else{
 							return "-";
 						}
@@ -836,7 +838,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 						if(value=='P'){
 							return "Proses Pengiriman";
 						}else if(value=='F'){
-							return "Proses Kirim Dengan No Resi : "+rowData.no_resi;
+							return "Sudah Dikirim Dengan No Resi : "+rowData.no_resi+" <br/>"+rowData.tanggal_kirim;
 						}else{
 							return "-";
 						}
@@ -847,12 +849,12 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 						else return 'background-color:red;color:#FFFFFF';
 					}
 				},
-				{field:'tanda_terima',title:'Stat. Tnd.Terima',width:100, halign:'center',align:'center',
+				{field:'tanda_terima',title:'Stat. Tnd.Terima',width:150, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
 						if(value=='P'){
 							return "Menunggu Tanda Terima";
 						}else if(value=='F'){
-							return "Tanda Terima Selesai";
+							return "Sudah Diterima <br/>"+rowData.tanggal_tandaterima;
 						}else{
 							return "-";
 						}
@@ -863,12 +865,12 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 						else return 'background-color:red;color:#FFFFFF';
 					}
 				},
-				{field:'bast',title:'Stat. BAST',width:100, halign:'center',align:'center',
+				{field:'bast',title:'Stat. BAST',width:150, halign:'center',align:'center',
 					formatter:function(value,rowData,rowIndex){
 						if(value=='P'){
 							return "Menunggu BAST";
 						}else if(value=='F'){
-							return "BAST Selesai";
+							return "Sudah BAST <br/>"+rowData.tanggal_bast;;
 						}else{
 							return "-";
 						}
