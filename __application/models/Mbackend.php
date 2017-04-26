@@ -353,7 +353,19 @@ class Mbackend extends CI_Model{
 			break;
 			*/
 			case "tbl_monitor":
-				$sql=" SELECT A.*,C.jenis_pembeli,B.no_order 
+			$where .=" AND (C.alamat_pengiriman <> '')";
+				$sql=" SELECT A.*,C.jenis_pembeli,B.no_order,
+						DATE_FORMAT(A.verifikasi_p_date,'%d %b %Y %h:%i %p') as tanggal_p_ver,
+						DATE_FORMAT(A.verifikasi_f_date,'%d %b %Y %h:%i %p') as tanggal_f_ver,
+						DATE_FORMAT(A.konfirmasi_p_date,'%d %b %Y %h:%i %p') as tanggal_p_konf,
+						DATE_FORMAT(A.konfirmasi_f_date,'%d %b %Y %h:%i %p') as tanggal_f_konf,
+						DATE_FORMAT(A.produksi_p_date,'%d %b %Y %h:%i %p') as tanggal_p_prod,
+						DATE_FORMAT(A.produksi_f_date,'%d %b %Y %h:%i %p') as tanggal_f_prod,
+						DATE_FORMAT(A.packing_p_date,'%d %b %Y %h:%i %p') as tanggal_p_pack,
+						DATE_FORMAT(A.packing_f_date,'%d %b %Y %h:%i %p') as tanggal_f_pack,
+						DATE_FORMAT(A.kirim_date,'%d %b %Y %h:%i %p') as tanggal_kirim,
+						DATE_FORMAT(A.tanda_terima_date,'%d %b %Y %h:%i %p') as tanggal_tandaterima,
+						DATE_FORMAT(A.bast_date,'%d %b %Y %h:%i %p') as tanggal_bast
 						FROM tbl_monitoring_order A  
 						LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
 						LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id
@@ -471,7 +483,7 @@ class Mbackend extends CI_Model{
 				$id=$this->input->post('id');
 				if($id)$where .=" AND A.id=".$id;
 				$sql="SELECT A.*,B.nama_sekolah,B.nama_lengkap,B.jenis_pembeli,
-						DATE_FORMAT(A.tgl_order,'%d %b %Y %h:%i %p') as tanggal_order
+						DATE_FORMAT(A.tgl_order,'%d %b %Y %h:%i %p') as tanggal_order, B.alamat_pengiriman
 					  FROM tbl_h_pemesanan A 
 					  LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id ".$where;
 				$data['header']=$this->db->query($sql)->row_array();

@@ -468,6 +468,7 @@ class Mfrontend extends CI_Model{
 					$where .= " AND A.id = '".$p1['id']."' ";
 				}
 				
+				/*
 				$sql = "
 					SELECT A.id as idpesan, A.no_order as id_pesanan, 
 						D.*, A.grand_total,
@@ -498,6 +499,36 @@ class Mfrontend extends CI_Model{
 					LEFT JOIN cl_jasa_pengiriman H ON H.id = A.cl_jasa_pengiriman_id
 					
 					".$where."
+					ORDER BY A.id ".$sort."
+					LIMIT $start,$per_page
+				";
+				*/
+				$sql = "
+					SELECT A.id as idpesan, A.no_order as id_pesanan, 
+						D.*, PR.provinsi, KB.kab_kota, KC.kecamatan, A.grand_total,
+						DATE_FORMAT(A.create_date,'%Y-%m-%d %T') as tanggal_pesan,
+						DATE_FORMAT(B.kirim_date,'%Y-%m-%d %T') as tanggal_kirim,
+						DATE_FORMAT(B.konfirmasi_p_date,'%Y-%m-%d %T') as tanggal_konfirmasi,
+						DATE_FORMAT(B.bast_date,'%Y-%m-%d %T') as tanggal_bast, 
+						DATE_FORMAT(B.tanda_terima_date,'%Y-%m-%d') as tanggal_terima,
+						DATE_FORMAT(B.tanda_terima_date,'%T') as jam_terima,
+						DATE_FORMAT(C.tanggal_transfer,'%Y-%m-%d') as tanggal_bayar,
+						DATE_FORMAT(B.tanda_terima_date,'%Y-%m-%d %T') as tanggal_sampai,
+						C.total_pembayaran, E.no_bast, F.no_kwitansi, G.metode_pembayaran,
+						H.jasa_pengiriman
+					FROM tbl_h_pemesanan A
+					LEFT JOIN tbl_monitoring_order B ON B.tbl_h_pemesanan_id = A.id
+					LEFT JOIN tbl_konfirmasi C ON C.tbl_h_pemesanan_id = A.id
+					LEFT JOIN tbl_registrasi D ON A.tbl_registrasi_id = D.id
+					LEFT JOIN tbl_bast E ON E.tbl_h_pemesanan_id = A.id
+					LEFT JOIN tbl_kwitansi F ON F.tbl_h_pemesanan_id = A.id
+					LEFT JOIN cl_metode_pembayaran G ON G.id = A.cl_metode_pembayaran_id
+					LEFT JOIN cl_jasa_pengiriman H ON H.id = A.cl_jasa_pengiriman_id
+					LEFT JOIN cl_provinsi PR ON PR.kode_prov = D.cl_provinsi_kode
+					LEFT JOIN cl_kab_kota KB ON KB.kode_kab_kota = D.cl_kab_kota_kode
+					LEFT JOIN cl_kecamatan KC ON KC.kode_kecamatan = D.cl_kecamatan_kode
+					
+					".$where." AND D.jenis_pembeli = 'SEKOLAH'
 					ORDER BY A.id ".$sort."
 					LIMIT $start,$per_page
 				";
