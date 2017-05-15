@@ -142,6 +142,12 @@ class Lib {
 				$ci->nsmarty->assign('namalengkap', $p2);
 				$html = $ci->nsmarty->fetch('backend/email/email_registrasi_sales.html');
 				$subject = "REGISTRASI PIC MARKETING MKS-Store";
+			break;	
+			case "email_lupa_password":
+				$ci->nsmarty->assign('email', $p1['email']);
+				$ci->nsmarty->assign('password', $p1['password']);
+				$html = $ci->nsmarty->fetch('frontend/modul/email_password.html');
+				$subject = "EMAIL LUPA PASSWORD MKS-Store";
 			break;			
 			case "email_test":
 				$html = $ci->nsmarty->fetch('frontend/modul/email_invoice.html');

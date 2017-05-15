@@ -112,6 +112,7 @@ $route['submit-login'] = 'frontend/loginpembeli'; // kepake
 $route['logoutpembeli'] = 'frontend/logoutpembeli'; // kepake
 
 $route['submit-update-profil'] = 'frontend/cruddata/form/updateprofile';
+$route['submit-forgot-password'] = 'frontend/forgot_password'; // kepake
 
 $route['registrasi'] = 'frontend/getdisplay/main_page/registrasi';
 $route['loading-registrasi'] = 'frontend/getdisplay/loading_page/registrasi';

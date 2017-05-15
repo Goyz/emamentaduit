@@ -41,14 +41,14 @@
                     <h2 class="subtitle">Lupa Password</h2>
                     <p style="text-align:center !important;"><b>Masukkan Alamat Email Anda</b></p>
 					<br/>
-					<form>
+					<form data-toggle="validator" role="form" id='formforgot' url="{$host}submit-forgot-password" method='post' enctype="multipart/form-data" class="form-horizontal">
 						<div class="form-group">
 							<label class="control-label" for="input-email">E-Mail Address</label>
-							<input name="email" id="input-email" class="form-control" type="text">
+							<input name="mailerEd" id="input-email" class="form-control validasi" type="text">
 						</div>
 					</form>
 					<br/>
-					<center><input value="Submit" class="btn btn-primary" id="lupapasword" type="submit"></center>
+					<center><a id="forgotuser" class="btn btn-primary">Submit</a></center>
                 </div>
             </div>
         </div>
@@ -83,6 +83,23 @@
 				$.unblockUI();
 				$('#hasilnya').html(resp);
 			}
+		});
+	});
+	
+	$('#forgotuser').on('click', function(){
+		validasi = $('#formforgot').form('validate');		
+		if(validasi){
+			$.blockUI({ message: '<h3>Data Sedang Diproses...</h3>' });			
+		}	
+		submit_form('formforgot', function(resp){
+			if(resp == 1){
+				alert("Password Anda Sudah Kami Kirim Ke Email Anda. Silahkan Cek Email Anda");
+				window.location.href = host;
+			}else if(resp == 2){
+				alert("Data Anda Tidak Ditemukan");
+			}
+			
+			$.unblockUI();
 		});
 	});
 

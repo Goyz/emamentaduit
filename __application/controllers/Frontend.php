@@ -1450,6 +1450,22 @@ class Frontend extends CI_Controller {
 		}
 	}	
 	
+	function forgot_password(){
+		$cek_data = $this->db->get_where('tbl_registrasi', array('email'=>$this->input->post('mailerEd'), 'jenis_pembeli' => 'UMUM') )->row_array();
+		if(!$cek_data){
+			echo 2;
+			exit;
+		}
+		
+		$cek_data['password'] = $this->encrypt->decode($cek_data['password']);
+		$kirim_email = $this->lib->kirimemail('email_lupa_password', $this->input->post('mailerEd'), $cek_data);
+		if($kirim_email){
+			echo 1;
+		}
+		
+
+	}
+	
 	function tester(){			
 		//echo "<pre>";
 		//print_r($this->auth);
