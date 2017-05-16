@@ -16,15 +16,16 @@ class Frontend extends CI_Controller {
 		$this->auth = unserialize(base64_decode($this->session->userdata('mkspembeli')));
 		$this->host	= $this->config->item('base_url');
 		
-		$this->client_id		= 'bkk13am';
-		$this->client_secret	= 'ae044c5653e256aa8a0a53ed3cbd9db6';
-		$this->redirect_uri		= 'http://localhost:81/public_codeigniter/mks/profile';
+		$this->client_id		= $this->config->item('client_id');
+		$this->client_secret	= $this->config->item('client_secret');;
+		$this->redirect_uri		= $this->config->item('redirect_uri');;
 		
-		$this->token_endpoint		= 'http://data.dikdasmen.kemdikbud.go.id/sso/token';
-		$this->authorize_endpoint	= 'http://data.dikdasmen.kemdikbud.go.id/sso/auth';
-		$this->profile_endpoint		= 'http://data.dikdasmen.kemdikbud.go.id/sso/profile';
-		$this->sekolah_endpoint		= 'http://data.dikdasmen.kemdikbud.go.id/sso/bosdata';
-		$this->sess_endpoint		= 'http://data.dikdasmen.kemdikbud.go.id/sso/sessid';
+		$this->token_endpoint		= $this->config->item('token_endpoint');
+		$this->authorize_endpoint	= $this->config->item('authorize_endpoint');
+		$this->profile_endpoint		= $this->config->item('profile_endpoint');
+		$this->sekolah_endpoint		= $this->config->item('sekolah_endpoint');
+		$this->sess_endpoint		= $this->config->item('sess_endpoint');
+		$this->infosp				= 'http://data.dikdasmen.kemdikbud.go.id/sso/infosp';		
 		
 		$host = $this->host;
 		$this->nsmarty->assign('host',$this->host);
@@ -54,6 +55,7 @@ class Frontend extends CI_Controller {
 	
 	function getdisplay($type="", $p1="", $p2="", $p3="", $p4=""){
 		$zona_pilihan = $this->session->userdata('zonaxtreme');
+		$this->nsmarty->assign('zona', $zona_pilihan);
 		switch($type){
 			case "main_page":				
 				$data_cart = $this->cart->contents();
@@ -63,26 +65,25 @@ class Frontend extends CI_Controller {
 				
 				}elseif($p1 == "ubahpassword"){
 					
-				}elseif($p1 == "profile"){
+				}elseif($p1 == "shop"){
 					$code = $this->input->get('code');
-					//echo $code;exit;
 					if($code){
 						$token = $this->lib->oauthtoken($this->client_id, $this->client_secret, $code, $this->redirect_uri, $this->token_endpoint);
 						if(isset($token['error'])){
 							echo "Error : <b>".$token['error']." </b> Pesan : <b>".$token['error_description']."</b>";exit;
 						}
-						//print_r($token);exit;
+						
+						//print_r($token);
+						//echo $token;
+						//exit;
+						
 						$getidentity = $this->lib->oauthidentity($token['access_token'], $this->profile_endpoint);
 						$infosp = $this->lib->oauthidentity($token['access_token'], $this->infosp);
+						//echo "identitiy : <pre>";print_r($getidentity);echo "</pre>";
+						//echo "infosp : <pre>";print_r($infosp);echo "</pre>";exit;
+						
 						$cek_user=$this->mfrontend->getdata('data_login_dapotik','row_array',$getidentity['username']);
-						//echo "<pre>";print_r($infosp);echo "</pre>";exit;
 						if(isset($cek_user['email'])){
-							$sess = array();
-							$sess['zona_pilihan'] = $infosp['zona'];
-							$this->session->set_userdata("zonaxtreme", $sess);
-							$this->session->set_userdata('aldeaz_pembeli', base64_encode(serialize($cek_user)));
-							header("Location: " . $this->host ."katalog");
-						}else{
 							$data=array('email'=>$getidentity['username'],
 										'nama_user'=>$getidentity['username'],
 										'nama_lengkap'=>$getidentity['nama'],
@@ -90,6 +91,7 @@ class Frontend extends CI_Controller {
 										'kode_wilayah'=>$getidentity['kode_wilayah'],
 										'sekolah_id'=>$getidentity['sekolah_id'],
 										'peran_id'=>$getidentity['peran_id'],
+										'bentuk_pendidikan'=>$getidentity['bentuk_pendidikan'],
 										'jenis_pembeli'=>'SEKOLAH',
 										'status'=>1,
 										'pengguna_id'=>$getidentity['pengguna_id'],
@@ -106,9 +108,58 @@ class Frontend extends CI_Controller {
 										'cl_kab_kota_kode'=>$infosp['kd_kab'],
 										'kab'=>$infosp['kab'],
 										'cl_kecamatan_kode'=>$infosp['kd_kec'],
-										//'kd_kec'=>$infosp['kd_kec'],
+										'kd_kec'=>$infosp['kd_kec'],
 										'kec'=>$infosp['kec'],
 										'desa'=>$infosp['desa'],
+										'zona'=>$infosp['zona'],
+										'kode_pos'=>$infosp['kode_pos'],
+										'email_kepsek'=>$infosp['email_kepsek'],
+										'email_operator'=>$infosp['email_operator'],
+										'no_hp_kepsek'=>$infosp['hp_kepsek'],
+										'no_hp_bendahara'=>$infosp['hp_operator']
+										
+							);
+							$simpan_dapotik=$this->mfrontend->simpansavedata('tbl_reg_dapotik',$data,'edit');
+							if($simpan_dapotik==1){
+								$cek_user=$this->mfrontend->getdata('data_login_dapotik','row_array',$getidentity['username']);
+								$sess = array();
+								$sess['zona_pilihan'] = $infosp['zona'];
+								$sess['bentuk_pendidikan'] = $infosp['bentuk_pendidikan'];
+								$this->session->set_userdata("zonaxtreme", $sess);
+								$this->session->set_userdata('mkspembeli', base64_encode(serialize($cek_user)));
+								header("Location: " . $this->host ."profile");
+							}else{
+								echo "FAILED SAVE ";exit;
+							}
+						}else{
+							$data=array('email'=>$getidentity['username'],
+										'nama_user'=>$getidentity['username'],
+										'nama_lengkap'=>$getidentity['nama'],
+										'no_telp_sekolah'=>$getidentity['no_telepon'],
+										'kode_wilayah'=>$getidentity['kode_wilayah'],
+										'sekolah_id'=>$getidentity['sekolah_id'],
+										'peran_id'=>$getidentity['peran_id'],
+										'bentuk_pendidikan'=>$getidentity['bentuk_pendidikan'],										
+										'jenis_pembeli'=>'SEKOLAH',
+										'status'=>1,
+										'pengguna_id'=>$getidentity['pengguna_id'],
+										'alamat_pengiriman'=>$infosp['alamat'],
+										'nama_sekolah'=>$infosp['nama_sekolah'],
+										'nama_kepala_sekolah'=>$infosp['nama_kepsek'],
+										'nip'=>$infosp['nip_kepsek'],
+										'nama_bendahara'=>$infosp['nama_operator'],
+										'npsn'=>$infosp['npsn'],
+										'kd_prov'=>$infosp['kd_prov'],
+										'cl_provinsi_kode'=>$infosp['kd_prov'],
+										'prov'=>$infosp['prov'],
+										'kd_kab'=>$infosp['kd_kab'],
+										'cl_kab_kota_kode'=>$infosp['kd_kab'],
+										'kab'=>$infosp['kab'],
+										'cl_kecamatan_kode'=>$infosp['kd_kec'],
+										'kd_kec'=>$infosp['kd_kec'],
+										'kec'=>$infosp['kec'],
+										'desa'=>$infosp['desa'],
+										'zona'=>$infosp['zona'],
 										'kode_pos'=>$infosp['kode_pos'],
 										'email_kepsek'=>$infosp['email_kepsek'],
 										'email_operator'=>$infosp['email_operator'],
@@ -121,15 +172,17 @@ class Frontend extends CI_Controller {
 								$cek_user=$this->mfrontend->getdata('data_login_dapotik','row_array',$getidentity['username']);
 								$sess = array();
 								$sess['zona_pilihan'] = $infosp['zona'];
+								$sess['bentuk_pendidikan'] = $infosp['bentuk_pendidikan'];								
 								$this->session->set_userdata("zonaxtreme", $sess);
-								$this->session->set_userdata('aldeaz_pembeli', base64_encode(serialize($cek_user)));
-								header("Location: " . $this->host ."katalog");
+								$this->session->set_userdata('mkspembeli', base64_encode(serialize($cek_user)));
+								header("Location: " . $this->host ."profile");
 							}else{
 								echo "FAILED SAVE ";exit;
 							}
 						}
 					}
-					
+				}elseif($p1 == "profile"){
+				
 				}elseif($p1 == "login"){
 					
 				}elseif($p1 == "bantuan"){
@@ -486,7 +539,22 @@ class Frontend extends CI_Controller {
 							$data_buku[$k]['id_url'] = $this->lib->base64url_encode($v['id']);
 							$data_buku[$k]['judul_url'] = $this->lib->clean(strtolower($v['judul_buku']),"-");
 						}
-						$data_tingkatan = $this->db->get('cl_tingkatan')->result_array();
+						
+						$arrayfiltertingkatan = array();
+						if($this->auth){
+							if($this->auth["bentuk_pendidikan"] == "SD"){
+								$arrayfiltertingkatan = array("id"=>2);
+							}elseif($this->auth["bentuk_pendidikan"] == "SMP"){
+								$arrayfiltertingkatan = array("id"=>3);
+							}elseif($this->auth["bentuk_pendidikan"] == "SMA"){
+								$arrayfiltertingkatan = array("id"=>4);
+							}elseif($this->auth["bentuk_pendidikan"] == "SMK"){
+								$arrayfiltertingkatan = array("id"=>4);
+							}
+						}
+						
+						$data_tingkatan = $this->db->get_where('cl_tingkatan', $arrayfiltertingkatan )->result_array();
+						
 						$array_tingkatan = array();
 						foreach($data_tingkatan as $k => $v){
 							$array_tingkatan[$k]['tingkatan'] = $v['tingkatan'];
@@ -500,7 +568,12 @@ class Frontend extends CI_Controller {
 						$data_pengguna = $this->db->get('cl_group_sekolah')->result_array();
 						$data_kategori = $this->db->get('cl_kategori')->result_array();
 						
-						$total_data = $this->db->count_all("tbl_buku");
+						if($this->auth["bentuk_pendidikan"] != null){
+							$total_data = $this->mfrontend->getdata('hitung_data_filter', 'num_rows');
+						}else{
+							$total_data = $this->db->count_all("tbl_buku");
+						}
+						
 						$limit = 16;
 						$total_paging = $total_data / $limit;
 						if(is_int($total_paging) == true){
@@ -1412,10 +1485,12 @@ class Frontend extends CI_Controller {
 					$sess = array();
 					if($cek_user["jenis_pembeli"] == "UMUM"){
 						$sess['zona_pilihan'] = $cek_user["zona_pengiriman"];
+						$sess['bentuk_pendidikan'] = $cek_user["bentuk_pendidikan"];
 						$sess['provinsi'] = $cek_user['provinsi'];
 					}elseif($cek_user["jenis_pembeli"] == "SEKOLAH"){
 						$zona = $this->db->get_where("cl_provinsi", array("kode_prov"=>$cek_user["cl_provinsi_kode"]))->row_array();
 						$cek_user['zona_pengiriman'] = $zona["zona"];
+						$sess['bentuk_pendidikan'] = $cek_user["bentuk_pendidikan"];						
 						$sess['zona_pilihan'] = $zona["zona"];
 						$sess['provinsi'] = $zona['provinsi'];
 					}
@@ -1482,19 +1557,23 @@ class Frontend extends CI_Controller {
 	}
 	
 	function test(){			
-		$data_pesanan = $this->db->get("tbl_h_pemesanan")->result_array();
-		$arraycek = array();
-		foreach($data_pesanan as $k => $v){
-			$cekdatareg = $this->db->get_where("tbl_registrasi", array("id"=>$v["tbl_registrasi_id"]) )->row_array();
-			if($cekdatareg){
-				continue;
+		/*
+		$data_registrasi = $this->db->get_where("tbl_registrasi", array("jenis_pembeli"=>"sekolah"))->result_array();
+		foreach($data_registrasi as $k => $v){
+			$bentuk = explode(" ", $v["nama_sekolah"]);
+			$bentuknya = substr($bentuk[0], 0, 3);
+			
+			if($bentuknya == "SDN"){
+				$fixnya = "SD";
 			}else{
-				$arraycek[$k]["id_registrasinya"] = $v["tbl_registrasi_id"];
+				$fixnya = $bentuknya; 
 			}
+			
+			$this->db->update("tbl_registrasi", array("bentuk_pendidikan"=>$fixnya), array("id"=>$v["id"]) );
 		}
 		
-		echo "<pre>";
-		print_r($arraycek);exit;
+		//echo "<pre>";
+		//print_r($arraycek);exit;
 		
 		/*
 		$curl = curl_init();

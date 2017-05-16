@@ -28,7 +28,7 @@ $config['encryption_key'] = 'dfALfpwMG98smd764JfpdfCVB0065sgj';
 $config['sess_driver'] = 'files';
 $config['sess_cookie_name'] = 'ci_session';
 $config['sess_expiration'] = 7200;
-$config['sess_save_path'] = NULL;
+$config['sess_save_path'] = sys_get_temp_dir();
 $config['sess_match_ip'] = FALSE;
 $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = FALSE;
@@ -51,10 +51,9 @@ $config['compress_output'] = FALSE;
 $config['time_reference'] = 'local';
 $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
-
-$config['client_id'] = 'bkk13am';
+$config['client_id'] = 'bbk13am';
 $config['client_secret'] = 'ae044c5653e256aa8a0a53ed3cbd9db6';
-$config['redirect_uri'] = 'http://bukusekolah.mks-store.id';
+$config['redirect_uri'] = 'http://www.mks-store.id/shop/';
 
 $config['token_endpoint'] = 'http://data.dikdasmen.kemdikbud.go.id/sso/token';
 $config['authorize_endpoint'] = 'http://data.dikdasmen.kemdikbud.go.id/sso/auth';

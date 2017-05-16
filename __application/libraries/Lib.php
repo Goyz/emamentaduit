@@ -410,7 +410,10 @@ class Lib {
 			'code' => $code,
 			'redirect_uri' => $redirect_uri,
 		);
-		$url_params = http_build_query($params);
+		//print_r($params);exit;
+		//$url_params = http_build_query($params);
+		$url = $token_endpoint;
+		/*$url_params = http_build_query($params);
 		
 		$url = $token_endpoint.$url_params;
 		$curl = curl_init();
@@ -420,10 +423,19 @@ class Lib {
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 1);
 		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 1);
+		*/
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_POST, 1);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, urldecode(http_build_query($params)));
 		$result = curl_exec($curl);
+		curl_close($curl);
 		$result_obj = json_decode($result, true);
 		
 		return $result_obj;
+		
+		
 	}
 	//end fungsi oauthtoken
 	
@@ -432,12 +444,50 @@ class Lib {
 		$params = array(
 			'access_token' => $access_token, // PROVIDER SPECIFIC: the access_token is passed to Google via POST param
 		);
-		$url_params = http_build_query($params);
+		
+		/*$url_params = http_build_query($params);
 		$url = $url_user . $url_params; // TODO: we probably want to send this using a curl_setopt...
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $url);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		$result = curl_exec($curl);
+		$result_obj = json_decode($result, true);
+		
+		return $result_obj;
+		*/
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $url_user);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_POST, 1);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, urldecode(http_build_query($params)));
+		$result = curl_exec($curl);
+		curl_close($curl);
+		$result_obj = json_decode($result, true);
+				
+		return $result_obj;
+	}
+	function oauthsekolah($sekolah_token, $url_user){
+		$params = array(
+			'access_token' => $sekolah_token, // PROVIDER SPECIFIC: the access_token is passed to Google via POST param
+		);
+		
+		/*$url_params = http_build_query($params);
+		$url = $url_user . $url_params; // TODO: we probably want to send this using a curl_setopt...
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		$result = curl_exec($curl);
+		$result_obj = json_decode($result, true);
+		
+		return $result_obj;
+		*/
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $url_user);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_POST, 1);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, urldecode(http_build_query($params)));
+		$result = curl_exec($curl);
+		curl_close($curl);
 		$result_obj = json_decode($result, true);
 		
 		return $result_obj;

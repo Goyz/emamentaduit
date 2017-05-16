@@ -38,8 +38,11 @@ $route['backup-repository'] = 'backend/backupsystem/repository';
 $route['beranda'] = 'frontend/getdisplay/main_page/beranda'; //kepake
 $route['loading-beranda'] = 'frontend/getdisplay/loading_page/beranda'; //kepake
 
-$route['profile'] = 'frontend/getdisplay/loading_page/profile'; //kepake
+$route['profile'] = 'frontend/getdisplay/main_page/profile'; //kepake
 $route['loading-profile'] = 'frontend/getdisplay/loading_page/profile'; //kepake
+
+$route['shop'] = 'frontend/getdisplay/main_page/shop'; //kepake untuk login dapodaik
+$route['loading-shop'] = 'frontend/getdisplay/loading_page/profile'; //kepake
 
 $route['kontak'] = 'frontend/getdisplay/main_page/kontak'; //kepake
 $route['loading-kontak'] = 'frontend/getdisplay/loading_page/kontak'; //kepake

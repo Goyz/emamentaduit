@@ -128,6 +128,19 @@ class Mfrontend extends CI_Model{
 						ORDER BY A.id ASC
 						LIMIT $p2, $p3
 					";
+					
+					if($this->auth){
+						if($this->auth["bentuk_pendidikan"] == "SD"){
+							$where .= " AND B.cl_tingkatan_id = 2 ";
+						}elseif($this->auth["bentuk_pendidikan"] == "SMP"){
+							$where .= " AND B.cl_tingkatan_id = 3 ";
+						}elseif($this->auth["bentuk_pendidikan"] == "SMA"){
+							$where .= " AND B.cl_tingkatan_id = 4 ";
+						}elseif($this->auth["bentuk_pendidikan"] == "SMK"){
+							$where .= " AND B.cl_tingkatan_id = 4 ";
+						}
+					}
+					
 				}elseif($type == 'data_buku_tingkatan'){
 					$where .= " AND C.id = '".$p1."' ";
 				}elseif($type == 'data_buku_detail'){
@@ -169,9 +182,22 @@ class Mfrontend extends CI_Model{
 					$where .= " AND A.judul_buku like '%".$crfilter."%' ";
 				}
 				
+				if($this->auth){
+					if($this->auth["bentuk_pendidikan"] == "SD"){
+						$where .= " AND B.cl_tingkatan_id = 2 ";
+					}elseif($this->auth["bentuk_pendidikan"] == "SMP"){
+						$where .= " AND B.cl_tingkatan_id = 3 ";
+					}elseif($this->auth["bentuk_pendidikan"] == "SMA"){
+						$where .= " AND B.cl_tingkatan_id = 4 ";
+					}elseif($this->auth["bentuk_pendidikan"] == "SMK"){
+						$where .= " AND B.cl_tingkatan_id = 4 ";
+					}
+				}
+				
 				$sql = "
 					SELECT A.*
 					FROM tbl_buku A
+					LEFT JOIN cl_kelas B ON B.id = A.cl_kelas_id
 					$where AND A.flag_disable_enable IS NULL 
 				";
 				
@@ -626,6 +652,12 @@ class Mfrontend extends CI_Model{
 			break;
 			case "tbl_reg_dapotik":
 				$table="tbl_registrasi";
+				if($sts_crud == "edit"){
+					$cek_id = $this->db->get_where("tbl_registrasi", array("email" => $data["email"]) )->row_array(); 
+					$id = $cek_id["id"];
+				}
+				//echo "<pre>";
+				//print_r($data);exit;
 			break;
 			case "uploadfile":
 				$array_cek_invoice = array( 'no_order' => $data['inv'] );
