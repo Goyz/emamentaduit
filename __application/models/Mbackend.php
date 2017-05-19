@@ -354,7 +354,7 @@ class Mbackend extends CI_Model{
 			*/
 			case "tbl_monitor":
 			$where .=" AND (C.alamat_pengiriman <> '')";
-				$sql=" SELECT A.*,C.jenis_pembeli,B.no_order,
+				$sql=" SELECT A.*,C.jenis_pembeli,B.no_order, C.nama_lengkap, C.nama_sekolah,
 						DATE_FORMAT(A.verifikasi_p_date,'%d %b %Y %h:%i %p') as tanggal_p_ver,
 						DATE_FORMAT(A.verifikasi_f_date,'%d %b %Y %h:%i %p') as tanggal_f_ver,
 						DATE_FORMAT(A.konfirmasi_p_date,'%d %b %Y %h:%i %p') as tanggal_p_konf,
@@ -385,10 +385,10 @@ class Mbackend extends CI_Model{
 					".$where;
 			break;
 			case "get_no_gudang":
-				$sql=" SELECT *  FROM tbl_gudang ";
+				$sql=" SELECT * FROM tbl_gudang ";
 				$res=$this->db->query($sql)->result_array();
 				if(count($res)>0){
-					$sql=" SELECT max(no_gudang)+1 as nogud_baru  FROM tbl_gudang ";
+					$sql=" SELECT max(id)+1 as nogud_baru  FROM tbl_gudang ";
 					$qry=$this->db->query($sql)->row();
 					$id=$qry->nogud_baru;
 				}else{
@@ -417,8 +417,10 @@ class Mbackend extends CI_Model{
 			case "manajemen_gudang_sekolah":
 				$where .=" AND D.jenis_pembeli = 'SEKOLAH' ";
 				$sql="SELECT A.*,C.grand_total,
-						C.no_order,C.tgl_order,C.zona,D.nama_sekolah,D.nama_lengkap,D.jenis_pembeli,
-						C.id as id_pemesanan,D.nama_kepala_sekolah,D.alamat_pengiriman,E.jasa_pengiriman  
+							C.no_order,C.zona,D.nama_sekolah,D.nama_lengkap,D.jenis_pembeli,
+							C.id as id_pemesanan,D.nama_kepala_sekolah,D.alamat_pengiriman,E.jasa_pengiriman,
+							DATE_FORMAT(C.tgl_order,'%d %b %Y %h:%i %p') as tanggal_order,
+							DATE_FORMAT(A.tgl_masuk,'%d %b %Y %h:%i %p') as tanggal_masuk
 						FROM tbl_gudang A 
 						LEFT JOIN tbl_h_pemesanan C ON A.tbl_h_pemesanan_id=C.id
 						LEFT JOIN tbl_registrasi D ON C.tbl_registrasi_id=D.id
@@ -430,8 +432,11 @@ class Mbackend extends CI_Model{
 			case "manajemen_gudang_umum":
 				$where .=" AND D.jenis_pembeli = 'UMUM'";
 				$sql="SELECT A.*,B.no_konfirmasi,B.tgl_konfirmasi,B.total_pembayaran,
-						C.no_order,C.tgl_order,C.zona,D.nama_sekolah,D.nama_lengkap,D.jenis_pembeli,
-						C.id as id_pemesanan,D.nama_kepala_sekolah,D.alamat_pengiriman,E.jasa_pengiriman  
+							C.no_order,C.tgl_order,C.zona,D.nama_sekolah,D.nama_lengkap,D.jenis_pembeli,
+							C.id as id_pemesanan,D.nama_kepala_sekolah,D.alamat_pengiriman,E.jasa_pengiriman,
+							DATE_FORMAT(C.tgl_order,'%d %b %Y %h:%i %p') as tanggal_order,
+							DATE_FORMAT(B.tgl_konfirmasi,'%d %b %Y %h:%i %p') as tanggal_konfirmasi,
+							DATE_FORMAT(A.tgl_masuk,'%d %b %Y %h:%i %p') as tanggal_masuk
 						FROM tbl_gudang A 
 						LEFT JOIN tbl_konfirmasi B ON A.tbl_konfirmasi_id=B.id
 						LEFT JOIN tbl_h_pemesanan C ON (A.tbl_h_pemesanan_id=C.id AND B.tbl_h_pemesanan_id=C.id)
@@ -446,8 +451,11 @@ class Mbackend extends CI_Model{
 			case "konfirmasi_sekolah":
 				if($type=="konfirmasi_sekolah")$where .=" AND C.jenis_pembeli='SEKOLAH'";
 				else $where .=" AND C.jenis_pembeli='UMUM'";
-				$sql="SELECT A.*,B.no_order,B.tgl_order,B.zona,C.nama_sekolah,C.nama_lengkap,
-						B.id as id_pemesanan,C.jenis_pembeli,C.nama_kepala_sekolah 
+				$sql="SELECT A.*,B.no_order,B.zona,C.nama_sekolah,C.nama_lengkap,
+							C.email, C.no_telp_sekolah, C.no_hp_customer,
+							B.id as id_pemesanan,C.jenis_pembeli,C.nama_kepala_sekolah,
+							DATE_FORMAT(B.tgl_order,'%d %b %Y %h:%i %p') as tanggal_order,
+							DATE_FORMAT(A.tgl_konfirmasi,'%d %b %Y %h:%i %p') as tanggal_konfirmasi
 						FROM tbl_konfirmasi A 
 						LEFT JOIN tbl_h_pemesanan B ON A.tbl_h_pemesanan_id=B.id
 						LEFT JOIN tbl_registrasi C ON B.tbl_registrasi_id=C.id
@@ -543,7 +551,9 @@ class Mbackend extends CI_Model{
 				if($type=='tbl_h_pemesanan')$where .=" AND B.jenis_pembeli='SEKOLAH' AND (A.status='T' OR A.status='F')";
 				if($type=='tbl_h_pemesanan_umum')$where .=" AND B.jenis_pembeli='UMUM' AND (A.flag_ver='F' AND A.flag_ver_gudang='F') ";
 				
-				$sql="SELECT A.*,B.nama_sekolah,B.nama_lengkap 
+				$sql="SELECT A.*,B.nama_sekolah,B.nama_lengkap,
+							B.email, B.no_telp_sekolah, B.no_hp_customer,
+						DATE_FORMAT(A.tgl_order,'%d %b %Y %h:%i %p') as tanggal_order
 					  FROM tbl_h_pemesanan A 
 					  LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id 
 					  ".$where."
@@ -563,7 +573,9 @@ class Mbackend extends CI_Model{
 					$where .=" AND A.status <> 'C'";
 				}
 				
-				$sql="SELECT A.*,B.nama_sekolah,B.nama_lengkap 
+				$sql="SELECT A.*,B.nama_sekolah,B.nama_lengkap, 
+						B.email, B.no_telp_sekolah, B.no_hp_customer,
+						DATE_FORMAT(A.tgl_order,'%d %b %Y %h:%i %p') as tanggal_order
 					  FROM tbl_h_pemesanan A 
 					  LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id 
 					  ".$where."
@@ -581,7 +593,8 @@ class Mbackend extends CI_Model{
 					$where .=" AND A.flag_ver_gudang <> 'F' AND A.flag_ver <> 'P'";
 				}
 				
-				$sql="SELECT A.*,B.nama_sekolah,B.nama_lengkap 
+				$sql="SELECT A.*,B.nama_sekolah,B.nama_lengkap,
+						DATE_FORMAT(A.tgl_order,'%d %b %Y %h:%i %p') as tanggal_order
 					  FROM tbl_h_pemesanan A 
 					  LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id 
 					  ".$where."
@@ -847,7 +860,7 @@ class Mbackend extends CI_Model{
 					if($gd){
 						$mod_na=$this->input->post('mod_na');
 						if($mod_na=='ver_sekolah' || $mod_na=='ver_gudang_sekolah'){
-							$no_gudang=$this->getdata('get_no_gudang');
+							$no_gudang = "GD-".$this->getdata('get_no_gudang');
 							$data_gd=array('tbl_h_pemesanan_id'=>$id,
 										'no_gudang'=>$no_gudang,
 										'tgl_masuk'=>date('Y-m-d H:i:s'),

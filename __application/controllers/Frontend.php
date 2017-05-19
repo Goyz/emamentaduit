@@ -91,7 +91,7 @@ class Frontend extends CI_Controller {
 										'kode_wilayah'=>$getidentity['kode_wilayah'],
 										'sekolah_id'=>$getidentity['sekolah_id'],
 										'peran_id'=>$getidentity['peran_id'],
-										'bentuk_pendidikan'=>$getidentity['bentuk_pendidikan'],
+										'bentuk_pendidikan'=>$infosp['bentuk_pendidikan'],
 										'jenis_pembeli'=>'SEKOLAH',
 										'status'=>1,
 										'pengguna_id'=>$getidentity['pengguna_id'],
@@ -139,7 +139,7 @@ class Frontend extends CI_Controller {
 										'kode_wilayah'=>$getidentity['kode_wilayah'],
 										'sekolah_id'=>$getidentity['sekolah_id'],
 										'peran_id'=>$getidentity['peran_id'],
-										'bentuk_pendidikan'=>$getidentity['bentuk_pendidikan'],										
+										'bentuk_pendidikan'=>$infosp['bentuk_pendidikan'],										
 										'jenis_pembeli'=>'SEKOLAH',
 										'status'=>1,
 										'pengguna_id'=>$getidentity['pengguna_id'],
@@ -1002,7 +1002,13 @@ class Frontend extends CI_Controller {
 				}
 				$data_invoice = $this->mfrontend->getdata('header_pesanan', 'row_array', $inv);
 				if($data_invoice){
-					$no_bast = $data_invoice['no_order']."/OLS-MKS/BAST/XII/".date('Y');
+					$sql_nobast = "
+						select max(id) as idnya from tbl_bast
+					";
+					$maxbast = $this->db->query($sql_nobast)->row_array();
+					$bast_urutan = ($maxbast['idnya']+1);
+					
+					$no_bast = "NO.".$bast_urutan."/OLS-MKS/BAST/".date('m')."/".date('Y');
 					$datacust = $this->mfrontend->getdata('datacustomer', 'row_array', $data_invoice['tbl_registrasi_id'], '', 'cetak_bast');
 					//$datakonfirmasi = $this->db->get_where('tbl_konfirmasi', array('tbl_h_pemesanan_id'=>$data_invoice['id']) )->row_array();
 					$datadetailpesanan = $this->mfrontend->getdata('detail_pesanan', 'result_array', $data_invoice['idpesan']);
@@ -1069,7 +1075,14 @@ class Frontend extends CI_Controller {
 				}				
 				$data_invoice = $this->mfrontend->getdata('header_pesanan', 'row_array', $inv);
 				if($data_invoice){
-					$no_kwitansi = $data_invoice['no_order']."/OLS-MKS/K/".date('Y');
+					//$no_kwitansi = $data_invoice['no_order']."/OLS-MKS/K/".date('Y');
+					
+					$sql_kwitansi = "
+						select max(id) as idnya from tbl_kwitansi
+					";
+					$maxkwitansi = $this->db->query($sql_kwitansi)->row_array();
+					$kwitansi_urutan = ($maxkwitansi['idnya']+1);
+					$no_kwitansi = date('d').date('m').date('y').$kwitansi_urutan;
 					$datacust = $this->mfrontend->getdata('datacustomer', 'row_array', $data_invoice['tbl_registrasi_id'], '', 'cetak_bast');
 					$jumlah = number_to_words($data_invoice['grand_total']);
 					//$datakonfirmasi = $this->db->get_where('tbl_konfirmasi', array('tbl_h_pemesanan_id'=>$data_invoice['idpesan']) )->row_array();
@@ -1162,12 +1175,21 @@ class Frontend extends CI_Controller {
 				$data_invoice = $this->mfrontend->getdata('header_pesanan', 'row_array', $inv);
 				if($data_invoice){
 					$datadetailpesanan = $this->mfrontend->getdata('detail_pesanan', 'result_array', $data_invoice['idpesan']);
+					$datacust = $this->mfrontend->getdata('datacustomer', 'row_array', $data_invoice['tbl_registrasi_id'], '', 'cetak_bast');
+					$tot_qty = 0;
+					$tot_harga = 0;
 					foreach($datadetailpesanan as $k=>$v){
 						$datadetailpesanan[$k]['harga'] = number_format($v['harga'],0,",",".");
 						$datadetailpesanan[$k]['subtotal'] = number_format($v['subtotal'],0,",",".");
+						
+						$tot_qty += $v['qty'];
+						$tot_harga += $v['subtotal'];
 					}
 					$this->nsmarty->assign('datadetailpesanan', $datadetailpesanan);
 					$this->nsmarty->assign('data_invoice', $data_invoice);
+					$this->nsmarty->assign('datacust', $datacust);
+					$this->nsmarty->assign('tot_qty', $tot_qty);
+					$this->nsmarty->assign('tot_harga', number_format($tot_harga,0,",",".") );
 					$this->nsmarty->assign('inv', $inv);
 				}
 				
@@ -1542,21 +1564,54 @@ class Frontend extends CI_Controller {
 	}
 	
 	function tester(){			
-		//echo "<pre>";
-		//print_r($this->auth);
-		//print_r($this->cart->contents());
+		$data_sales = $this->db->get_where("tbl_registration", array("pic_id"=>18) )->result_array();
 		
-		//$this->cart->destroy();	
+		$html = "
+			<table>
+				<tr>
+					<td>PIC</td>
+					<td>Nama Sales</td>
+					<td>Username</td>
+					<td>Password</td>
+					<td>Kode Marketing</td>
+				</tr>
+		";
+		foreach($data_sales as $k => $v){
+			$html .= "
+				<tr>
+					<td>HADI GUNOWO</td>
+					<td>".$v["nama_lengkap"]."</td>
+					<td>".$v["email_address"]."</td>
+					<td>".$this->encrypt->decode($v["password"])."</td>
+					<td>".$v["registration_code"]."</td>
+				</tr>
+			";		
+		}
+		$html .= "
+			</table>
+		";
 		
-		//echo date('l');
-		
-		//$dt = strtotime('06/19/2009');
-		//$day = date("l", $dt);
-		//echo $day;
-		//echo (int)date('Y');
+		echo $html;
 	}
 	
 	function test(){			
+		$sql=" SELECT *  FROM tbl_gudang ";
+		$res=$this->db->query($sql)->result_array();
+		if(count($res)>0){
+			$sql=" SELECT max(id)+1 as nogud_baru  FROM tbl_gudang ";
+			$qry=$this->db->query($sql)->row();
+			$id=$qry->nogud_baru;
+		}else{
+			$id=1;
+		}
+		
+		if($id<10){$id_baru='0000'.$id;}
+		if($id<100 && $id >=10){$id_baru='000'.$id;}
+		if($id<1000 && $id >=100){$id_baru='00'.$id;}
+		if($id<10000 && $id >=1000){$id_baru='0'.$id;}
+		echo $id_baru;
+		
+		
 		/*
 		$data_registrasi = $this->db->get_where("tbl_registrasi", array("jenis_pembeli"=>"sekolah"))->result_array();
 		foreach($data_registrasi as $k => $v){

@@ -840,12 +840,14 @@ class Mfrontend extends CI_Model{
 					if($maxord['ordered_no'] != null){
 						$order_urut 	= explode("-", $maxord['ordered_no']);
 						$order_urutnya 	= ( $order_urut[1] + 1 ); 
-						$acak_string 	= strtoupper($this->lib->randomString(4,"angkahuruf"));
-						$acak_no_order 	= "ORD".$acak_string."-".$order_urutnya;
+						//$acak_string 	= strtoupper($this->lib->randomString(4,"angkahuruf"));
+						//$acak_no_order 	= "ORD".$acak_string."-".$order_urutnya;
+						$acak_no_order 	= "MKS-".$order_urutnya;
 					}else{
 						$order_urutnya = 100000;
-						$acak_string 	= strtoupper($this->lib->randomString(4,"angkahuruf"));
-						$acak_no_order 	= "ORD".$acak_string."-".$order_urutnya;
+						//$acak_string 	= strtoupper($this->lib->randomString(4,"angkahuruf"));
+						//$acak_no_order 	= "ORD".$acak_string."-".$order_urutnya;
+						$acak_no_order 	= "MKS-".$order_urutnya;
 					}
 					
 					$data_header_pesanan = array(

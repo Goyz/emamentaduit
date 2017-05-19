@@ -31,17 +31,22 @@ table.gridtable td {
 
 <table width="100%" style='font-family:helvetica,arial,verdana,sans; font-size:12px;'>
 	<tr>
-		<td style="width: 35%; height: 50px;"><img src='__assets/images/logo_mks.png' width='200px' /></td>
-		<td style="width: 50%; height: 80px; color: #00000; text-align: center; " valign="middle">
+		<td style="width: 35%; height: 50px;"><img src='__assets/images/logo_mks.png' width='150px' /></td>
+		<td style="width: 50%; height: 80px; color: #00000;" valign="middle">
 			<div style="font-family:arial; font-weight:bold;">		
 				<h3>SURAT PESANAN BUKU</h3>
 				<table width='100%'>
-				<tr>
-					<td width='20%'>No</td>
-					<td width='5%'>:</td>
-					<td width='75%'>{$inv}</td>
-				</tr>
-			</table>
+					<tr>
+						<td width='20%'>No</td>
+						<td width='5%'>:</td>
+						<td width='75%'>{$inv}</td>
+					</tr>
+				</table>
+				<h5>
+					PT. Mulia Kencana Semesta 
+					<br/>
+					Jl. A. H. Nasution No. 73 Cipadung Bandung
+				</h5>
 			</div>
 		</td>
 		<td style="width: 15%; height: 80px;" align='right'>
@@ -58,14 +63,14 @@ table.gridtable td {
 
 <table width="100%" style='font-family:helvetica,arial,verdana,sans; font-size:12px;'>
 	<tr>
-		<td width='20%'>NPSN</td>
+		<td width='25%'>NPSN</td>
 		<td width='5%'>:</td>
-		<td width='75%'>{$data_invoice.npsn}</td>
+		<td width='70%'>{$data_invoice.npsn}</td>
 	</tr>
 	<tr>
 		<td>Zona Pengiriman</td>
 		<td>:</td>
-		<td>{$data_invoice.zona}</td>
+		<td>{$data_invoice.zona_pengiriman}</td>
 	</tr>
 	<tr>
 		<td>Provinsi</td>
@@ -112,9 +117,9 @@ table.gridtable td {
 
 <table width="100%" style='font-family:helvetica,arial,verdana,sans; font-size:12px;'>
 	<tr>
-		<td width='20%'>Nama</td>
+		<td width='25%'>Nama</td>
 		<td width='5%'>:</td>
-		<td width='75%'>
+		<td width='70%'>
 			PT. Mulia Kencana Semesta
 		</td>
 	</tr>
@@ -166,12 +171,17 @@ table.gridtable td {
 				<td>{$rows.kelas}</td>
 				<td>{$rows.nama_group}</td>
 				<td>{$rows.judul_buku}</td>
-				<td>{$rows.harga}</td>
-				<td>{$rows.qty}</td>
-				<td>{$rows.subtotal}</td>
+				<td style='font-weight:bold;text-align:right'>Rp. {$rows.harga}</td>
+				<td style='font-weight:bold;text-align:right'>{$rows.qty}</td>
+				<td style='font-weight:bold;text-align:right'>Rp. {$rows.subtotal}</td>
 			</tr>
 			{assign var=ind value=$ind+1}
 		{/foreach}
+		<tr style='background:#FAF8FD'>
+			<td style='font-weight:bold;text-align:center' colspan='5'>Total</td>
+			<td style='font-weight:bold;text-align:right'>{$tot_qty}</td>
+			<td style='font-weight:bold;text-align:right'>Rp. {$tot_harga}</td>
+		</tr>
 	</tbody>
 </table>
 <br/>
@@ -181,6 +191,49 @@ table.gridtable td {
 </p>
 <br/>
 
+<table width="100%" style='margin-top:10px;margin-bottom:10px;font-family:helvetica,arial,verdana,sans; font-size:12px;'>
+	<tr>
+		<td width='50%' align='center'>
+			<table width="100%">
+				<tr>
+					<td align='center'>PIHAK KEDUA</td>
+				</tr>
+				<tr>
+					<td align='center'>
+						<br />
+						<br />
+						<br />
+						<br />
+						<br />
+						<br />
+						<br />
+						{if $datacust.jenis_pembeli eq 'SEKOLAH'}
+							( {$datacust.nama_kepala_sekolah|default:'-'} )
+						{elseif $datacust.jenis_pembeli eq 'UMUM'}
+							( {$datacust.nama_lengkap|default:'-'} )
+						{/if}
+ 					</td>
+				</tr>
+			</table>
+		</td>
+		<td width='50%' align='center'>
+			<table width="100%">
+				<tr>
+					<td align='center'>PIHAK PERTAMA</td>
+				</tr>
+				<tr>
+					<td align='center'>
+							<img src='__assets/images/stempel-tdtgn-mks.png' width='130px' height="90px" />
+						<br/>
+						( Reza Viryawan )
+ 					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+{*
 <table width="100%" style='font-family:helvetica,arial,verdana,sans; font-size:12px;'>
 	<tr>
 		<td style="width: 35%; height: 80px;" align='left'>
@@ -196,5 +249,5 @@ table.gridtable td {
 		</td>
 	</tr>	
 </table>
-
+*}
 
