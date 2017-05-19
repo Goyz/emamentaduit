@@ -450,10 +450,23 @@ float: left;
 width: 20%;
 float: left;
 }
+
+#menu .navbar-nav {
+	float:none;
+	position:relative;
+	padding-left:95px !important;
+}
+
 }
 @media (min-width: 1200px) {
 .col-lg-5ths {
 width: 20%;
 float: left;
 }
+#menu .navbar-nav {
+	float:none;
+	position:relative;
+	padding-left:95px !important;
+}
+
 }

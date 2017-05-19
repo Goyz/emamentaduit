@@ -253,23 +253,24 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 						}
 					}
 				},
-				{field:'no_gudang',title:'No. Gudang - Tgl',width:150, halign:'center',align:'left',
-					formatter:function(value,rowData,rowIndex){
-						return "NO : "+value+" <br>Tgl : "+rowData.tgl_masuk
-					}
-				}
 				
 			];
 			kolom[modnya] = [	
-				
-				{field:'no_order',title:'No. Pesanan - Tgl ',width:150, halign:'center',align:'left',
+				{field:"nama_sekolah",title:'Nama Sekolah',width:200, halign:'center',align:'left'},				
+				{field:'no_gudang',title:'No. Gudang - Tgl',width:170, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
-						return "NO : "+value+" <br>Tgl : "+rowData.tgl_order
+						return "NO : "+value+" <br>Tgl : "+rowData.tanggal_masuk
+					}
+				},				
+				{field:'no_order',title:'No. Pesanan - Tgl ',width:170, halign:'center',align:'left',
+					formatter:function(value,rowData,rowIndex){
+						return "NO : "+value+" <br>Tgl : "+rowData.tanggal_order
 					}
 				},
 				{field:'zona',title:'Zona',width:40, halign:'center',align:'center'},
 				{field:'alamat_pengiriman',title:'Alamat Pengiriman',width:350, halign:'center',align:'left'},
 				{field:'jasa_pengiriman',title:'Jasa Kirim',width:100, halign:'center',align:'left'},
+				/*
 				{field:'nama_lengkap',title:'PIC',width:200, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
 						if(rowData.jenis_pembeli=='SEKOLAH')
@@ -279,13 +280,13 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 					}
 				},
 				
-				
 				//{field:'nama_sekolah',title:'Nama Sekolah',width:200, halign:'center',align:'left'},
 				{field:'grand_total',title:'Total',width:150, halign:'center',align:'right',
 					formatter:function(value,rowData,rowIndex){
 						return NumberFormat(value);
 					}
 				},
+				*/
 			];
 		break;
 		case "manajemen_gudang_umum":
@@ -343,23 +344,23 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 							return "<img src='"+host+"__assets/eb/easyui/themes/icons/ok.png'>";
 						}
 					}
-				},
+				},				
+			];
+			kolom[modnya] = [	
+				{field:"nama_lengkap",title:'Nama Pelanggan',width:200, halign:'center',align:'left'},		
 				{field:'no_gudang',title:'No Gudang - TGL',width:150, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
 						return "NO : "+value+" <br>Tgl : "+rowData.tgl_masuk
 					}
-				}
-				
-			];
-			kolom[modnya] = [	
+				},				
 				{field:'no_konfirmasi',title:'No. Konfirmasi - Tgl',width:150, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
-						return "NO : "+value+" <br>Tgl : "+rowData.tgl_konfirmasi
+						return "NO : "+value+" <br>Tgl : "+rowData.tanggal_konfirmasi
 					}
 				},
 				{field:'no_order',title:'No. Pesanan - Tgl ',width:150, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
-						return "NO : "+value+" <br>Tgl : "+rowData.tgl_order
+						return "NO : "+value+" <br>Tgl : "+rowData.tanggal_order
 					}
 				},
 				{field:'zona',title:'Zona',width:40, halign:'center',align:'center'},
@@ -471,14 +472,14 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 						
 					}
 				},
-				
-				{field:'no_order',title:'No. Pesanan',width:130, halign:'center',align:'center'},
-				{field:'tgl_order',title:'Tgl. Order',width:150, halign:'center',align:'center'},
-				{field:'zona',title:'Zona',width:80, halign:'center',align:'center'},
-				
+								
 			];
 			kolom[modnya] = [	
-				{field:(modnya=='invoice' ? "nama_sekolah" : "nama_lengkap"),title:(modnya=='invoice' ? 'Nama Sekolah' : "Nama Lengkap"),width:200, halign:'center',align:'left'},
+				{field:'no_order',title:'No. Pesanan',width:130, halign:'center',align:'center'},
+				{field:'tanggal_order',title:'Tgl. Order',width:150, halign:'center',align:'center'},
+				{field:'zona',title:'Zona',width:80, halign:'center',align:'center'},
+				{field:(modnya=='ver_gudang_sekolah' ? "nama_sekolah" : "nama_lengkap"),title:(modnya=='ver_gudang_sekolah' ? 'Nama Sekolah' : "Nama Lengkap"),width:200, halign:'center',align:'left'},
+				/*
 				{field:'sub_total',title:'Sub. Total',width:150, halign:'center',align:'right',
 					formatter:function(value,rowData,rowIndex){
 						return NumberFormat(value);
@@ -494,10 +495,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 						return NumberFormat(value);
 					}
 				},
-				
-				
-				
-				
+				*/
 			];
 		break;
 		case "ver_sekolah":
@@ -587,14 +585,17 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 						}
 						
 					}
-				},
-				{field:'no_order',title:'No. Pesanan',width:130, halign:'center',align:'center'},
-				{field:'tgl_order',title:'Tgl. Order',width:150, halign:'center',align:'center'},
-				{field:'zona',title:'Zona',width:80, halign:'center',align:'center'},
-				
+				},				
 			];
 			kolom[modnya] = [	
-				{field:(modnya=='invoice' ? "nama_sekolah" : "nama_lengkap"),title:(modnya=='invoice' ? 'Nama Sekolah' : "Nama Lengkap"),width:200, halign:'center',align:'left'},
+				{field:'no_order',title:'No. Pesanan',width:130, halign:'center',align:'center'},
+				{field:'tanggal_order',title:'Tgl. Order',width:150, halign:'center',align:'center'},
+				{field:'zona',title:'Zona',width:80, halign:'center',align:'center'},			
+				{field:(modnya=='invoice' || modnya=='ver_sekolah' ? "nama_sekolah" : "nama_lengkap"),title:(modnya=='invoice' || modnya=='ver_sekolah'  ? 'Nama Sekolah' : "Nama Pelanggan"),width:200, halign:'center',align:'left'},
+				{field:'email',title:'Email',width:200, halign:'center',align:'left'},
+				{field:(modnya=='ver_sekolah' ? "no_telp_sekolah" : "no_hp_customer"),title:(modnya=='ver_sekolah'  ? 'Telp. Sekolah' : "No. Kontak"),width:200, halign:'center',align:'left'},
+				
+				/*
 				{field:'sub_total',title:'Sub. Total',width:150, halign:'center',align:'right',
 					formatter:function(value,rowData,rowIndex){
 						return NumberFormat(value);
@@ -605,9 +606,10 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 						return NumberFormat(value);
 					}
 				},
+				*/
 				{field:'grand_total',title:'Grand Total',width:150, halign:'center',align:'right',
 					formatter:function(value,rowData,rowIndex){
-						return NumberFormat(value);
+						return "Rp. "+NumberFormat(value);
 					}
 				},
 				
@@ -765,7 +767,16 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 			row_number=false;
 			frozen[modnya] = [	
 				{field:'no_order',title:'No. Order',width:150, halign:'center',align:'center'},
-				{field:'jenis_pembeli',title:'Pelanggan',width:100, halign:'center',align:'center'},				
+				{field:'jenis_pembeli',title:'Jenis Pelanggan',width:100, halign:'center',align:'center'},	
+				{field:'id',title:'Nama Pelanggan',width:150, halign:'center',align:'center',
+					formatter:function(value,rowData,rowIndex){
+						if(rowData.jenis_pembeli=='SEKOLAH'){
+							return rowData.nama_sekolah;
+						}else if(rowData.jenis_pembeli=='UMUM'){
+							return rowData.nama_lengkap;
+						}
+					},
+				},				
 			];
 
 			kolom[modnya] = [	
@@ -893,23 +904,21 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 			row_number=true;
 			if(modnya=='member_sekolah'){
 				frozen[modnya] = [	
-				//	{field:'nama_lengkap',title:'Nama Lengkap',width:130, halign:'center',align:'left'},
 					{field:'nama_sekolah',title:'Nama Sekolah',width:150, halign:'center',align:'left'},
-					{field:'email',title:'Email',width:130, halign:'center',align:'left'},
-					{field:'npsn',title:'NPSN',width:80, halign:'center',align:'center'},
-					{field:'reg_date',title:'Reg. Date',width:130, halign:'center',align:'center'},
-					
+					{field:'npsn',title:'NPSN',width:80, halign:'center',align:'center'},															
 				];
 				kolom[modnya] = [	
+					{field:'email',title:'Email Dapodik',width:150, halign:'center',align:'left'},					
 					{field:'prov_kota',title:'Prov.KabKota',width:300, halign:'center',align:'left'},
 					{field:'alamat_pengiriman',title:'Alamat',width:200, halign:'center',align:'left'},
-					{field:'kode_pos',title:'Kode Pos',width:55, halign:'center',align:'left'},
-					{field:'no_telp_sekolah',title:'No. Telp Sekolah',width:100, halign:'center',align:'left'},
-					{field:'nama_kepala_sekolah',title:'Nama KEPSEK',width:120, halign:'center',align:'left'},
-					{field:'nama_bendahara',title:'Nama Bendahara',width:120, halign:'center',align:'left'},
-					{field:'no_hp_kepsek',title:'No. KEPSEK',width:100, halign:'center',align:'left'},
-					{field:'no_hp_bendahara',title:'No. Bendahara',width:100, halign:'center',align:'left'}
-					
+					{field:'kode_pos',title:'Kode Pos',width:100, halign:'center',align:'left'},
+					{field:'no_telp_sekolah',title:'No. Telp Sekolah',width:150, halign:'center',align:'left'},
+					{field:'nama_kepala_sekolah',title:'Nama Kepala Sekolah',width:200, halign:'center',align:'left'},
+					{field:'no_hp_kepsek',title:'No. HP Kepala Sekolah',width:150, halign:'center',align:'left'},
+					{field:'email_kepsek',title:'Email Kepala Sekolah',width:200, halign:'center',align:'left'},
+					{field:'nama_bendahara',title:'Nama Bendahara',width:200, halign:'center',align:'left'},
+					{field:'no_hp_bendahara',title:'No. HP Bendahara',width:150, halign:'center',align:'left'},
+					{field:'registrasi_date',title:'Reg. Date',width:150, halign:'center',align:'center'},					
 				];
 			}else{
 				frozen[modnya] = [	
@@ -1071,13 +1080,17 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 					}
 				},
 				
-				{field:'zona',title:'Zona',width:80, halign:'center',align:'center'}
 				
 			];
 			kolom[modnya] = [	
+				{field:'zona',title:'Zona',width:80, halign:'center',align:'center'},
+				{field:(modnya=='konfirmasi_sekolah' ? "nama_sekolah" : "nama_lengkap"),title:(modnya=='konfirmasi_sekolah'  ? 'Nama Sekolah' : "Nama Pelanggan"),width:200, halign:'center',align:'left'},								
+				{field:'email',title:'Email',width:200, halign:'center',align:'left'},
+				{field:(modnya=='konfirmasi_sekolah' ? "no_telp_sekolah" : "no_hp_customer"),title:(modnya=='konfirmasi_sekolah'  ? 'Telp. Sekolah' : "No. Kontak"),width:200, halign:'center',align:'left'},
+				
 				{field:'no_konfirmasi',title:'No Konfirmasi - TGL',width:200, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
-						return "NO : "+value+" <br>Tgl : "+rowData.tgl_konfirmasi
+						return "NO : "+value+" <br>Tgl : "+rowData.tanggal_konfirmasi
 					}
 				},
 				/*{field:'file_bukti_bayar',title:'Bukti Bayar',width:150, halign:'center',align:'left',
@@ -1091,25 +1104,15 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 				},*/
 				{field:'no_order',title:'No Order - TGL ',width:200, halign:'center',align:'left',
 					formatter:function(value,rowData,rowIndex){
-						return "NO : "+value+" <br>Tgl : "+rowData.tgl_order
+						return "NO : "+value+" <br>Tgl : "+rowData.tanggal_order
 					}
 				},
 				{field:'konfirmasi',title:'Remark',width:200, halign:'center',align:'left'},
-				{field:'nama_lengkap',title:'PIC',width:200, halign:'center',align:'left',
-					formatter:function(value,rowData,rowIndex){
-						if(rowData.jenis_pembeli=='SEKOLAH')
-							return rowData.nama_kepala_sekolah;
-						else 
-							return value
-					}
-					
-				},
-				//{field:'nama_sekolah',title:'Nama Sekolah',width:200, halign:'center',align:'left'},
 				{field:'nama_bank_pengirim',title:'Bank Pengirim',width:200, halign:'center',align:'left'},
 				{field:'nama_bank_penerima',title:'Bank Penerima',width:200, halign:'center',align:'left'},
 				{field:'total_pembayaran',title:'Total',width:150, halign:'center',align:'right',
 					formatter:function(value,rowData,rowIndex){
-						return NumberFormat(value);
+						return "Rp. "+NumberFormat(value);
 					}
 				},
 			];
@@ -1220,13 +1223,17 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 						
 					}
 				},
-				{field:'no_order',title:'No Order/Invoice',width:130, halign:'center',align:'center'},
-				{field:'tgl_order',title:'Tgl. Order',width:150, halign:'center',align:'center'},
-				{field:'zona',title:'Zona',width:80, halign:'center',align:'center'},
 				
 			];
 			kolom[modnya] = [	
+				{field:'no_order',title:'No Order/Invoice',width:130, halign:'center',align:'center'},
+				{field:'tanggal_order',title:'Tgl. Order',width:150, halign:'center',align:'center'},
+				{field:'zona',title:'Zona',width:80, halign:'center',align:'center'},			
 				{field:(modnya=='invoice' ? "nama_sekolah" : "nama_lengkap"),title:(modnya=='invoice' ? 'Nama Sekolah' : "Nama Lengkap"),width:200, halign:'center',align:'left'},
+				{field:'email',title:'Email',width:200, halign:'center',align:'left'},
+				{field:(modnya=='invoice' ? "no_telp_sekolah" : "no_hp_customer"),title:(modnya=='invoice'  ? 'Telp. Sekolah' : "No. Kontak"),width:200, halign:'center',align:'left'},
+				
+				/*
 				{field:'sub_total',title:'Sub. Total',width:150, halign:'center',align:'right',
 					formatter:function(value,rowData,rowIndex){
 						return NumberFormat(value);
@@ -1237,6 +1244,7 @@ function genGrid(modnya, divnya, lebarnya, tingginya, param_tambahan){
 						return NumberFormat(value);
 					}
 				},
+				*/
 				{field:'grand_total',title:'Grand Total',width:150, halign:'center',align:'right',
 					formatter:function(value,rowData,rowIndex){
 						return NumberFormat(value);
@@ -1489,6 +1497,7 @@ function genform(type, modulnya, submodulnya, stswindow, tabel){
 		case "delete":
 		case "disable_enable":
 		case "mapping":
+		case "updateprofile":
 			var row = $("#grid_"+modulnya).datagrid('getSelected');
 			if(row){
 				if(type=='edit'){
@@ -1548,8 +1557,15 @@ function genform(type, modulnya, submodulnya, stswindow, tabel){
 						$('#detil_nya_'+modulnya).show();
 						$('#detil_nya_'+modulnya).html(resp).removeClass("loading");
 					});
-				}	
+				}else if(type=='updateprofile'){
+					$('#grid_nya_'+modulnya).hide();
+					$('#detil_nya_'+modulnya).html('').show().addClass("loading");	
 					
+					$.post(host+'backoffice-form/update_profil_sekolah', { 'editstatus':'edit', id:row.id, 'tabel':table }, function(resp){
+						$('#detil_nya_'+modulnya).show();
+						$('#detil_nya_'+modulnya).html(resp).removeClass("loading");
+					});				
+				}		
 			}else{
 				$.messager.alert('MKS - STORE',"Pilih Data Dalam List",'error');
 			}
