@@ -13,83 +13,89 @@
 	<div id='tb_{$main}' style="padding:5px;;height:{$tinggi_toolbar|default:'30px'};">
 	
 			<div id='tombol'>
-				{if $button|default:'' eq 'true'}	
-				<a href="javascript:void(0)"  class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="genform('add', '{$mod}','{$main}');">
-					<span class="l-btn-left l-btn-icon-left">
-						<span class="l-btn-text">Tambah</span><span class="l-btn-icon icon-add">&nbsp;</span>
-					</span>
-				</a>
-				&nbsp;			
-				<a href="javascript:void(0)" class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="genform('edit', '{$mod}','{$main}');">
-					<span class="l-btn-left l-btn-icon-left">
-						<span class="l-btn-text">Edit / Detail</span><span class="l-btn-icon icon-edit">&nbsp;</span>
-					</span>
-				</a>
-				&nbsp;
-				<a href="javascript:void(0)"  class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="genform('delete', '{$mod}','{$main}','','{$table|default:''}');">
-					<span class="l-btn-left l-btn-icon-left">
-						<span class="l-btn-text">Hapus</span><span class="l-btn-icon icon-remove">&nbsp;</span>
-					</span>
-				</a>
-				&nbsp;
-					{if $button_disable|default:'false' eq 'true'}	
-					<a href="javascript:void(0)"  class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="genform('disable_enable', '{$mod}','{$main}','','{$table|default:''}');">
-						<span class="l-btn-left l-btn-icon-left">
-							<span class="l-btn-text">Disable/Enable</span><span class="l-btn-icon icon-ok">&nbsp;</span>
-						</span>
-					</a>
-					{/if}
-					{if $button_mapping|default:'false' eq 'true'}	
-					<a href="javascript:void(0)"  class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="genform('mapping', '{$mod}','{$main}','','{$table|default:''}');">
-						<span class="l-btn-left l-btn-icon-left">
-							<span class="l-btn-text">Mapping</span><span class="l-btn-icon cost_object">&nbsp;</span>
-						</span>
-					</a>
-					{/if}
-				&nbsp;
-				{/if}
-				{if $preview|default:'false' eq 'true'}	
-				<a href="javascript:void(0)"  class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="genform('view', '{$mod}','{$main}');">
-					<span class="l-btn-left l-btn-icon-left">
-						<span class="l-btn-text">Lihat Detil</span><span class="l-btn-icon icon-remove">&nbsp;</span>
-					</span>
-				</a>
-				{/if}
-				{if $general|default:'false' eq 'true'}	
-				<a href="javascript:void(0)"  class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="genform('general', '{$mod}','{$main}');">
-					<span class="l-btn-left l-btn-icon-left">
-						<span class="l-btn-text">{$txt_button|default:'-'}</span><span class="l-btn-icon {$icon_button|default:'icon-add'}">&nbsp;</span>
-					</span>
-				</a>
-				{/if}
-				&nbsp;
-				&nbsp;
-				&nbsp;
 				{if $filter|default:'' eq 'true'}
-					<label style='width:120px;'>Filter Berdasarkan </label>:
-					<select id='kat_{$acak}' style='width:150px;padding:3px;'>
+					<label style='width:130px;margin-top:-5px !important;'>Filter Berdasarkan : </label>
+					<select id='kat_{$acak}' style='width:150px;'>
 						<option value=''>-- Pilih --</option>
 						{$data_select|default:''}
 					</select>				
 					&nbsp;&nbsp;
 					<input type="text" name="key_{$acak}" id="key_{$acak}" style="width:20%;">
 					&nbsp;&nbsp;&nbsp;
-					<a href="javascript:void(0)" style='' class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="cariData('{$acak}');">
+					<a href="javascript:void(0)" style='margin-top:-10px !important;' class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="cariData('{$acak}');">
 						<span class="l-btn-left l-btn-icon-left">
 							<span class="l-btn-text">Cari</span><span class="l-btn-icon icon-search">&nbsp;</span>
 						</span>
 					</a>	
 				{/if}
 				{if $search|default:'' eq 'true'}
-					<input type="text" name="key_{$acak}" id="key_{$acak}" style="width:50%;">
+					<input type="text" name="key_{$acak}" id="key_{$acak}" style="width:50%;padding:1px;">
 					&nbsp;&nbsp;&nbsp;
-					<a href="javascript:void(0)" style='' class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="cariData('{$acak}');">
+					<a href="javascript:void(0)" style='margin-top:-10px !important;' class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="cariData('{$acak}');">
 						<span class="l-btn-left l-btn-icon-left">
 							<span class="l-btn-text">Cari</span><span class="l-btn-icon icon-search">&nbsp;</span>
 						</span>
 					</a>
+				{/if}				
+				{if $button|default:'' eq 'true'}	
+				<a href="javascript:void(0)" style='margin-top:-10px !important;'  class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="genform('add', '{$mod}','{$main}');">
+					<span class="l-btn-left l-btn-icon-left">
+						<span class="l-btn-text">Tambah</span><span class="l-btn-icon icon-add">&nbsp;</span>
+					</span>
+				</a>
+				&nbsp;			
+				<a href="javascript:void(0)" style='margin-top:-10px !important;' class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="genform('edit', '{$mod}','{$main}');">
+					<span class="l-btn-left l-btn-icon-left">
+						<span class="l-btn-text">Edit / Detail</span><span class="l-btn-icon icon-edit">&nbsp;</span>
+					</span>
+				</a>
+				&nbsp;
+				<a href="javascript:void(0)" style='margin-top:-10px !important;' class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="genform('delete', '{$mod}','{$main}','','{$table|default:''}');">
+					<span class="l-btn-left l-btn-icon-left">
+						<span class="l-btn-text">Hapus</span><span class="l-btn-icon icon-remove">&nbsp;</span>
+					</span>
+				</a>
+				&nbsp;
+					{if $button_disable|default:'false' eq 'true'}	
+					<a href="javascript:void(0)" style='margin-top:-10px !important;' class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="genform('disable_enable', '{$mod}','{$main}','','{$table|default:''}');">
+						<span class="l-btn-left l-btn-icon-left">
+							<span class="l-btn-text">Disable/Enable</span><span class="l-btn-icon icon-ok">&nbsp;</span>
+						</span>
+					</a>
+					{/if}
+					{if $button_mapping|default:'false' eq 'true'}	
+					<a href="javascript:void(0)" style='margin-top:-10px !important;' class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="genform('mapping', '{$mod}','{$main}','','{$table|default:''}');">
+						<span class="l-btn-left l-btn-icon-left">
+							<span class="l-btn-text">Mapping</span><span class="l-btn-icon icon-tip">&nbsp;</span>
+						</span>
+					</a>
+					{/if}
+				&nbsp;
 				{/if}
-			
+				{if $preview|default:'false' eq 'true'}	
+				<a href="javascript:void(0)" style='margin-top:-10px !important;' class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="genform('view', '{$mod}','{$main}');">
+					<span class="l-btn-left l-btn-icon-left">
+						<span class="l-btn-text">Lihat Detil</span><span class="l-btn-icon icon-remove">&nbsp;</span>
+					</span>
+				</a>
+				{/if}
+				{if $general|default:'false' eq 'true'}	
+				<a href="javascript:void(0)" style='margin-top:-10px !important;' class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="genform('general', '{$mod}','{$main}');">
+					<span class="l-btn-left l-btn-icon-left">
+						<span class="l-btn-text">{$txt_button|default:'-'}</span><span class="l-btn-icon {$icon_button|default:'icon-add'}">&nbsp;</span>
+					</span>
+				</a>
+				{/if}
+				&nbsp;
+				
+				{if $buttonapdet|default:'false' eq 'true'}	
+				<a href="javascript:void(0)" style='margin-top:-10px !important;' class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="genform('updateprofile', '{$mod}','{$main}','','{$table|default:''}');">
+					<span class="l-btn-left l-btn-icon-left">
+						<span class="l-btn-text">Update Profile</span><span class="l-btn-icon icon-man">&nbsp;</span>
+					</span>
+				</a>
+				{/if}
+				&nbsp;
 			</div>
 		
 		{if $button_2|default:'' eq 'true'}

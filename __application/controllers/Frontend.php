@@ -84,6 +84,7 @@ class Frontend extends CI_Controller {
 						
 						$cek_user=$this->mfrontend->getdata('data_login_dapotik','row_array',$getidentity['username']);
 						if(isset($cek_user['email'])){
+							/*
 							$data=array('email'=>$getidentity['username'],
 										'nama_user'=>$getidentity['username'],
 										'nama_lengkap'=>$getidentity['nama'],
@@ -116,7 +117,8 @@ class Frontend extends CI_Controller {
 										'email_kepsek'=>$infosp['email_kepsek'],
 										'email_operator'=>$infosp['email_operator'],
 										'no_hp_kepsek'=>$infosp['hp_kepsek'],
-										'no_hp_bendahara'=>$infosp['hp_operator']
+										'no_hp_bendahara'=>$infosp['hp_operator'],
+										'reg_date'=>date('Y-m-d H:i:s')
 										
 							);
 							$simpan_dapotik=$this->mfrontend->simpansavedata('tbl_reg_dapotik',$data,'edit');
@@ -131,6 +133,15 @@ class Frontend extends CI_Controller {
 							}else{
 								echo "FAILED SAVE ";exit;
 							}
+							*/
+							
+							$cek_user=$this->mfrontend->getdata('data_login_dapotik','row_array',$getidentity['username']);
+							$sess = array();
+							$sess['zona_pilihan'] = $infosp['zona'];
+							$sess['bentuk_pendidikan'] = $infosp['bentuk_pendidikan'];
+							$this->session->set_userdata("zonaxtreme", $sess);
+							$this->session->set_userdata('mkspembeli', base64_encode(serialize($cek_user)));
+							header("Location: " . $this->host ."profile");
 						}else{
 							$data=array('email'=>$getidentity['username'],
 										'nama_user'=>$getidentity['username'],
@@ -164,7 +175,8 @@ class Frontend extends CI_Controller {
 										'email_kepsek'=>$infosp['email_kepsek'],
 										'email_operator'=>$infosp['email_operator'],
 										'no_hp_kepsek'=>$infosp['hp_kepsek'],
-										'no_hp_bendahara'=>$infosp['hp_operator']
+										'no_hp_bendahara'=>$infosp['hp_operator'],
+										'reg_date'=>date('Y-m-d H:i:s')
 										
 							);
 							$simpan_dapotik=$this->mfrontend->simpansavedata('tbl_reg_dapotik',$data,'add');

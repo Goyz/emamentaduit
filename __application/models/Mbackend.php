@@ -13,6 +13,14 @@ class Mbackend extends CI_Model{
 				$where .=" AND ".$this->input->post('kat')." like '%".$this->db->escape_str($this->input->post('key'))."%'";
 		}
 		switch($type){
+			case "dataprofiledapodik":
+				$sql = "
+					SELECT A.*
+					FROM tbl_registrasi A 
+					$where AND A.jenis_pembeli = 'SEKOLAH' 
+					AND id = '".$p1."'
+				";
+			break;
 			case "tbl_komentar":
 				$sql="SELECT A.*,B.nama_lengkap FROM tbl_komentar A LEFT JOIN tbl_registrasi B ON A.tbl_registrasi_id=B.id ".$where;
 			break;
@@ -377,7 +385,8 @@ class Mbackend extends CI_Model{
 			case "tbl_registrasi_umum":
 				if($type=="tbl_registrasi")$where .=" AND A.jenis_pembeli='SEKOLAH'";
 				else $where .=" AND A.jenis_pembeli='UMUM'";
-				$sql="SELECT A.*,CONCAT('PROV. ',B.provinsi,', ',C.kab_kota,', KEC. ',D.kecamatan)as prov_kota
+				$sql="SELECT A.*,CONCAT('PROV. ',B.provinsi,', ',C.kab_kota,', KEC. ',D.kecamatan)as prov_kota,
+						DATE_FORMAT(A.reg_date,'%d %b %Y %h:%i %p') as registrasi_date
 					FROM tbl_registrasi A
 					LEFT JOIN cl_provinsi B ON A.cl_provinsi_kode=B.kode_prov
 					LEFT JOIN cl_kab_kota C ON A.cl_kab_kota_kode=C.kode_kab_kota
@@ -713,6 +722,15 @@ class Mbackend extends CI_Model{
 		}
 		
 		switch($table){
+			case "tbl_registrasi_dapodik":
+				$table = "tbl_registrasi";
+				unset($data["nama_sekolah"]);
+				unset($data["prov"]);
+				unset($data["kab"]);
+				unset($data["kec"]);
+				unset($data["desa"]);
+				unset($data["email"]);
+			break;
 			case "tbl_registration":
 				//print_r($data);exit;
 				$cek_email = $this->db->get_where("tbl_registration", array("username"=>$data["email_address"]) )->row_array();

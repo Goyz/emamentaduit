@@ -133,6 +133,12 @@ class Backend extends JINGGA_Controller {
 			$sts=$this->input->post('editstatus');
 			$this->nsmarty->assign('sts',$sts);
 			switch($mod){
+				case "update_profil_sekolah":
+					$id = $this->input->post('id');
+					$dataprofile = $this->mbackend->getdata('dataprofiledapodik', 'row_array', $id);
+					$this->nsmarty->assign('data', $dataprofile);
+					$this->nsmarty->assign('id',$id);
+				break;				
 				case "konfirmasi_sekolah":
 					$id_pesanan = $this->input->post('id');
 					$this->nsmarty->assign('id_pesanan',$id_pesanan);

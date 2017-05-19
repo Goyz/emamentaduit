@@ -1,13 +1,19 @@
-
 {if $mod eq 'invoice' || $mod eq 'konfirmasi_sekolah' || $mod eq 'komentar' || $mod eq 'konfirmasi_umum' ||$mod eq 'komplain'||$mod eq 'invoice_umum'|| $mod eq 'konfirmasi' || $mod eq 'gudang_konfirmasi' || $mod eq 'gudang_kirim' || $mod eq 'member_sekolah' || $mod eq 'member_umum' || $mod eq 'monitor_order' || $mod eq 'ver_umum' || $mod eq 'ver_sekolah' || $mod eq 'ver_gudang_umum' || $mod eq 'ver_gudang_sekolah' || $mod eq 'manajemen_gudang_sekolah' || $mod eq 'manajemen_gudang_umum'}
-	{include file="backend/template/grid.html" main={$mod} button="false" table={$table|default:''} filter="true" }
+	{assign var=button value='false'}
+	{assign var=updateprofile value='false'}
+	{if $mod eq 'member_sekolah'}
+		{assign var=updateprofile value='true'}
+	{/if}
+	
+	{include file="backend/template/grid.html" main={$mod} buttonapdet={$updateprofile}  button={$button} table={$table|default:''} filter="true" }
 	{if $mod eq 'konfirmasi'}
-	<div class="modol" ></div>
-		
+		<div class="modol" ></div>
 	{/if}
 {else}
 	{assign var=disable_enable value='false'}
 	{assign var=mapping value='false'}
+	{assign var=updateprofile value='false'}
+	
 	{if $mod eq 'produk'}
 		{assign var=disable_enable value='true'}
 	{/if}
